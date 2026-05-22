@@ -55,7 +55,7 @@ Entre sus responsabilidades se incluyen:
 | 4 | | Camino del Equipo | El Mundial |
 | 5 | | Detalles de Partidos | El Mundial |
 | 6 | | Estadísticas y Premios | El Mundial |
-| 7 | | Historial de Mundiales | El Mundial |
+| 7 | Miguel Jaramillo | Historial de Mundiales | El Mundial |
 | 8 | | Eventos en Vivo | La Final |
 | 9 | | Estado del Equipo en la Final | La Final |
 | 10 | | **Jugar la Final** *(Responsabilidad Grupal)* | La Final |
