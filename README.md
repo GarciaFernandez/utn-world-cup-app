@@ -49,7 +49,7 @@ Entre sus responsabilidades se incluyen:
 
 | # | Integrante | Funcionalidad | Sección |
 |---|-----------|---------------|---------|
-| 1 | | Cuerpo Técnico y Estrategia | Mi Equipo |
+| 1 | Luciano Casais | Cuerpo Técnico y Estrategia | Mi Equipo |
 | 2 | Bruno Cano | Rivales Históricos | Mi Equipo |
 | 3 | Valentin Boccarini | Fase de Grupos | El Mundial |
 | 4 | | Camino del Equipo | El Mundial |
