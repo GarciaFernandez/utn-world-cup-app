@@ -52,7 +52,7 @@ Entre sus responsabilidades se incluyen:
 | 1 | Luciano Casais | Cuerpo Técnico y Estrategia | Mi Equipo |
 | 2 | Bruno Cano | Rivales Históricos | Mi Equipo |
 | 3 | Valentin Boccarini | Fase de Grupos | El Mundial |
-| 4 | | Camino del Equipo | El Mundial |
+| 4 | Gianfranco Schettino | Camino del Equipo | El Mundial |
 | 5 | | Detalles de Partidos | El Mundial |
 | 6 | | Estadísticas y Premios | El Mundial |
 | 7 | Miguel Jaramillo | Historial de Mundiales | El Mundial |
