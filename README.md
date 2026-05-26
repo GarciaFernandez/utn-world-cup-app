@@ -53,7 +53,7 @@ Entre sus responsabilidades se incluyen:
 | 2 | Bruno Cano | Rivales Históricos | Mi Equipo |
 | 3 | Valentin Boccarini | Fase de Grupos | El Mundial |
 | 4 | Gianfranco Schettino | Camino del Equipo | El Mundial |
-| 5 | | Detalles de Partidos | El Mundial |
+| 5 | Ignacio Frias | Detalles de Partidos | El Mundial |
 | 6 | Joaquin Garcia Fernandez | Estadísticas y Premios | El Mundial |
 | 7 | Miguel Jaramillo | Historial de Mundiales | El Mundial |
 | 8 | Rosana Monteros Sofe| Eventos en Vivo | La Final |
