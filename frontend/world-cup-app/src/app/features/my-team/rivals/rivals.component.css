@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Contenedor y Maquetación de la Tabla
+   ========================================================================== */
+
+/* Contenedor con límite de altura para forzar scrollbar interno si la grilla es muy extensa */
+.table-wrap {
+  max-height: min(58vh, 560px);
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* Fijado de la cabecera de la tabla para mantener la referencia durante el scroll vertical */
+.table-wrap thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  z-index: 2;
+}
+
+
+/* ==========================================================================
+   Alineación y Estilos de Columnas
+   ========================================================================== */
+
+/* Segunda columna (Nombre del Rival): Centrado de la cabecera th */
+.table-wrap table thead th:nth-child(2) {
+  text-align: center;
+}
+
+/* Segunda columna (Nombre del Rival): Centrado de las celdas de datos td */
+.table-wrap table tbody td:nth-child(2) {
+  text-align: center;
+  font-weight: 600; /* Mantiene el texto destacado para el nombre del país */
+}
+
+
+/* ==========================================================================
+   Estados de Carga y Excepciones (Utilidades)
+   ========================================================================== */
+
+/* Contenedor genérico para pantallas de carga, errores o listas vacías */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Iconografía para los estados vacíos */
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  line-height: 1;
+}

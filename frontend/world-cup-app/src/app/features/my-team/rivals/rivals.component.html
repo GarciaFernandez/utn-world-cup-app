@@ -1,6 +1,42 @@
 <section class="card">
   <div class="card-header">
-    <span class="card-title">Rivales históricos</span>
+    <span class="card-title">Rivales Históricos</span>
+    <span class="badge badge-primary">{{ pageState.selectedTeamLabel }}</span>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
+
+  <div class="empty-state" *ngIf="pageState.loading">
+    <div class="empty-icon">⏳</div>
+    <p>Cargando rivales históricos...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
+    <div class="empty-icon">⚠️</div>
+    <p>{{ pageState.errorMessage }}</p>
+  </div>
+
+  <section class="table-wrap mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID DEL EQUIPO</th>
+          <th class="text-center">NOMBRE DEL RIVAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rival of pageState.rivals">
+          <td>
+            <span class="badge badge-secondary">{{ rival.id | uppercase }}</span>
+          </td>
+          <td class="text-center text-bold">
+            {{ rival.name }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="empty-state" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length === 0">
+    <div class="empty-icon">🧭</div>
+    <p>No se encontraron rivales registrados para este equipo.</p>
+  </div>
 </section>
