@@ -14,25 +14,52 @@
     <p>{{ pageState.errorMessage }}</p>
   </div>
 
-  <section class="table-wrap mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length > 0">
-    <table>
-      <thead>
-        <tr>
-          <th>ID DEL EQUIPO</th>
-          <th class="text-center">NOMBRE DEL RIVAL</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let rival of pageState.rivals">
-          <td>
-            <span class="badge badge-secondary">{{ rival.id | uppercase }}</span>
-          </td>
-          <td class="text-center text-bold">
-            {{ rival.name }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <section class="rivals-grid mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length > 0">
+    
+    <div class="rival-card" *ngFor="let rival of pageState.rivals">
+      
+<div class="rival-card-header">
+  <span class="rival-flag-emoji">{{ getFlagEmoji(rival.id) }}</span>
+  
+  <h3 class="rival-name">{{ rival.name }}</h3>
+</div>
+
+      <div class="rival-card-body">
+        <div class="rival-info-item">
+          <span class="info-label">Confederación:</span>
+          <span class="info-value badge-confederation">{{ rival.footballAssociation ?? 'N/A' }}</span>
+        </div>
+
+        <div class="rival-info-item">
+          <span class="info-label">Rating Overall:</span>
+          <div class="rating-container">
+            <span class="info-value text-bold">{{ rival.rating ?? 0 }} / 100</span>
+            <div class="rating-bar-bg">
+              <div class="rating-bar-fill" [style.width.%]="rival.rating ?? 0"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rival-info-item">
+          <span class="info-label">Entrenador:</span>
+          <span class="info-value">📋 {{ rival.coach ?? 'Sin especificar' }}</span>
+        </div>
+
+        <div class="rival-info-item">
+          <span class="info-label">Capitán:</span>
+          <span class="info-value">👤 {{ rival.captain ?? 'No asignado' }}</span>
+        </div>
+      </div>
+
+      <div class="rival-card-footer">
+        <div class="rival-strategy">
+          <span class="badge-formation">{{ rival.formation ?? 'N/A' }}</span>
+          <span class="strategy-text">{{ rival.strategy ?? 'Estrategia Normal' }}</span>
+        </div>
+      </div>
+
+    </div>
+
   </section>
 
   <div class="empty-state" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length === 0">

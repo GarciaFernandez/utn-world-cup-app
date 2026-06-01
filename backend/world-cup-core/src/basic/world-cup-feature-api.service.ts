@@ -73,4 +73,10 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     // Le pasamos tu interfaz al getEndpointData para que NestJS sepa qué estructura viaja en la red
     return this.getEndpointData<HistoricalRivalApiItem[]>(path);
   }
+
+  public async getTeamDetailById(teamId: string): Promise<any> {
+    return this.getEndpointData<any>('/teams', {
+      teamId: teamId.trim().toLowerCase(),
+    });
+  }
 }

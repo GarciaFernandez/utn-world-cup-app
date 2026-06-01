@@ -4,7 +4,7 @@ import { AbstractBaseService } from '../../basic/abstract-base.service';
 import { ApiErrorMappingRule, ApiErrorStatusMap, ErrorUtils } from '../../basic/error/error.utils';
 import { WorldCupCoreErrorCode } from '../../basic/model/world-cup-core-error-code.enum';
 import { WorldCupFeatureApiService } from '../../basic/world-cup-feature-api.service';
-import { HistoricalRivalApiItem } from './model/rivals-service.interface'; 
+import { HistoricalRivalApiItem, EnrichedRivalApiItem } from './model/rivals-service.interface'; 
 
 const RIVALS_API_ERROR_STATUS_MAP: ApiErrorStatusMap = {
   [HttpStatus.NOT_FOUND]: {
@@ -29,15 +29,34 @@ export class RivalsService extends AbstractBaseService {
     super(adminService);
   }
 
-  /** Obtiene la lista de rivales para el equipo configurado actualmente. */
-  // Cambiamos Promise<any> por un array de tu interfaz tipada
-  public async getRivals(): Promise<HistoricalRivalApiItem[]> { 
+  /** Obtiene la lista de rivales enriquecida para el equipo configurado actualmente. */
+  public async getRivals(): Promise<EnrichedRivalApiItem[]> { 
     try {
       const teamId = this.getCurrentTeamId();
       const rivalsResponse = await this.worldCupFeatureApiService.getHistoricalRivals(teamId);
-      
-      // TypeScript ahora sabe exactamente qué campos tiene cada rival adentro de la respuesta
-      return rivalsResponse as HistoricalRivalApiItem[];
+      const baseRivals = rivalsResponse as HistoricalRivalApiItem[];
+
+      // Mapeamos los rivales y buscamos su detalle en paralelo
+      return await Promise.all(
+        baseRivals.map(async (rival) => {
+          const teamDetailsResponse = await this.worldCupFeatureApiService.getTeamDetailById(rival.id);
+          
+          const dataArray = teamDetailsResponse?.data ?? teamDetailsResponse;
+          const details = Array.isArray(dataArray) ? dataArray[0] : dataArray;
+
+          return {
+            id: rival.id,
+            name: rival.name,
+            group: details?.group,
+            footballAssociation: details?.footballAssociation,
+            rating: details?.rating,
+            coach: details?.coach,
+            captain: details?.captain,
+            strategy: details?.strategy,
+            formation: details?.formation
+          };
+        })
+      );
     } catch (error) {
       ErrorUtils.mapWorldCupApiError(error, RIVALS_API_ERROR_STATUS_MAP, RIVALS_API_ERROR_FALLBACK);
     }
