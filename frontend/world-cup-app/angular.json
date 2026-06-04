@@ -58,9 +58,17 @@
   },
   "cli": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "analytics": false
 =======
     "analytics": "68184968-046b-4381-bb40-49e99d33f2cd"
 >>>>>>> e37702bc8220d6f2e292788250c4f7a7a7ead278
+=======
+<<<<<<< Updated upstream
+    "analytics": "68184968-046b-4381-bb40-49e99d33f2cd"
+=======
+    
+>>>>>>> Stashed changes
+>>>>>>> f855215e8e177f404cf806424d02f7f77c6a43a6
   }
 }
