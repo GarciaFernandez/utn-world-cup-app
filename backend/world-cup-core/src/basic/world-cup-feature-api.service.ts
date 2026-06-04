@@ -5,12 +5,8 @@ import { LanguageEnum } from './model/language.enum';
 import { WorldCupApiService } from './world-cup-api.service';
 import type { GameDictionaryApiResponse, SquadPlayerApiItem } from '../teams/services/model/squad-service.interface';
 import type { TeamHistoryApiResponse } from '../teams/services/model/team-history-service.interface';
-import type {
-  CurrentWorldCupApiResponse,
-  TeamCatalogApiItem,
-  TeamStatsApiResponse,
-} from '../world-cup/services/model/simulation-service.interface';
-import { CoachApiItem } from 'src/teams/services/model/coach-service.interface';
+import type {CurrentWorldCupApiResponse,TeamCatalogApiItem,TeamStatsApiResponse,} from '../world-cup/services/model/simulation-service.interface';
+import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';import { CoachApiItem } from 'src/teams/services/model/coach-service.interface';
 import { StrategyApiItem } from 'src/teams/services/model/strategy-service.interface';
 import { FormationApiItem } from 'src/teams/services/model/formation-service.interface';
 
@@ -72,6 +68,18 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     return this.postEndpointData<CurrentWorldCupApiResponse>('/world-cup/simulate', {
       teamId,
       lang: this.resolveLang(lang),
+    });
+  }
+  public async getHistoricalRivals(teamId: string): Promise<HistoricalRivalApiItem[]> {
+    const path = `/teams/${teamId.toLowerCase()}/rivals`;
+    
+    // Le pasamos tu interfaz al getEndpointData para que NestJS sepa qué estructura viaja en la red
+    return this.getEndpointData<HistoricalRivalApiItem[]>(path);
+  }
+
+  public async getTeamDetailById(teamId: string): Promise<any> {
+    return this.getEndpointData<any>('/teams', {
+      teamId: teamId.trim().toLowerCase(),
     });
   }
     public async getTeamCoaching(teamId: string): Promise<CoachApiItem> {
