@@ -15,6 +15,27 @@
       ],
       "restart": true,
       "console": "integratedTerminal"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run Script: db:seed",
+      "request": "launch",
+      "command": "npm run db:seed",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run Script: test:turn-context-persistence",
+      "request": "launch",
+      "command": "npm run test:turn-context-persistence",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run Script: test:same-turn-substitution-guard",
+      "request": "launch",
+      "command": "npm run test:same-turn-substitution-guard",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminModule } from '../admin/admin.module';
+import { BasicModule } from '../basic/basic.module';
 import { CoachingController } from './controllers/coaching.controller';
 import { RivalsController } from './controllers/rivals.controller';
 import { SquadController } from './controllers/squad.controller';
@@ -10,7 +11,7 @@ import { SquadService } from './services/squad.service';
 import { TeamHistoryService } from './services/team-history.service';
 
 @Module({
-  imports: [AdminModule],
+  imports: [AdminModule,BasicModule],
   controllers: [SquadController, CoachingController, TeamHistoryController, RivalsController],
   providers: [SquadService, CoachingService, TeamHistoryService, RivalsService],
 })
