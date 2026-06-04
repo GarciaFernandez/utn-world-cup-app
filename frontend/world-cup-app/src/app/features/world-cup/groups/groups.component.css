@@ -33,3 +33,30 @@
 .qualification-mark-best-third {
   color: #2196f3;
 }
+
+.all-groups-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.group-card {
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.group-card-header {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: var(--team-highlight);
+  color: var(--team-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+.group-table tr.best-third td:first-child { 
+  border-left: 3px solid #FF9800; 
+}

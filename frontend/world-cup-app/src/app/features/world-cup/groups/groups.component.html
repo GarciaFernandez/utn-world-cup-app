@@ -1,6 +1,56 @@
 <section class="card">
   <div class="card-header">
-    <span class="card-title">Fase de grupos</span>
+    <span class="card-title">Fase de Grupos</span>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
+
+  <div *ngIf="pageState.loading" class="empty-state">
+    <span class="empty-icon">⏳</span>
+    <p>Cargando grupos...</p>
+  </div>
+
+  <div *ngIf="pageState.errorMessage && !pageState.loading" class="empty-state">
+    <span class="empty-icon">⚠️</span>
+    <p>{{ pageState.errorMessage }}</p>
+  </div>
+
+  <div *ngIf="pageState.showNoSimulationState && !pageState.loading && !pageState.errorMessage" class="empty-state">
+    <span class="empty-icon">📊</span>
+    <p>No hay simulación disponible. Primero simulá el mundial desde "Simular final".</p>
+  </div>
+
+  <div *ngIf="!pageState.loading && pageState.groups.length > 0" class="all-groups-grid">
+    <div *ngFor="let group of pageState.groups" class="group-card">
+      <div class="group-card-header">Grupo {{ group.group }}</div>
+      <table class="group-table">
+        <thead>
+          <tr>
+            <th>Equipo</th>
+            <th>PJ</th>
+            <th>PG</th>
+            <th>PE</th>
+            <th>PP</th>
+            <th>DG</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let team of group.teams" [class.qualified]="team.isQualified && !team.isBestThird"
+            [class.best-third]="team.isBestThird" [class.highlight-row]="team.isSelectedTeam">
+            <td>
+              <div class="team-name-cell">
+                <span class="pos-circle">{{ team.position }}</span>
+                {{ team.teamName }}
+              </div>
+            </td>
+            <td>{{ team.played }}</td>
+            <td>{{ team.wins }}</td>
+            <td>{{ team.draws }}</td>
+            <td>{{ team.losses }}</td>
+            <td>{{ team.goalDifference }}</td>
+            <td class="pts-cell">{{ team.points }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>

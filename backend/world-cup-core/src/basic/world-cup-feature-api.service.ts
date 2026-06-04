@@ -71,4 +71,11 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
       lang: this.resolveLang(lang),
     });
   }
+
+  public async getCurrentGroups(): Promise<any[]> {
+  return this.getEndpointData<any[]>('/world-cup/current/groups');
+}
+
+
+
 }
