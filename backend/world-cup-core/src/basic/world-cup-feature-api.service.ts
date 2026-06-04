@@ -71,4 +71,10 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
       lang: this.resolveLang(lang),
     });
   }
+
+  public async getTeamJourney(teamId: string, lang?: string): Promise<unknown> {
+    return this.getEndpointData<unknown>(`/world-cup/current/teams/${teamId}/journey`, {
+      lang: this.resolveLang(lang),
+    });
+  }
 }

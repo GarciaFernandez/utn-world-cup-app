@@ -1,8 +1,12 @@
-import { Controller } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get } from '@nestjs/common';
+import { JourneyService } from '../services/journey.service';
 
-@ApiTags('world-cup')
-@Controller('world-cup')
+@Controller('world-cup/journey')
 export class JourneyController {
-  // TODO: Se debe implementar el controlador y el servicio correspondiente.
+  constructor(private readonly journeyService: JourneyService) {}
+
+  @Get()
+  async getJourney() {
+    return await this.journeyService.getTeamJourney();
+  }
 }
