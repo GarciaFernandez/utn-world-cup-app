@@ -1,6 +1,84 @@
 <section class="card">
   <div class="card-header">
     <span class="card-title">Cuerpo técnico</span>
+    <span class="badge badge-primary">{{ pageState.selectedTeamLabel }}</span>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
+  
+  <div class="empty-state" *ngIf="pageState.loading">
+    <div class="empty-icon">⏳</div>
+    <p>Cargando Cuerpo Tecnico...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
+    <div class="empty-icon">⚠️</div>
+    <p>{{ pageState.errorMessage }}</p>
+  </div>
+
+<section class="table-wrap mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.coach"> 
+  <table>
+    <thead>
+      <tr>
+        <th>name</th>
+        <th>age</th>
+        <th>nationality</th>
+        <th>profile</th>
+        <th>riskAppetite</th>
+        <th>gameManagement</th>
+        <th>adaptability</th>
+        <th>pressingBias</th>
+        <th>possessionBias</th>
+        <th>defenseBias</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ pageState.coach.name }}</td>
+        <td>{{ pageState.coach.age }}</td>
+        <td>{{ pageState.coach.nationality }}</td>
+        <td>{{ pageState.coach.profile }}</td>
+        <td>{{ pageState.coach.riskAppetite }}</td>
+        <td>{{ pageState.coach.gameManagement }}</td>
+        <td>{{ pageState.coach.adaptability }}</td>
+        <td>{{ pageState.coach.pressingBias }}</td>
+        <td>{{ pageState.coach.possessionBias }}</td>
+        <td>{{ pageState.coach.defenseBias }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+  <div class="empty-state" *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.coach">  
+  <div class="empty-icon">🧭</div>
+  <p>No hay cuerpo técnico que coincida con el filtro actual.</p>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-header">
+    <span class="card-title">Estrategia</span>
+  </div>
+  <div class="empty-state" *ngIf="pageState.loading">
+    <div class="empty-icon">⏳</div>
+    <p>Cargando Estrategia...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
+    <div class="empty-icon">⚠️</div>
+    <p>{{ pageState.errorMessage }}</p>
+  </div>
+  <section class="table-wrap mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.coach"> 
+  <table>
+    <thead>
+      <tr>
+        <th>Estrategia</th>
+        <th>Formacion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ pageState.coach.name }}</td>
+        <td>{{ pageState.coach.age }}</td>
+      </tr>
+    </tbody>
+  </table>
 </section>

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { AdminModule } from '../admin/admin.module';
 import { GroupsController } from './controllers/groups.controller';
 import { JourneyController } from './controllers/journey.controller';
@@ -14,7 +15,10 @@ import { StatsAwardsService } from './services/stats-awards.service';
 import { WorldCupHistoryService } from './services/world-cup-history.service';
 
 @Module({
-  imports: [AdminModule],
+  imports: [
+    AdminModule,
+    HttpModule
+  ],
   controllers: [
     SimulationController,
     GroupsController,

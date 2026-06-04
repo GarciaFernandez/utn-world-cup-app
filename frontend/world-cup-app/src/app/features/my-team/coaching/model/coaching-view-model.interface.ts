@@ -10,6 +10,8 @@ import {
 } from './coaching-api.interface';
 
 export interface CoachingViewModel {
+  searchTerm(searchTerm: any, positionFilter: any): any;
+  positionFilter(searchTerm: any, positionFilter: any): any;
   lang: 'es' | 'en';
   loading: boolean;
   savingStrategy: boolean;

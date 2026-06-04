@@ -41,7 +41,7 @@ Entre sus responsabilidades se incluyen:
 - Centralizar consultas técnicas y comunicación con la cátedra.
 - Ayudar a destrabar problemas técnicos dentro del equipo.
 
-**Nombre del Tech Lead:**  [Completar con Nombre]
+**Nombre del Tech Lead:**  [Gianfranco Schettino]
 
 ### Integrantes por funcionalidad
 
@@ -49,15 +49,15 @@ Entre sus responsabilidades se incluyen:
 
 | # | Integrante | Funcionalidad | Sección |
 |---|-----------|---------------|---------|
-| 1 | | Cuerpo Técnico y Estrategia | Mi Equipo |
+| 1 | Luciano Casais | Cuerpo Técnico y Estrategia | Mi Equipo |
 | 2 | Bruno Cano | Rivales Históricos | Mi Equipo |
 | 3 | Valentin Boccarini | Fase de Grupos | El Mundial |
-| 4 | | Camino del Equipo | El Mundial |
-| 5 | | Detalles de Partidos | El Mundial |
-| 6 | | Estadísticas y Premios | El Mundial |
-| 7 | | Historial de Mundiales | El Mundial |
-| 8 | | Eventos en Vivo | La Final |
-| 9 | | Estado del Equipo en la Final | La Final |
+| 4 | Gianfranco Schettino | Camino del Equipo | El Mundial |
+| 5 | Ignacio Frias | Detalles de Partidos | El Mundial |
+| 6 | Joaquin Garcia Fernandez | Estadísticas y Premios | El Mundial |
+| 7 | Miguel Jaramillo | Historial de Mundiales | El Mundial |
+| 8 | Rosana Monteros Sofe| Eventos en Vivo | La Final |
+| 9 | Juan Cruz Borda | Estado del Equipo en la Final | La Final |
 | 10 | | **Jugar la Final** *(Responsabilidad Grupal)* | La Final |
 
 > **Jugar la Final** es obligatoria para la aprobación del TP y responsabilidad de todo el grupo. Debe poder jugarse de principio a fin sin errores. De ella dependen: Eventos en Vivo, Estado del Equipo, Estadísticas y Premios e Historial de Mundiales.

@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     'route.myTeam.squad.title': 'Plantel',
     'route.myTeam.squad.subtitle': 'Nómina completa y detalles de jugadores',
     'route.myTeam.coaching.title': 'Cuerpo técnico',
-    'route.myTeam.coaching.subtitle': 'Pendiente de desarrollo por el alumno',
+    'route.myTeam.coaching.subtitle': 'Información sobre el cuerpo técnico y su estrategia',
     'route.myTeam.history.title': 'Historia del Equipo',
     'route.myTeam.history.subtitle': 'Títulos internacionales',
     'route.myTeam.rivals.title': 'Rivales históricos',

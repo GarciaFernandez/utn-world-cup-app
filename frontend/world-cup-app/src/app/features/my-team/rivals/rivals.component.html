@@ -1,6 +1,69 @@
 <section class="card">
   <div class="card-header">
-    <span class="card-title">Rivales históricos</span>
+    <span class="card-title">Rivales Históricos</span>
+    <span class="badge badge-primary">{{ pageState.selectedTeamLabel }}</span>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
+
+  <div class="empty-state" *ngIf="pageState.loading">
+    <div class="empty-icon">⏳</div>
+    <p>Cargando rivales históricos...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
+    <div class="empty-icon">⚠️</div>
+    <p>{{ pageState.errorMessage }}</p>
+  </div>
+
+  <section class="rivals-grid mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length > 0">
+    
+    <div class="rival-card" *ngFor="let rival of pageState.rivals">
+      
+<div class="rival-card-header">
+  <span class="rival-flag-emoji">{{ getFlagEmoji(rival.id) }}</span>
+  
+  <h3 class="rival-name">{{ rival.name }}</h3>
+</div>
+
+      <div class="rival-card-body">
+        <div class="rival-info-item">
+          <span class="info-label">Confederación:</span>
+          <span class="info-value badge-confederation">{{ rival.footballAssociation ?? 'N/A' }}</span>
+        </div>
+
+        <div class="rival-info-item">
+          <span class="info-label">Rating Overall:</span>
+          <div class="rating-container">
+            <span class="info-value text-bold">{{ rival.rating ?? 0 }} / 100</span>
+            <div class="rating-bar-bg">
+              <div class="rating-bar-fill" [style.width.%]="rival.rating ?? 0"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rival-info-item">
+          <span class="info-label">Entrenador:</span>
+          <span class="info-value">📋 {{ rival.coach ?? 'Sin especificar' }}</span>
+        </div>
+
+        <div class="rival-info-item">
+          <span class="info-label">Capitán:</span>
+          <span class="info-value">👤 {{ rival.captain ?? 'No asignado' }}</span>
+        </div>
+      </div>
+
+      <div class="rival-card-footer">
+        <div class="rival-strategy">
+          <span class="badge-formation">{{ rival.formation ?? 'N/A' }}</span>
+          <span class="strategy-text">{{ rival.strategy ?? 'Estrategia Normal' }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="empty-state" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.rivals.length === 0">
+    <div class="empty-icon">🧭</div>
+    <p>No se encontraron rivales registrados para este equipo.</p>
+  </div>
 </section>

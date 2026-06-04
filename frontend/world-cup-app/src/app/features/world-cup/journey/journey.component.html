@@ -1,6 +1,20 @@
-<section class="card">
-  <div class="card-header">
-    <span class="card-title">Camino del equipo</span>
+<section *ngIf="pageState$ | async as state">
+  <h2>Camino del Equipo - Checkpoint 2</h2>
+
+  <div *ngIf="state.loading">
+    <p>Cargando datos desde el WorldCupCore...</p>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
+
+  <div *ngIf="state.noData">
+    <p>⚠️ No hay simulación activa. Por favor, simulá el mundial primero.</p>
+  </div>
+
+  <div *ngIf="state.error">
+    <p>❌ Ocurrió un error al comunicarse con el backend.</p>
+  </div>
+
+  <div *ngIf="state.data">
+    <h3>Datos recibidos correctamente:</h3>
+    <pre>{{ state.data | json }}</pre>
+  </div>
 </section>
