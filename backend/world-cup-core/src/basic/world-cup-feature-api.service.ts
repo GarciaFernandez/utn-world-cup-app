@@ -10,6 +10,9 @@ import type {
   TeamCatalogApiItem,
   TeamStatsApiResponse,
 } from '../world-cup/services/model/simulation-service.interface';
+import { CoachApiItem } from 'src/teams/services/model/coach-service.interface';
+import { StrategyApiItem } from 'src/teams/services/model/strategy-service.interface';
+import { FormationApiItem } from 'src/teams/services/model/formation-service.interface';
 
 @Injectable()
 export class WorldCupFeatureApiService extends AbstractBaseService {
@@ -69,6 +72,23 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     return this.postEndpointData<CurrentWorldCupApiResponse>('/world-cup/simulate', {
       teamId,
       lang: this.resolveLang(lang),
+    });
+  }
+    public async getTeamCoaching(teamId: string): Promise<CoachApiItem> {
+    return this.getEndpointData<CoachApiItem>(`/teams/coaches`, {
+      teamId: teamId
+    });
+  }
+
+  public async getTeamStrategy(teamId: string): Promise<StrategyApiItem> {
+    return this.getEndpointData<StrategyApiItem>(`/teams/{teamId}/strategy`, {
+      teamId: teamId
+    });
+  }
+
+  public async getTeamFormation(teamId: string): Promise<FormationApiItem> {
+    return this.getEndpointData<FormationApiItem>(`/teams/{teamId}/formation`, {
+      teamId: teamId
     });
   }
 }
