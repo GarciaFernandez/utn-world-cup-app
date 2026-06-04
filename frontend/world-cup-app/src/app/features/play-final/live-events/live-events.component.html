@@ -2,5 +2,177 @@
   <div class="card-header">
     <span class="card-title">Eventos en vivo</span>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
+
+ <ng-container *ngIf="pageState$ | async as pageState">
+    <div class="empty-state" *ngIf="pageState.loading">
+      <div class="empty-icon">⏳</div>
+      <p>Cargando eventos de la final...</p>
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!pageState.loading && pageState.errorMessage"
+    >
+      <div class="empty-icon">⚠️</div>
+      <p>{{ pageState.errorMessage }}</p>
+      <button
+        type="button"
+        class="btn btn-ghost mt-16"
+        (click)="onRefresh()"
+      >
+        Reintentar
+      </button>
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !pageState.loading &&
+        !pageState.errorMessage &&
+        pageState.showEmptyState
+      "
+    >
+      <div class="empty-icon">🏟️</div>
+      <p>No hay una final activa ni una final jugada todavía.</p>
+      <p class="empty-hint">
+        Primero se debe iniciar y jugar la final para ver el timeline de
+        eventos.
+      </p>
+    </div>
+
+    <ng-container
+      *ngIf="
+        !pageState.loading &&
+        !pageState.errorMessage &&
+        pageState.data as match
+      "
+    >
+      <section class="live-scoreboard card">
+        <div class="team-side">
+          <span class="team-flag">{{ match.team.flag }}</span>
+
+          <div>
+            <h3>{{ match.team.name }}</h3>
+            <p>{{ getTeamMeta(match, 'team') }}</p>
+          </div>
+        </div>
+
+        <div class="score-center">
+          <span class="badge badge-green">
+            {{ getMatchStateLabel(match) }}
+          </span>
+
+          <div class="score">{{ match.score }}</div>
+
+          <div class="match-meta">
+            Min. {{ match.minute }} · Turno {{ match.turn }}
+            <span>· Zona {{ match.zoneLabel || '-' }}</span>
+          </div>
+        </div>
+
+        <div class="team-side team-side-right">
+          <div>
+            <h3>{{ match.opponent.name }}</h3>
+            <p>{{ getTeamMeta(match, 'opponent') }}</p>
+          </div>
+
+          <span class="team-flag">{{ match.opponent.flag }}</span>
+        </div>
+      </section>
+
+      <div class="live-layout">
+        <section class="card timeline-card">
+          <div class="card-header">
+            <span class="card-title">Timeline cronológico</span>
+
+            <button
+              type="button"
+              class="btn btn-ghost"
+              (click)="onRefresh()"
+            >
+              Actualizar
+            </button>
+          </div>
+
+          <div class="empty-state compact" *ngIf="!match.events.length">
+            <div class="empty-icon">📋</div>
+            <p>La final existe, pero todavía no tiene eventos registrados.</p>
+          </div>
+
+          <ol class="timeline" *ngIf="match.events.length">
+            <li
+              class="timeline-item"
+              *ngFor="let event of match.events"
+              [ngClass]="'event-' + event.style"
+            >
+              <div class="event-minute">
+                {{ event.minuteLabel }}
+              </div>
+
+              <div class="event-icon">
+                {{ event.icon }}
+              </div>
+
+              <div class="event-body">
+                <div class="event-title">
+                  <span>{{ getEventDescription(event) }}</span>
+
+                  <span class="badge badge-gray">
+                    {{ event.type }}
+                  </span>
+                </div>
+
+                <div class="event-subtitle">
+                  <span *ngIf="event.teamName">
+                    {{ event.teamName }}
+                  </span>
+
+                  <span *ngIf="event.playerName">
+                    · {{ event.playerName }}
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <aside class="card summary-card">
+          <div class="card-header">
+            <span class="card-title">Resumen</span>
+          </div>
+
+          <div class="summary-score">
+            {{ match.score }}
+          </div>
+
+          <div class="summary-row">
+            <span>Goles</span>
+            <strong>{{ getGoalsText(match) }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Amarillas</span>
+            <strong>{{ getCardsText(match, 'yellow') }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Rojas</span>
+            <strong>{{ getCardsText(match, 'red') }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Total de eventos</span>
+            <strong>{{ match.events.length }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Jugador del partido</span>
+            <strong>
+              {{ match.playerOfMatch?.playerName || 'A definir' }}
+            </strong>
+          </div>
+        </aside>
+      </div>
+    </ng-container>
+  </ng-container>
 </section>
