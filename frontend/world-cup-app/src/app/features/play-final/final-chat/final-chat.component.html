@@ -1,6 +1,153 @@
-<section class="card">
-  <div class="card-header">
-    <span class="card-title">Jugar la final</span>
+<div class="chat-layout-container" *ngIf="partido">
+  
+  <div class="chat-main-section">
+    
+    <div class="chat-history-scroll" #chatScrollContainer>
+      <div class="chat-feed-wrapper">
+        
+        <div *ngFor="let item of chatTimeline" class="chat-message-bubble">
+          <p class="message-text">{{ item.text }}</p>
+          <span class="message-time">{{ item.minute }}' - {{ partido.teamName || 'Tunisia' }}</span>
+        </div>
+
+        <div *ngIf="vm.sending" class="chat-loading-bubble">
+          <span>Procesando jugada táctica...</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="chat-actions-footer">
+
+      <div *ngIf="esPartidoFinalizado" class="final-match-banner">
+        <div class="final-match-alert">
+          🏁 ¡Final del partido! La gran final de la copa ha terminado.
+        </div>
+        <button class="quick-option-btn btn-primary-action" (click)="salirAlMenu()">
+          Ir a Simular para Volver a Jugar
+        </button>
+      </div>
+      
+      <div *ngIf="!esPartidoFinalizado">
+        <p class="actions-label">Acciones disponibles:</p>
+        <div class="quick-actions-grid">
+          <button 
+            *ngFor="let opcion of partido.options; let i = index" 
+            class="quick-option-btn"
+            [disabled]="vm.sending"
+            (click)="seleccionarOpcion(i + 1)">
+            {{ opcion.label }}
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="vm.actionErrorMessage" class="action-error-message">
+        {{ vm.actionErrorMessage }}
+      </div>
+    </div>
+
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
-</section>
+
+<div class="chat-sidebar-section">
+  
+  <div class="sidebar-card live-score-card">
+    <span class="card-subtitle">MARCADOR EN VIVO</span>
+    <div class="score-display">
+      <span class="score-number">{{ golesLocal }}</span>
+      <span class="score-divider">-</span>
+      <span class="score-number">{{ golesVisitante }}</span>
+    </div>
+    <div class="match-teams-labels">
+      <span>{{ partido.teamName || 'Tunisia' }}</span>
+      <span class="vs-text">vs</span>
+      <span>{{ partido.opponentName || 'Rival' }}</span>
+    </div>
+    <div class="time-badge">
+      🕒 Minuto {{ partido.minute ?? 1 }}' - Turno {{ partido.turn ?? 1 }}
+    </div>
+  </div>
+
+  <div class="sidebar-card tactics-card">
+    <span class="card-subtitle">TÁCTICA Y ESTRATEGIA</span>
+    
+    <div class="tactic-field">
+      <span class="tactic-label">Zona de cancha:</span>
+      <span class="tactic-value badge-blue">{{ partido.zone || 'MIDFIELD' }}</span>
+    </div>
+
+    <div class="tactic-field">
+      <span class="tactic-label">Posesión:</span>
+      <span class="tactic-value" [ngClass]="partido.possession === 'USER' || partido.possession === 'Propia' ? 'badge-green' : 'badge-red'">
+        {{ partido.possession === 'USER' || partido.possession === 'Propia' ? 'Tu equipo' : 'Rival' }}
+      </span>
+    </div>
+
+    <div class="tactic-field" *ngIf="partido.ballCarrier">
+      <span class="tactic-label">Conductor de pelota:</span>
+      <span class="tactic-value badge-gray">{{ partido.ballCarrier }}</span>
+    </div>
+
+    <div class="tactic-field" *ngIf="partido.eventType">
+      <span class="tactic-label">Tipo de evento:</span>
+      <span class="tactic-value badge-event">{{ partido.eventType }}</span>
+    </div>
+
+    <div class="coaches-section">
+      <span class="card-subtitle-sub">DATOS DE TÉCNICOS</span>
+      
+      <div class="coach-card">
+        <div class="coach-header">
+          <span class="coach-team">{{ partido.teamName || 'Tunisia' }}</span>
+          <span class="coach-name">{{ partido.teamCoachName || 'Sami Trabelsi' }}</span>
+          <span class="coach-profile">({{ partido.teamCoachProfile || 'PRAGMATIC' }})</span>
+        </div>
+        <div class="coach-details">
+          Estrategia: <span class="highlight">{{ partido.teamStrategy || 'DEFENSE' }}</span> · 
+          Formación: <span class="highlight">{{ partido.teamFormation || '5-4-1' }}</span>
+        </div>
+      </div>
+
+      <div class="coach-card">
+        <div class="coach-header">
+          <span class="coach-team">{{ partido.opponentName || 'Rival' }}</span>
+          <span class="coach-name">{{ partido.opponentCoachName || 'Steve Clarke' }}</span>
+          <span class="coach-profile">({{ partido.opponentCoachProfile || 'CONSERVATIVE' }})</span>
+        </div>
+        <div class="coach-details">
+          Estrategia: <span class="highlight">{{ partido.opponentStrategy || 'BALANCED' }}</span> · 
+          Formación: <span class="highlight">{{ partido.opponentFormation || '5-4-1' }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+<div *ngIf="!partido && !vm.starting" class="start-game-container">
+  <div class="start-game-card">
+    <div class="start-game-icon">🏆</div>
+    <h3 class="start-game-title">Gran Final de la Copa del Mundo</h3>
+    <p class="start-game-text">
+      Presioná el botón de abajo para iniciar la secuencia táctica de la final o reenganchar el partido pendiente si cambiaste de menú.
+    </p>
+    
+    <div class="start-game-actions">
+      <button (click)="clickIniciarPartido()" class="btn-start-match">
+        ⚽ Iniciar / Reanudar Partido
+      </button>
+
+      <button (click)="salirAlMenu()" class="btn-cancel-match">
+        Volver al Menú de Simulación
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="vm.starting" class="loading-fullscreen-container">
+  <div class="chat-loading-bubble loading-fullscreen-bubble">
+    <span>Preparando el estadio y cargando datos de la final...</span>
+  </div>
+</div>

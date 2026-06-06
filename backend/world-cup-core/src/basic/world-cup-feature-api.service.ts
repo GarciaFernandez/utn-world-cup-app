@@ -9,6 +9,7 @@ import type {CurrentWorldCupApiResponse,TeamCatalogApiItem,TeamStatsApiResponse,
 import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';import { CoachApiItem } from 'src/teams/services/model/coach-service.interface';
 import { StrategyApiItem } from 'src/teams/services/model/strategy-service.interface';
 import { FormationApiItem } from 'src/teams/services/model/formation-service.interface';
+import { TournamentStatsData,AwardItem, PlayerStatsItem } from '../world-cup/services/model/stats-awards.interface';
 
 @Injectable()
 export class WorldCupFeatureApiService extends AbstractBaseService {
@@ -66,7 +67,7 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
 
   public async simulateWorldCup(teamId: string, lang?: string): Promise<CurrentWorldCupApiResponse> {
     return this.postEndpointData<CurrentWorldCupApiResponse>('/world-cup/simulate', {
-      teamId,
+      teamId: teamId?.trim().toLowerCase(),
       lang: this.resolveLang(lang),
     });
   }
@@ -110,4 +111,46 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     return this.getEndpointData<any[]>('/world-cup/current/groups');
   }
 
+
+  public async startFinal(teamId: string, lang?: string): Promise<any> {
+    // La cátedra espera el teamId en el Body de la petición
+    return this.postEndpointData('/match/start-final', {
+      teamId,
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async playMatch(matchId: string, selectedOption: string, lang?: string): Promise<any> {
+    // Mapeamos los datos hacia el endpoint de la cátedra /match/play
+    return this.postEndpointData('/match/play', {
+      matchId,
+      selectedOption,
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  /*'--------------------- STATS, PLAYERS STATS AND AWARDS' -------------------- */
+  public async getTournamentStats(lang?: string): Promise<TournamentStatsData> {
+    return this.getEndpointData<TournamentStatsData>('/world-cup/current/stats', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async getTournamentAwards(lang?: string): Promise<AwardItem[]> {
+    return this.getEndpointData<AwardItem[]>('/world-cup/current/awards', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async getPlayerDetailedStats(teamId?: string): Promise<PlayerStatsItem[]> {
+    return this.getEndpointData<PlayerStatsItem[]>('/world-cup/current/player-stats', {
+      teamId: teamId?.trim().toLowerCase(),
+    });
+  }
+  
+
+  
 }
+
+
+

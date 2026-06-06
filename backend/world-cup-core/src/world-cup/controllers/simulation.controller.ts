@@ -3,7 +3,14 @@ import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AbstractController } from '../../basic/abstract.controller';
 import { CurrentWorldCupQueryRequest } from './request/current-world-cup-query.request';
 import { SimulationService } from '../services/simulation.service';
-
+import {ResponseObject} from '../../basic/response-object';
+import {
+  CurrentWorldCupApiResponse,
+  FinalistPreview,
+  SimulationScreenResponse,
+  TeamCatalogApiItem,
+  TeamStatsApiResponse,
+} from '../services/model/simulation-service.interface';
 @ApiTags('world-cup')
 @Controller('world-cup')
 export class SimulationController extends AbstractController {
@@ -23,7 +30,7 @@ export class SimulationController extends AbstractController {
   /** Runs a world cup simulation and returns updated current metadata. */
   @Post('simulate')
   @ApiOperation({ summary: 'World Cup - run simulation action' })
-  public async simulate(): Promise<unknown> {
+  public async simulate(): Promise<ResponseObject<SimulationScreenResponse>> {
     return this.createOkResponse(await this.simulationService.simulate());
   }
 }
