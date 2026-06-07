@@ -1,6 +1,143 @@
-<section class="card">
+<div *ngIf="vm.loading" class="stats-loading-box">
+  <div class="spinner"></div>
+  <p>Cargando cómputos y estadísticas oficiales del torneo...</p>
+</div>
+
+<div *ngIf="!vm.loading && vm.errorMessage" class="stats-error-box">
+  <p>⚠️ {{ vm.errorMessage }}</p>
+</div>
+
+<div *ngIf="!vm.loading && !vm.errorMessage && vm.showNoDataState" class="card stats-placeholder-card">
   <div class="card-header">
-    <span class="card-title">Estadísticas y premios</span>
+    <span class="card-title">Estadísticas y Premios de la Copa</span>
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
-</section>
+  <div class="placeholder-body">
+    <span class="placeholder-icon">⏳</span>
+    <h3>El Mundial todavía está en disputa</h3>
+    <p>El cuadro de estadísticas definitivas, los líderes de juego y la galería de premios individuales se habilitarán automáticamente al finalizar el partido de la gran final.</p>
+  </div>
+</div>
+
+<div *ngIf="!vm.loading && !vm.errorMessage && !vm.showNoDataState" class="stats-fade-in">
+
+  <section class="stats-summary-grid">
+    <div class="card stat-item">
+      <h4>Partidos Disputados</h4>
+      <p class="stat-number">{{ vm.totalMatches }}</p>
+    </div>
+    <div class="card stat-item">
+      <h4>Goles Totales</h4>
+      <p class="stat-number">{{ vm.totalGoals }}</p>
+    </div>
+    <div class="card stat-item">
+      <h4>Promedio Gol por Partido</h4>
+      <p class="stat-number">{{ vm.avgGoalsPerMatch | number:'1.2-2' }}</p>
+    </div>
+    <div class="card stat-item">
+      <h4>Tarjetas Amarillas</h4>
+      <p class="stat-number yellow-card-txt">🟨 {{ vm.totalYellowCards }}</p>
+    </div>
+    <div class="card stat-item">
+      <h4>Tarjetas Rojas</h4>
+      <p class="stat-number red-card-txt">🟥 {{ vm.totalRedCards }}</p>
+    </div>
+  </section>
+
+  <section class="card podium-section">
+    <div class="card-header">
+      <span class="card-title">Podio Oficial del Torneo</span>
+    </div>
+    <div class="podium-container">
+      <div *ngFor="let team of vm.podium" class="podium-card" [ngClass]="team.place.toLowerCase()">
+        <span class="medal-icon">{{ team.medal }}</span>
+        <span class="team-flag">{{ team.flag }}</span>
+        <h3>{{ team.teamName }}</h3>
+        <p class="place-label">{{ team.placeLabel }}</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="leaderboards-wrapper">
+    
+    <section class="card leaderboard-card">
+      <div class="card-header">
+        <span class="card-title">Máximos Goleadores</span>
+      </div>
+      <div class="table-container">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th>Jugador</th>
+              <th>Equipo</th>
+              <th class="txt-center">Goles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of vm.topScorers">
+              <td><strong>#{{ p.rank }}</strong></td>
+              <td class="bold-name">{{ p.playerName }}</td>
+              <td class="team-cell">
+                <span class="mini-flag">{{ p.teamFlag }}</span> 
+                <span>{{ p.teamName }}</span>
+              </td>
+              <td class="txt-center bold-value">{{ p.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card leaderboard-card">
+      <div class="card-header">
+        <span class="card-title">Máximos Asistentes</span>
+      </div>
+      <div class="table-container">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th>Jugador</th>
+              <th>Equipo</th>
+              <th class="txt-center">Asistencias</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of vm.topAssists">
+              <td><strong>#{{ p.rank }}</strong></td>
+              <td class="bold-name">{{ p.playerName }}</td>
+              <td class="team-cell">
+                <span class="mini-flag">{{ p.teamFlag }}</span> 
+                <span>{{ p.teamName }}</span>
+              </td>
+              <td class="txt-center bold-value">{{ p.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="card awards-section">
+    <div class="card-header">
+      <span class="card-title">Galería de Premios Individuales</span>
+    </div>
+    <div class="awards-grid">
+      <div *ngFor="let award of vm.awards" class="award-item-card">
+        <div class="award-badge">
+          {{ award.icon }}
+        </div>
+        <div class="award-info">
+          <h3>{{ award.title }}</h3>
+          <p class="award-winner"><strong>Ganador:</strong> {{ award.winnerName }}</p>
+          <div class="award-team">
+            <span class="mini-flag">{{ award.teamFlag }}</span> 
+            <span>{{ award.teamName }}</span>
+          </div>
+          <p class="award-reason">"{{ award.reason }}"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

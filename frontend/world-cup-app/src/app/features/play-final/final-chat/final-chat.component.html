@@ -7,7 +7,7 @@
         
         <div *ngFor="let item of chatTimeline" class="chat-message-bubble">
           <p class="message-text">{{ item.text }}</p>
-          <span class="message-time">{{ item.minute }}' - {{ partido.teamName || 'Tunisia' }}</span>
+          <span class="message-time">{{ item.minute }}' - {{ partido.teamName}}</span>
         </div>
 
         <div *ngIf="vm.sending" class="chat-loading-bubble">
@@ -69,10 +69,34 @@
 
   <div class="sidebar-card tactics-card">
     <span class="card-subtitle">TÁCTICA Y ESTRATEGIA</span>
-    
+    <div class="tactic-selectors-wrapper">
+      
+<div class="tactic-select-control">
+  <select [value]="estrategiaSeleccionada" 
+          (change)="onEstrategiaCambiada($event)"
+          [disabled]="vm.sending || vm.changingTactic">
+    <option value="" disabled>Seleccionar Estrategia</option>
+    <option *ngFor="let est of estrategiasDisponibles" [value]="est.strategy">
+      {{ est.strategy }}
+    </option>
+  </select>
+</div>
+
+<div class="tactic-select-control">
+  <select [value]="formacionSeleccionada" 
+          (change)="onFormacionCambiada($event)"
+          [disabled]="vm.sending || vm.changingTactic">
+    <option value="" disabled>Seleccionar Formación</option>
+    <option *ngFor="let form of formacionesDisponibles" [value]="form.formation">
+      {{ form.formation }}
+    </option>
+  </select>
+</div>
+
+    </div>
     <div class="tactic-field">
       <span class="tactic-label">Zona de cancha:</span>
-      <span class="tactic-value badge-blue">{{ partido.zone || 'MIDFIELD' }}</span>
+      <span class="tactic-value badge-blue">{{ partido.zone}}</span>
     </div>
 
     <div class="tactic-field">
@@ -97,25 +121,25 @@
       
       <div class="coach-card">
         <div class="coach-header">
-          <span class="coach-team">{{ partido.teamName || 'Tunisia' }}</span>
-          <span class="coach-name">{{ partido.teamCoachName || 'Sami Trabelsi' }}</span>
-          <span class="coach-profile">({{ partido.teamCoachProfile || 'PRAGMATIC' }})</span>
+          <span class="coach-team">{{ partido.teamName }}</span>
+          <span class="coach-name">{{ partido.teamCoachName}}</span>
+          <span class="coach-profile">({{ partido.teamCoachProfile}})</span>
         </div>
         <div class="coach-details">
-          Estrategia: <span class="highlight">{{ partido.teamStrategy || 'DEFENSE' }}</span> · 
-          Formación: <span class="highlight">{{ partido.teamFormation || '5-4-1' }}</span>
+          Estrategia: <span class="highlight">{{ partido.teamStrategy}}</span> · 
+          Formación: <span class="highlight">{{ partido.teamFormation}}</span>
         </div>
       </div>
 
       <div class="coach-card">
         <div class="coach-header">
-          <span class="coach-team">{{ partido.opponentName || 'Rival' }}</span>
-          <span class="coach-name">{{ partido.opponentCoachName || 'Steve Clarke' }}</span>
-          <span class="coach-profile">({{ partido.opponentCoachProfile || 'CONSERVATIVE' }})</span>
+          <span class="coach-team">{{ partido.opponentName}}</span>
+          <span class="coach-name">{{ partido.opponentCoachName}}</span>
+          <span class="coach-profile">({{ partido.opponentCoachProfile }})</span>
         </div>
         <div class="coach-details">
-          Estrategia: <span class="highlight">{{ partido.opponentStrategy || 'BALANCED' }}</span> · 
-          Formación: <span class="highlight">{{ partido.opponentFormation || '5-4-1' }}</span>
+          Estrategia: <span class="highlight">{{ partido.opponentStrategy}}</span> · 
+          Formación: <span class="highlight">{{ partido.opponentFormation}}</span>
         </div>
       </div>
     </div>

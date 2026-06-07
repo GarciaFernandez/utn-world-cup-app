@@ -96,6 +96,12 @@ export class UiVisualsService {
         return '🏆';
       case 'INFO':
         return 'ℹ️';
+      case 'CHAMPION':
+        return '🥇';
+      case 'RUNNER_UP':
+        return '🥈';
+      case 'THIRD_PLACE':
+        return '🥉';
       default:
         return '💬';
     }

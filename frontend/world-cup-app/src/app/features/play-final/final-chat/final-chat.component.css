@@ -1,4 +1,4 @@
-/* Contenedor principal: Ahora ocupa TODO el ancho de la pantalla y el alto estricto */
+
 .chat-layout-container {
   display: flex;
   gap: 20px;
@@ -7,16 +7,14 @@
   padding: 0 24px;
   box-sizing: border-box;
   margin: 0;
-  /* Control estricto de altura: la app ocupa exactamente lo que queda disponible */
+
   height: calc(100vh - 140px);
   max-height: calc(100vh - 140px);
-  overflow: hidden; /* Evita cualquier desborde o scroll externo */
+  overflow: hidden; 
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* ==========================================================================
-   SECCIÓN IZQUIERDA: FEED DE RELATOS Y ACCIONES (AJUSTADO)
-   ========================================================================== */
+
 .chat-main-section {
   flex: 3;
   display: flex;
@@ -24,14 +22,14 @@
   background-color: #151c2c;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  overflow: hidden; /* Recorta cualquier exceso de altura */
-  height: 100%;     /* Fuerza a ocupar el alto máximo disponible de su padre */
+  overflow: hidden; 
+  height: 100%;     
 }
 
-/* HISTORIAL CON SCROLL INDEPENDIENTE (ÚNICO CON SCROLL PERMITIDO) */
+
 .chat-history-scroll {
   flex: 1;
-  overflow-y: auto; /* Permite scroll interno si se acumulan los relatos */
+  overflow-y: auto; 
   padding: 24px;
   scroll-behavior: smooth;
   max-height: 100%;
@@ -43,7 +41,7 @@
   gap: 16px;
 }
 
-/* Burbujas del chat */
+
 .chat-message-bubble {
   align-self: center;
   width: 90%;
@@ -122,19 +120,17 @@
   cursor: not-allowed;
 }
 
-/* ==========================================================================
-   SECCIÓN DERECHA: SIDEBAR TÁCTICO (SIN SCROLLBAR Y FIJO)
-   ========================================================================== */
+
 .chat-sidebar-section {
-  flex: 0 0 340px; /* Tamaño fijo para que no se deforme en pantallas gigantes */
+  flex: 0 0 340px; 
   width: 340px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  overflow: hidden !important; /* Desactivamos cualquier scroll lateral */
+  overflow: hidden !important;
 }
 
-/* Forzamos la desaparición visual de cualquier barra en el sidebar */
+
 .chat-sidebar-section::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
@@ -147,7 +143,7 @@
   padding: 20px;
 }
 
-/* Reducción de aire interno exclusivo de la tarjeta de táctica */
+
 .tactics-card {
   padding: 12px 14px !important;
 }
@@ -211,14 +207,14 @@
   font-weight: 600;
 }
 
-/* Filas tácticas miniaturizadas y sin bordes horizontales */
+
 .tactic-field {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 !important;
   margin-bottom: 8px;
-  border-bottom: none !important; /* Chau líneas divisorias */
+  border-bottom: none !important; 
 }
 
 .tactic-label {
@@ -227,7 +223,7 @@
   font-weight: 500;
 }
 
-/* Estilos de los Badges Compactos */
+
 .tactic-value {
   font-size: 11px !important;
   font-weight: 700;
@@ -240,7 +236,7 @@
 .badge-green { background-color: #16a34a !important; }
 .badge-red { background-color: #dc2626 !important; }
 
-/* Conductor de Pelota Mini */
+
 .badge-gray {
   background-color: #1e293b !important;
   color: #cbd5e1 !important;
@@ -251,7 +247,7 @@
   font-weight: 600;
 }
 
-/* Tipo de Evento Especial */
+
 .badge-event {
   background-color: rgba(16, 185, 129, 0.08) !important;
   color: #10b981 !important;
@@ -264,9 +260,7 @@
   letter-spacing: 0.02em;
 }
 
-/* ==========================================================================
-   SECCIÓN DE TÉCNICOS INTEGRADA Y COMPACTA (SIN BORDES)
-   ========================================================================== */
+
 .coaches-section {
   margin-top: 12px !important;
   border-top: none !important;
@@ -284,7 +278,7 @@
   text-align: left;
 }
 
-/* Micro-tarjetas oscuras para Directores Técnicos */
+
 .coach-card {
   background-color: rgba(30, 41, 59, 0.4) !important;
   border: 1px solid rgba(255, 255, 255, 0.03) !important;
@@ -327,16 +321,14 @@
   font-weight: 600;
 }
 
-/* ==========================================================================
-   EXTRAS: MENSAJES DE ERROR, SCROLLBARS Y BANNERS
-   ========================================================================== */
+
 .action-error-message {
   color: #ef4444;
   font-size: 13px;
   margin-top: 8px;
 }
 
-/* Estilo fino del Webkit Scrollbar para los relatos internos */
+
 .chat-history-scroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -348,7 +340,7 @@
   border-radius: 4px;
 }
 
-/* Contenedor de Partido Finalizado */
+
 .final-match-banner {
   display: flex;
   flex-direction: column;
@@ -376,7 +368,7 @@
   color: white;
 }
 
-/* Pantalla de Inicio / Reanudación del Partido */
+
 .start-game-container {
   display: flex;
   justify-content: center;
@@ -422,7 +414,7 @@
   align-items: center;
 }
 
-/* Botones de control del modal de inicio */
+
 .btn-start-match {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
@@ -474,4 +466,51 @@
 
 .loading-fullscreen-bubble {
   padding: 16px 32px;
+}
+
+.tactic-selectors-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tactic-select-control select {
+  width: 100%;
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+
+.tactic-select-control select:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #243146;
+}
+
+
+.tactic-select-control select:focus {
+  border-color: #2563eb;
+  background-color: #1e293b;
+}
+
+
+.tactic-select-control select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Estilo para las opciones de la lista desplegable nativa */
+.tactic-select-control select option {
+  background-color: #151c2c;
+  color: #ffffff;
 }

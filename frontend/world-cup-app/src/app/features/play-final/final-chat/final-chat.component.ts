@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { APP_ROUTES } from '../../../core/constants/app-routes'; 
 import { FinalChatService } from './service/final-chat.service';
 import { FinalChatViewModel } from './model/final-chat-view-model.interface';
-import { FinalChatMessageApiItem } from './model/final-chat-api.interface';
+import { FinalChatMessageApiItem, MatchStrategyApiItem, MatchFormationApiItem} from './model/final-chat-api.interface';
 
 @Component({
   selector: 'app-final-chat-page',
@@ -22,6 +22,8 @@ import { FinalChatMessageApiItem } from './model/final-chat-api.interface';
 export class FinalChatPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   private readonly finalChatService = inject(FinalChatService);
   private readonly router = inject(Router); 
+  public estrategiaSeleccionada: string = '';
+  public formacionSeleccionada: string = '';
 
   @ViewChild('chatScrollContainer') private chatScrollContainer!: ElementRef<HTMLDivElement>;
   
@@ -65,25 +67,53 @@ export class FinalChatPageComponent implements OnInit, OnDestroy, AfterViewCheck
     return this.chatTimeline.some(item => (item as any).type === 'FINAL');
   }
 
-  ngOnInit(): void {
-    // 1. Inicializa configuraciones de idioma
+  public get estrategiasDisponibles(): MatchStrategyApiItem[] {
+    return this.vm.availableStrategies;
+  }
+
+  public get formacionesDisponibles(): MatchFormationApiItem[] {
+    return this.vm.availableFormations;
+  }
+
+ngOnInit(): void {
+
     this.finalChatService.initialize();
 
-    /* 2. DETECTAR EL F5 Y REENGANCHAR:
-      Si el historial local quedó en 0 por el refresco pero la propiedad 'partido' 
-      ya tiene información (gracias al getter que lee del servicio), 
-      gatillamos la llamada automáticamente para rellenar el feed.
-    */
-    if (this.chatTimeline.length === 0 && this.partido) {
-      this.clickIniciarPartido();
+
+if (this.chatTimeline.length === 0 && this.partido) {
+      this.finalChatService.comenzarPartido().subscribe({
+        next: () => {
+          this.finalChatService.cargarEstrategiasDisponibles().subscribe();
+          this.finalChatService.cargarFormacionesDisponibles().subscribe();
+          
+          // Sincronizamos las variables para que el HTML dibuje la opción correcta por defecto
+          if (this.partido) {
+            this.estrategiaSeleccionada = this.partido.teamStrategy || '';
+            this.formacionSeleccionada = this.partido.teamFormation || '';
+          }
+        }
+      });
+    } else if (this.partido) {
+
+      this.estrategiaSeleccionada = this.partido.teamStrategy || '';
+      this.formacionSeleccionada = this.partido.teamFormation || '';
     }
   }
 
-  /**
-   * FUNCIÓN NUEVA: Se vincula al botón de la UI para arrancar o reenganchar el partido a demanda
-   */
+
   public clickIniciarPartido(): void {
-    this.finalChatService.comenzarPartido().subscribe();
+    this.finalChatService.comenzarPartido().subscribe({
+      next: () => {
+        if (this.partido) {
+
+          this.finalChatService.cargarEstrategiasDisponibles().subscribe();
+          this.finalChatService.cargarFormacionesDisponibles().subscribe();
+
+          this.estrategiaSeleccionada = this.partido.teamStrategy || '';
+          this.formacionSeleccionada = this.partido.teamFormation || '';
+        }
+      }
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -111,7 +141,7 @@ export class FinalChatPageComponent implements OnInit, OnDestroy, AfterViewCheck
             const item = this.chatTimeline[i] as any;
             if (item.homeTeamScore !== undefined || item.scoreHome !== undefined) {
               mensajeConMarcador = item;
-              break; // Cortamos el bucle, ya encontramos el último que se cargó
+              break; 
             }
           }
 
@@ -136,6 +166,37 @@ export class FinalChatPageComponent implements OnInit, OnDestroy, AfterViewCheck
     this.finalChatService.resetearEstado();
     this.router.navigate([APP_ROUTES.worldCup.simulate]);
   }
+  public onEstrategiaCambiada(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const nuevaEstrategia = selectElement.value;
+    
+    if (!nuevaEstrategia || this.vm.sending) return;
+
+    this.estrategiaSeleccionada = nuevaEstrategia;
+
+
+    this.finalChatService.cambiarEstrategiaPartido(nuevaEstrategia).subscribe({
+      next: () => {
+        console.log('Estrategia actualizada con éxito en el backend.');
+      }
+    });
+  }
+
+  public onFormacionCambiada(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const nuevaFormacion = selectElement.value;
+    
+    if (!nuevaFormacion || this.vm.sending) return;
+
+    this.formacionSeleccionada = nuevaFormacion;
+
+
+    this.finalChatService.cambiarFormacionPartido(nuevaFormacion).subscribe({
+      next: () => {
+        console.log('Formación actualizada con éxito en el backend.');
+      }
+    });
+  }
 
   private configurarAutoScrollReactivo(): void {
     const elementoScroll = this.chatScrollContainer?.nativeElement;
@@ -157,4 +218,5 @@ export class FinalChatPageComponent implements OnInit, OnDestroy, AfterViewCheck
 
     elementoScroll.scrollTop = elementoScroll.scrollHeight;
   }
+  
 }
