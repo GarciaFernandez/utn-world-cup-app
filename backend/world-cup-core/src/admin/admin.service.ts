@@ -19,7 +19,7 @@ export class AdminService {
     private readonly configService: ConfigService,
     private readonly worldCupApiService: WorldCupApiService,
   ) {
-    this.currentTeamId = this.configService.get<string>('TEAM_ID', 'arg').toLowerCase();
+    this.currentTeamId = this.configService.get<string>('TEAM_ID', 'tun').toLowerCase();
     this.currentLang = this.configService.get<LanguageEnum>('APP_LANG', LanguageEnum.DEFAULT);
   }
 

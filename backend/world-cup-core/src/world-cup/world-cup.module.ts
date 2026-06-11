@@ -7,12 +7,16 @@ import { MatchesController } from './controllers/matches.controller';
 import { SimulationController } from './controllers/simulation.controller';
 import { StatsAwardsController } from './controllers/stats-awards.controller';
 import { WorldCupHistoryController } from './controllers/world-cup-history.controller';
+import { PlayFinalController } from '../match/controllers/play-final.controller';
 import { GroupsService } from './services/groups.service';
 import { JourneyService } from './services/journey.service';
 import { MatchesService } from './services/matches.service';
 import { SimulationService } from './services/simulation.service';
 import { StatsAwardsService } from './services/stats-awards.service';
 import { WorldCupHistoryService } from './services/world-cup-history.service';
+import { PlayFinalService } from '../match/services/play-final.service';
+
+
 
 @Module({
   imports: [
@@ -26,6 +30,7 @@ import { WorldCupHistoryService } from './services/world-cup-history.service';
     MatchesController,
     StatsAwardsController,
     WorldCupHistoryController,
+    PlayFinalController
   ],
   providers: [
     GroupsService,
@@ -34,6 +39,7 @@ import { WorldCupHistoryService } from './services/world-cup-history.service';
     JourneyService,
     StatsAwardsService,
     WorldCupHistoryService,
+    PlayFinalService
   ],
 })
 export class WorldCupModule {}

@@ -9,6 +9,9 @@ import type {CurrentWorldCupApiResponse,TeamCatalogApiItem,TeamStatsApiResponse,
 import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';import { CoachApiItem } from 'src/teams/services/model/coach-service.interface';
 import { StrategyApiItem } from 'src/teams/services/model/strategy-service.interface';
 import { FormationApiItem } from 'src/teams/services/model/formation-service.interface';
+import { TournamentStatsData,AwardItem, PlayerStatsItem } from '../world-cup/services/model/stats-awards.interface';
+import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResponse, SelectMatchFormationApiResponse } from '../match/services/helpers/match-tactics.interface';
+
 
 @Injectable()
 export class WorldCupFeatureApiService extends AbstractBaseService {
@@ -66,7 +69,7 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
 
   public async simulateWorldCup(teamId: string, lang?: string): Promise<CurrentWorldCupApiResponse> {
     return this.postEndpointData<CurrentWorldCupApiResponse>('/world-cup/simulate', {
-      teamId,
+      teamId: teamId?.trim().toLowerCase(),
       lang: this.resolveLang(lang),
     });
   }
@@ -79,8 +82,6 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
 
   public async getHistoricalRivals(teamId: string): Promise<HistoricalRivalApiItem[]> {
     const path = `/teams/${teamId.toLowerCase()}/rivals`;
-    
-    // Le pasamos tu interfaz al getEndpointData para que NestJS sepa qué estructura viaja en la red
     return this.getEndpointData<HistoricalRivalApiItem[]>(path);
   }
 
@@ -89,7 +90,7 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
       teamId: teamId.trim().toLowerCase(),
     });
   }
-    public async getTeamCoaching(teamId: string): Promise<CoachApiItem> {
+  public async getTeamCoaching(teamId: string): Promise<CoachApiItem> {
     return this.getEndpointData<CoachApiItem>(`/teams/coaches`, {
       teamId: teamId
     });
@@ -104,6 +105,83 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
   public async getTeamFormation(teamId: string): Promise<FormationApiItem> {
     return this.getEndpointData<FormationApiItem>(`/teams/{teamId}/formation`, {
       teamId: teamId
+    });
+  }
+  public async getCurrentGroups(): Promise<any[]> {
+    return this.getEndpointData<any[]>('/world-cup/current/groups');
+  }
+
+
+  public async startFinal(teamId: string, lang?: string): Promise<any> {
+    return this.postEndpointData('/match/start-final', {
+      teamId,
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async playMatch(matchId: string, selectedOption: string, lang?: string): Promise<any> {
+    return this.postEndpointData('/match/play', {
+      matchId,
+      selectedOption,
+      lang: this.resolveLang(lang),
+    });
+  }
+
+
+  public async getMatchStrategies(lang?: string): Promise<MatchStrategyApiItem[]> {
+    return this.getEndpointData<MatchStrategyApiItem[]>('/match/strategies', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async getMatchFormations(lang?: string): Promise<MatchFormationApiItem[]> {
+    return this.getEndpointData<MatchFormationApiItem[]>('/match/formations', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+
+  public async selectMatchStrategy(
+    teamId: string, 
+    strategy: string, 
+    lang?: string
+  ): Promise<SelectMatchStrategyApiResponse> {
+    return this.postEndpointData<SelectMatchStrategyApiResponse>('/match/select-strategy', {
+      teamId: teamId.trim().toLowerCase(),
+      strategy,
+      lang: this.resolveLang(lang),
+    });
+  }
+
+
+  public async selectMatchFormation(
+    teamId: string, 
+    formation: string, 
+    lang?: string
+  ): Promise<SelectMatchFormationApiResponse> {
+    return this.postEndpointData<SelectMatchFormationApiResponse>('/match/select-formation', {
+      teamId: teamId.trim().toLowerCase(),
+      formation,
+      lang: this.resolveLang(lang),
+    });
+  }
+
+
+  public async getTournamentStats(lang?: string): Promise<TournamentStatsData> {
+    return this.getEndpointData<TournamentStatsData>('/world-cup/current/stats', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async getTournamentAwards(lang?: string): Promise<AwardItem[]> {
+    return this.getEndpointData<AwardItem[]>('/world-cup/current/awards', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+  public async getPlayerDetailedStats(teamId?: string): Promise<PlayerStatsItem[]> {
+    return this.getEndpointData<PlayerStatsItem[]>('/world-cup/current/player-stats', {
+      teamId: teamId?.trim().toLowerCase(),
     });
   }
 }

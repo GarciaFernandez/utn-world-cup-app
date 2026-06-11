@@ -74,3 +74,29 @@ export interface FinalChatTeamsPreviewApiResponse {
   opponentFlag: string;
   worldCupStatus: string;
 }
+
+export interface MatchStrategyApiItem {
+  strategy: string;
+  description: string;
+  compatibleFormations: string[];
+}
+
+export interface MatchFormationApiItem {
+  formation: string;
+  description: string;
+  compatibleStrategies: string[];
+}
+
+export interface SelectMatchStrategyApiResponse {
+  teamId: string;
+  strategy: string;
+  formation: string;
+  formationAutoAdjusted: boolean;
+  message: string;
+}
+
+export interface SelectMatchFormationApiResponse {
+  teamId: string;
+  formation: string;
+  message: string;
+}

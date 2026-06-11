@@ -1,4 +1,4 @@
-import { JourneyApiResponse } from './journey-api.interface';
+import { JourneyApiResponse } from './journey-api.interface'; 
 
 export interface JourneyViewModel {
   loading: boolean;

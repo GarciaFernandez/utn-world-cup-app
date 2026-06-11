@@ -1,21 +1,192 @@
-.jd-loss {
-  border-color: #f44336 !important;
-  background: rgba(244, 67, 54, 0.2) !important;
-  color: #f44336 !important;
+.journey-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: sans-serif;
 }
 
-.jd-draw {
-  border-color: #ffb300 !important;
-  background: rgba(255, 179, 0, 0.2) !important;
-  color: #ffb300 !important;
+.state-card {
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: bold;
+}
+.state-card.loading { background-color: #f8f9fa; color: #6c757d; }
+.state-card.empty { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.state-card.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+
+.journey-header {
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: var(--team-primary, #333); 
+  color: var(--team-secondary, #fff); 
+  border-radius: 8px;
+  text-align: center;
 }
 
-.j-loss {
-  background: rgba(244, 67, 54, 0.15);
-  color: #f44336;
+.summary-text {
+  font-size: 1.1em;
+  margin: 10px 0;
 }
 
-.j-draw {
-  background: rgba(255, 179, 0, 0.2);
-  color: #ffb300;
+.match-list {
+  list-style: none; 
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+.match-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.match-item.win { border-left: 6px solid #28a745; }
+.match-item.loss { border-left: 6px solid #dc3545; }
+.match-item.draw { border-left: 6px solid #ffc107; }
+.match-item.pending { border-left: 6px solid #6c757d; opacity: 0.8; }
+
+.match-stage {
+  flex: 1;
+  font-size: 0.9em;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.match-details {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+
+.opponent-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 150px;
+}
+
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 26px;
+  background-color: #e9ecef;
+  color: #495057;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: 1px solid #ced4da;
+}
+
+.journey-header {
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: var(--team-primary, #2b3a4a); 
+  color: #ffffff; 
+  border-radius: 8px;
+  text-align: center;
+}
+
+.journey-header h2, .summary-text, .stage-text {
+  color: #ffffff; 
+}
+
+.team-name {
+  font-weight: bold;
+  color: #212529; 
+}
+
+.score {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #212529; 
+}
+
+.match-stage span {
+  color: #495057;
+  font-weight: bold;
+}
+
+.team-name {
+  font-weight: bold;
+}
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f4;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.score {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.resolution {
+  font-size: 0.7em;
+  color: #555;
+}
+
+.match-result {
+  flex: 1;
+  text-align: right;
+}
+
+.result-badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: bold;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.flag-emoji {
+  font-size: 1.8em; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 45px;
+}
+
+.champion-badge {
+  background-color: #ffd700;
+  color: #856404;
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+  letter-spacing: 1px;
+}
+.header-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+.matches-played {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  border-radius: 5px;
 }
