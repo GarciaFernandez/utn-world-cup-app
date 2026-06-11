@@ -6,11 +6,10 @@ import { WorldCupApiService } from './world-cup-api.service';
 import type { GameDictionaryApiResponse, SquadPlayerApiItem } from '../teams/services/model/squad-service.interface';
 import type { TeamHistoryApiResponse } from '../teams/services/model/team-history-service.interface';
 import type {CurrentWorldCupApiResponse,TeamCatalogApiItem,TeamStatsApiResponse,} from '../world-cup/services/model/simulation-service.interface';
-import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';import { CoachApiItem } from 'src/teams/services/model/coach-service.interface';
-import { StrategyApiItem } from 'src/teams/services/model/strategy-service.interface';
-import { FormationApiItem } from 'src/teams/services/model/formation-service.interface';
+import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';import { CoachApiItem, CoachProfileApiItem, FormationApiItem, StrategyApiItem } from 'src/teams/services/model/coach-service.interface';
 import { TournamentStatsData,AwardItem, PlayerStatsItem } from '../world-cup/services/model/stats-awards.interface';
 import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResponse, SelectMatchFormationApiResponse } from '../match/services/helpers/match-tactics.interface';
+import { CoachingStrategyCatalogItemApiResponse } from 'src/teams/services/model/coach-service-model';
 
 
 @Injectable()
@@ -61,6 +60,12 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     });
   }
 
+  public async getAllStrategies(lang?: string): Promise<CoachingStrategyCatalogItemApiResponse[]> {
+    return this.getEndpointData<CoachingStrategyCatalogItemApiResponse[]>(`/match/strategies`, {
+      lang: this.resolveLang(lang),
+    });
+  }
+
   public async getCurrentWorldCup(lang?: string): Promise<CurrentWorldCupApiResponse> {
     return this.getEndpointData<CurrentWorldCupApiResponse>('/world-cup/current', {
       lang: this.resolveLang(lang),
@@ -97,16 +102,24 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
   }
 
   public async getTeamStrategy(teamId: string): Promise<StrategyApiItem> {
-    return this.getEndpointData<StrategyApiItem>(`/teams/{teamId}/strategy`, {
+    return this.getEndpointData<StrategyApiItem>(`/teams/${teamId}/strategy`, {
       teamId: teamId
     });
   }
 
   public async getTeamFormation(teamId: string): Promise<FormationApiItem> {
-    return this.getEndpointData<FormationApiItem>(`/teams/{teamId}/formation`, {
+    return this.getEndpointData<FormationApiItem>(`/teams/${teamId}/formation`, {
       teamId: teamId
     });
   }
+
+  public async getTeamCoachProfile(teamId: string): Promise<CoachProfileApiItem> {
+    return this.getEndpointData<CoachProfileApiItem>(`/reference/coach-profiles?lang= ${this.getCurrentLang()}`, {
+      teamId: teamId
+    }); 
+  } 
+
+  
   public async getCurrentGroups(): Promise<any[]> {
     return this.getEndpointData<any[]>('/world-cup/current/groups');
   }
@@ -141,17 +154,20 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
   }
 
 
-  public async selectMatchStrategy(
-    teamId: string, 
-    strategy: string, 
-    lang?: string
-  ): Promise<SelectMatchStrategyApiResponse> {
+  public async selectMatchStrategy(teamId: string,  strategy: string,  lang?: string ): Promise<SelectMatchStrategyApiResponse> {
     return this.postEndpointData<SelectMatchStrategyApiResponse>('/match/select-strategy', {
       teamId: teamId.trim().toLowerCase(),
       strategy,
       lang: this.resolveLang(lang),
     });
   }
+
+    public async resetTeamTactics(teamId: string): Promise<any> {
+    return this.postEndpointData('/match/reset-team-tactics', {
+      teamId: teamId.trim().toLowerCase()
+    });
+  }
+
 
 
   public async selectMatchFormation(

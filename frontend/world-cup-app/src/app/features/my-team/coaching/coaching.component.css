@@ -3,16 +3,18 @@
 }
 
 .coaching-panel {
-  background: var(--bg-card-hover);
-  border: 1px solid var(--border-color);
+  background: rgb(217, 215, 215);
+  border: 2px solid var(--border-color);
   border-radius: var(--radius);
   padding: 16px;
+  color:black;
+  margin-bottom: 5px;
 }
 
 .coaching-panel-title {
   font-size: 12px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: black;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   margin-bottom: 12px;
@@ -24,12 +26,17 @@
   gap: 10px;
 }
 
+.aptitudeBar {
+  width: 85%;
+}
+
 .coaching-current-lbl {
   font-size: 10px;
-  color: var(--text-muted);
+  color: Black;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  margin-top: 10px;
 }
 
 .coaching-pill {
@@ -42,6 +49,11 @@
   line-height: 1;
   letter-spacing: 0.4px;
   text-align: center;
+  font-weight: 700;
+}
+
+.badge-accent {
+  background: #e70013;
 }
 
 .coach-profile-pill-row {
@@ -50,9 +62,7 @@
 }
 
 .coach-profile-summary {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-color);
-  border-left: 2px solid var(--team-accent);
+  border: 1px solid #e70013;
   border-radius: 8px;
   padding: 10px 12px;
   margin-bottom: 16px;
@@ -71,7 +81,7 @@
 
 .coach-profile-summary-description {
   font-size: 11px;
-  color: var(--text-muted);
+  color: black;
   line-height: 1.5;
   padding: 2px 1px 0;
 }
@@ -99,7 +109,6 @@
   padding-top: 12px;
   display: flex;
   flex-direction: column;
-  min-height: 230px;
 }
 
 .strategy-profile-summary {
@@ -138,7 +147,7 @@
 
 .coaching-compatibility-label {
   font-size: 11px;
-  color: var(--text-muted);
+  color: black;
   padding-top: 3px;
 }
 
@@ -151,17 +160,22 @@
 .coaching-chip-list .badge {
   font-size: 10px;
   padding: 3px 10px;
+  color:#e70013;
+}
+
+.btn {  
+  background-color: #e70013;
 }
 
 .coaching-reset-btn {
   border-color: var(--team-accent);
-  color: var(--team-accent);
-  background: rgba(0, 0, 0, 0.08);
+  color:#8c8c8c;
+  background: #f5b9be;
 }
 
 .coaching-reset-btn:hover:not(:disabled) {
-  background: var(--team-accent);
-  color: var(--team-accent-contrast);
+  background: #e70013;
+  color: white;
   border-color: transparent;
 }
 
@@ -177,10 +191,9 @@
 }
 
 .coaching-compatibility-status {
-  margin-top: auto;
-  min-height: 42px;
   display: flex;
   align-items: flex-end;
+  margin-top: 30px;
 }
 
 .coaching-status-pill {
@@ -195,20 +208,20 @@
 }
 
 .coaching-status-incompatible {
-  background: rgba(214, 78, 78, 0.26);
-  color: #ff7f75;
+  background: red;
+  color: white;
   border: 1px solid rgba(255, 127, 117, 0.35);
 }
 
 .coaching-status-compatible {
-  background: rgba(84, 201, 114, 0.2);
-  color: #8fe3a8;
+  background: rgb(14, 205, 14);
+  color: white;
   border: 1px solid rgba(143, 227, 168, 0.32);
 }
 
 .coaching-status-original {
-  background: rgba(103, 171, 236, 0.22);
-  color: #8cc4ff;
+  background: rgb(54, 189, 243);
+  color: white;
   border: 1px solid rgba(140, 196, 255, 0.35);
 }
 
@@ -223,15 +236,20 @@
 }
 
 .team-rating-delta-positive {
-  color: #8fe3a8;
+  color: rgb(14, 205, 14);
 }
 
 .team-rating-delta-negative {
-  color: #ff7b7b;
+  color: red;
 }
 
 .team-rating-track {
   position: relative;
+  flex: 1;
+  height: 8px !important;
+  background: var(--bg-card-hover, #2a2a35) !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
 }
 
 .team-rating-segment {
@@ -243,16 +261,86 @@
 
 .team-rating-segment-positive {
   background: rgba(84, 201, 114, 0.65);
-  border-radius: 0 4px 4px 0;
+  border-radius: 0;
 }
 
 .team-rating-segment-negative {
   background: rgba(214, 78, 78, 0.7);
-  border-radius: 4px 0 0 4px;
+  border-radius: 0;
 }
 
 .team-rating-val {
   width: 70px;
+}
+
+.stat-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-bar-track {
+  height: 8px !important;
+  background: var(--bg-card-hover, #2a2a35) !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+}
+
+.stat-bar-fill {
+  display: block !important;
+  height: 100% !important;
+  background: var(--team-accent, #e70013) !important;
+  opacity: 0.7 !important;
+  border-radius: 4px !important;
+  transition: width 0.4s !important;
+}
+
+.metric-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-primary {
+  color: white;
+}
+
+.metric-label-uppercase {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.team-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-rating-base {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  border-radius: 0px 0px 0px 4px !important;
+  background: var(--team-accent, #e70013) !important;
+  opacity: 0.55 !important;
+  transition: width 0.4s !important;
+}
+
+.tunisia {
+  background-color: #E70013;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+tr:hover {
+    background-color: transparent !important;
+}
+
+.tun-flag {
+  background-image: url(https://static.vecteezy.com/system/resources/previews/011/600/483/original/tunisia-flag-waving-background-for-patriotic-and-national-design-vector.jpg) ;
+  
 }
 
 @media (max-width: 960px) {
