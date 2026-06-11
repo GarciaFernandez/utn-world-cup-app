@@ -8,13 +8,13 @@ import { LiveEventsApiResponse, LiveEventFeedApiItem } from './model/live-events
 @Component({
   selector: 'app-live-events',
   templateUrl: './live-events.component.html',
-  styleUrls: ['./live-events.component.css']
+  styleUrls: ['./live-events.component.css'],
 })
 export class LiveEventsPageComponent implements OnInit {
   private readonly pageService = inject(LiveEventsService);
 
   pageState$: Observable<LiveEventsViewModel> = this.pageService.getViewModel();
-  
+
   ngOnInit(): void {
     this.pageService.initialize();
   }
@@ -24,10 +24,7 @@ export class LiveEventsPageComponent implements OnInit {
   }
 
   getMatchStateLabel(match: LiveEventsApiResponse): string {
-    if (match.isFinished) {
-      return 'Finalizada';
-    }
-
+    if (match.isFinished) return 'Finalizada';
     return match.isActive ? 'En vivo' : 'Última final';
   }
 
@@ -48,11 +45,11 @@ export class LiveEventsPageComponent implements OnInit {
     if (cardType === 'yellow') {
       return `${match.team.name}: ${match.summary.teamYellowCards} · ${match.opponent.name}: ${match.summary.opponentYellowCards}`;
     }
-
     return `${match.team.name}: ${match.summary.teamRedCards} · ${match.opponent.name}: ${match.summary.opponentRedCards}`;
   }
 
-  trackByEvent(_: number, event: LiveEventFeedApiItem): number {
+  // ✅ _index con prefijo _ para indicar que es intencional no usarlo
+  trackByEvent(_index: number, event: LiveEventFeedApiItem): number {
     return event.statId;
   }
 }
