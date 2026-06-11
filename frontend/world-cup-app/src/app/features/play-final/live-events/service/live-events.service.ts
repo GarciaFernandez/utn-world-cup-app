@@ -3,20 +3,28 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, combineLatest, finalize, map, of, switchMap, tap } from 'rxjs';
 import { BaseApiService } from '../../../../core/services/base-api.service';
 import { UiVisualsService } from '../../../../core/services/ui-visuals.service';
-import { LiveEventFeedApiItem, LiveEventStyle, LiveEventsApiResponse } from '../model/live-events-api.interface';
+
+import { LiveEventFeedApiItem, LiveEventsApiResponse } from '../model/live-events-api.interface';
 import { LiveEventsViewModel } from '../model/live-events-view-model.interface';
+
+
+interface BackendErrorBody {
+  responseMessage?: {
+    messageCode?: string;
+  };
+}
 
 @Injectable({ providedIn: 'root' })
 export class LiveEventsService extends BaseApiService {
   private readonly uiVisualsService = inject(UiVisualsService);
- 
+
   private readonly pageState: LiveEventsViewModel = {
     lang: 'es',
     loading: false,
     errorMessage: '',
     showEmptyState: false,
+    showNoFinalState: false,  
     data: null,
-    showNoFinalState: false
   };
 
   private hasInitialized = false;
@@ -81,9 +89,7 @@ export class LiveEventsService extends BaseApiService {
   private normalizeResponse(
     data: LiveEventsApiResponse | null | undefined,
   ): LiveEventsApiResponse | null {
-    if (!data) {
-      return null;
-    }
+    if (!data) return null;
 
     return {
       ...data,
@@ -100,32 +106,34 @@ export class LiveEventsService extends BaseApiService {
   }
 
   private decorateEvent(event: LiveEventFeedApiItem): LiveEventFeedApiItem {
-  const eventType = (event.type ?? '').toUpperCase();
-  const style = (event.style ?? 'info').toUpperCase();
+   
+    const upperType  = (event.type  ?? '').toUpperCase();
+    const upperStyle = (event.style ?? '').toUpperCase();
 
-  if (event.style === 'goal' || eventType.includes('GOAL')) {
-    return { ...event, icon: '⚽', style: 'goal' };
+    if (upperStyle === 'GOAL'   || upperType.includes('GOAL'))   {
+      return { ...event, icon: '⚽', style: 'goal' };
+    }
+    if (upperStyle === 'YELLOW' || upperType.includes('YELLOW')) {
+      return { ...event, icon: '🟨', style: 'yellow' };
+    }
+    if (upperStyle === 'RED'    || upperType.includes('RED'))    {
+      return { ...event, icon: '🟥', style: 'red' };
+    }
+    if (upperType.includes('SUB')) {
+      return { ...event, icon: '🔄', style: 'sub' };
+    }
+
+    return { ...event, icon: 'ℹ️', style: 'info' };
   }
-
-  if (event.style === 'yellow' || style.includes('YELLOW')) {
-    return { ...event, icon: '🟨', style: 'yellow' };
-  }
-
-  if (event.style === 'red' || style.includes('RED')) {
-    return { ...event, icon: '🟥', style: 'red' };
-  }
-
-  if (eventType.includes('SUB')) {
-    return { ...event, icon: '🔄', style: 'sub' };
-  }
-
-  return { ...event, icon: 'ℹ️', style: 'info' };
-}
 
   private isFinalUnavailableError(error: HttpErrorResponse): boolean {
-    const messageCode = (error?.error as { responseMessage?: { messageCode?: string } } | undefined)
-      ?.responseMessage?.messageCode;
+    
+    if (!error?.error || typeof error.error !== 'object') return false;
 
-    return messageCode === 'WC_FINAL_MATCH_UNAVAILABLE';
+    const body = error.error as BackendErrorBody;
+
+    if (!body.responseMessage || typeof body.responseMessage !== 'object') return false;
+
+    return body.responseMessage.messageCode === 'WC_FINAL_MATCH_UNAVAILABLE';
   }
 }

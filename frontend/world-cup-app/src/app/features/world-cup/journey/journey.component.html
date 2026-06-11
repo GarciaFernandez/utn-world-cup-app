@@ -1,20 +1,59 @@
-<section *ngIf="pageState$ | async as state">
-  <h2>Camino del Equipo - Checkpoint 2</h2>
+<section class="journey-container" *ngIf="pageState">
+  
+  <article *ngIf="pageState.loading" class="state-card loading">
+    <p>Cargando el camino del equipo...</p>
+  </article>
 
-  <div *ngIf="state.loading">
-    <p>Cargando datos desde el WorldCupCore...</p>
-  </div>
+  <article *ngIf="pageState.noData" class="state-card empty">
+    <p>⚠️ El camino del equipo no está disponible. ¿Simulaste el mundial?</p>
+  </article>
 
-  <div *ngIf="state.noData">
-    <p>⚠️ No hay simulación activa. Por favor, simulá el mundial primero.</p>
-  </div>
+  <article *ngIf="pageState.error" class="state-card error">
+    <p>❌ Ocurrió un error al cargar los datos. Intentá nuevamente.</p>
+  </article>
 
-  <div *ngIf="state.error">
-    <p>❌ Ocurrió un error al comunicarse con el backend.</p>
-  </div>
+  <article *ngIf="pageState.data" class="journey-content">
+    
+    <header class="journey-header">
+      <h2>Camino del Equipo: {{ pageState.data.teamName }}</h2>
+      
+      <div *ngIf="pageState.data.isChampion" class="champion-badge">
+        ⭐ ¡CAMPEÓN DEL MUNDO! ⭐
+      </div>
 
-  <div *ngIf="state.data">
-    <h3>Datos recibidos correctamente:</h3>
-    <pre>{{ state.data | json }}</pre>
-  </div>
+      <p class="summary-text">{{ pageState.data.summary }}</p>
+      
+      <div class="header-stats">
+        <p class="stage-text">Fase alcanzada: <strong>{{ pageState.data.stageReachedLabel }}</strong></p>
+        <p class="matches-played">Partidos Jugados: <strong>{{ pageState.data.matchesPlayed }}</strong></p>
+      </div>
+    </header>
+
+    <ul class="match-list">
+      <li *ngFor="let match of pageState.data.matches" class="match-item" [ngClass]="match.resultStyle.toLowerCase()">
+        
+        <div class="match-stage">
+          <span>{{ match.stageLabel }}</span>
+        </div>
+        
+        <div class="match-details">
+          <div class="opponent-info">
+            <span class="flag-emoji">{{ getFlag(match.opponentTeamId) }}</span>
+            <span class="team-name">{{ match.opponentTeamName }}</span>
+          </div>
+          
+          <div class="score-box">
+            <span class="score">{{ match.scoreLabel }}</span>
+            <span *ngIf="match.resolutionLabel" class="resolution">{{ match.resolutionLabel }}</span>
+          </div>
+        </div>
+
+        <div class="match-result">
+          <span class="result-badge">{{ match.resultLabel }}</span>
+        </div>
+
+      </li>
+    </ul>
+
+  </article>
 </section>
