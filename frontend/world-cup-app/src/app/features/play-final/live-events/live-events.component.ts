@@ -48,7 +48,7 @@ export class LiveEventsPageComponent implements OnInit {
     return `${match.team.name}: ${match.summary.teamRedCards} · ${match.opponent.name}: ${match.summary.opponentRedCards}`;
   }
 
-  // ✅ _index con prefijo _ para indicar que es intencional no usarlo
+  
   trackByEvent(_index: number, event: LiveEventFeedApiItem): number {
     return event.statId;
   }

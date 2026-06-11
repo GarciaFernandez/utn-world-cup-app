@@ -28,10 +28,7 @@
       </p>
     </div>
 
-    <!--
-      ✅ !showEmptyState garantiza que data no es null al entrar al bloque,
-         así Angular infiere "match" como LiveEventsApiResponse (no null)
-    -->
+    
     <ng-container
       *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.showEmptyState && pageState.data as match">
 
@@ -77,7 +74,7 @@
           </div>
 
           <ol class="timeline" *ngIf="match.events.length">
-            <!-- ✅ trackBy conectado al método del componente -->
+            
             <li
               class="timeline-item"
               *ngFor="let event of match.events; trackBy: trackByEvent"

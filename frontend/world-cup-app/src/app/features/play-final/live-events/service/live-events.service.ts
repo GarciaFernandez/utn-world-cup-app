@@ -3,11 +3,11 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, combineLatest, finalize, map, of, switchMap, tap } from 'rxjs';
 import { BaseApiService } from '../../../../core/services/base-api.service';
 import { UiVisualsService } from '../../../../core/services/ui-visuals.service';
-// ✅ Eliminado LiveEventStyle — no se usaba directamente aquí
+
 import { LiveEventFeedApiItem, LiveEventsApiResponse } from '../model/live-events-api.interface';
 import { LiveEventsViewModel } from '../model/live-events-view-model.interface';
 
-// ✅ Tipo explícito para el body del error — reemplaza el cast inseguro anterior
+
 interface BackendErrorBody {
   responseMessage?: {
     messageCode?: string;
@@ -23,7 +23,7 @@ export class LiveEventsService extends BaseApiService {
     loading: false,
     errorMessage: '',
     showEmptyState: false,
-    showNoFinalState: false,  // ✅ se mantiene — existe en la interfaz que no podemos tocar
+    showNoFinalState: false,  
     data: null,
   };
 
@@ -106,7 +106,7 @@ export class LiveEventsService extends BaseApiService {
   }
 
   private decorateEvent(event: LiveEventFeedApiItem): LiveEventFeedApiItem {
-    // ✅ Todo en mayúsculas — comparaciones unificadas y consistentes
+   
     const upperType  = (event.type  ?? '').toUpperCase();
     const upperStyle = (event.style ?? '').toUpperCase();
 
@@ -127,7 +127,7 @@ export class LiveEventsService extends BaseApiService {
   }
 
   private isFinalUnavailableError(error: HttpErrorResponse): boolean {
-    // ✅ Sin cast inseguro — guardas de tipo explícitas antes de cada acceso
+    
     if (!error?.error || typeof error.error !== 'object') return false;
 
     const body = error.error as BackendErrorBody;
