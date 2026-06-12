@@ -12,7 +12,7 @@ export class JourneyService {
     loading: false,
     error: false,
     noData: false,
-    data: null
+    data: null 
   };
 
   private pageState = new BehaviorSubject<JourneyViewModel>(this.initialState);

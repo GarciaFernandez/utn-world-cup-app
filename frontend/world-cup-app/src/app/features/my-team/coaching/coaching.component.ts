@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CoachingService } from './service/coaching.service';
 import { CoachingViewModel } from './model/coaching-view-model.interface';
+import { CoachingTeamRatingDeltaItem } from './model/coaching-api.interface';
 
 @Component({
   selector: 'app-coaching-page',
@@ -11,13 +12,25 @@ import { CoachingViewModel } from './model/coaching-view-model.interface';
 export class CoachingPageComponent implements OnInit {
 
   
-  pageState!: CoachingViewModel;
-
-  constructor(private readonly coachingService: CoachingService) {}
+  constructor(protected readonly coachingService: CoachingService) {}
   
+  get pageState(): CoachingViewModel {
+    return this.coachingService.getViewModel();
+  }   
   public ngOnInit(): void {
     this.coachingService.initialize();
-    this.pageState = this.coachingService.getViewModel();
   }
   
+  getRatingDelta(metric: string): CoachingTeamRatingDeltaItem | null {
+    return this.pageState.ratingDeltas?.find(
+      delta => delta?.metric?.toLowerCase() === metric.toLowerCase()
+    ) ?? null;
+  }
+
+  getBaseValue(metric: string): number {
+    return this.pageState.baseRatings?.find(
+      ratings => ratings.metric.toLowerCase() === metric.toLowerCase()
+    )?.value ?? 0;
+  }
+
  }

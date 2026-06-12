@@ -1,84 +1,387 @@
-<section class="card">
+<section class="card tunisia tun-flag">
   <div class="card-header">
     <span class="card-title">Cuerpo técnico</span>
     <span class="badge badge-primary">{{ pageState.selectedTeamLabel }}</span>
   </div>
+ 
+  <div class="empty-state" *ngIf="pageState.loading">
+    <div class="empty-icon">⏳</div>
+    <p>Cargando Cuerpo Técnico...</p>
+  </div>
+ 
+  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
+    <div class="empty-icon">⚠️</div>
+    <p>{{ pageState.errorMessage }}</p>
+  </div>
+ 
+  <ng-container *ngIf="!pageState.loading && !pageState.errorMessage && pageState.coach">
+    <div class="coaching-panel mt-16">
+      <div class="coaching-current-row">
+        <div>
+          <p class="coaching-current-lbl">Coach</p>
+          <span class="badge badge-secondary coaching-pill">{{ pageState.coach.name }}</span>
+        </div>
+        <div>
+          <p class="coaching-current-lbl">Edad</p>
+          <span class="badge badge-secondary coaching-pill">{{ pageState.coach.age }}</span>
+        </div>
+        <div>
+          <p class="coaching-current-lbl">Nacionalidad</p>
+          <span class="badge badge-secondary coaching-pill">{{ pageState.coach.nationality }}</span>
+        </div>
+        <div>
+          <p class="coaching-current-lbl">Perfil</p>
+          <span class="badge badge-accent coaching-pill profile-chip-small">{{ pageState.coach.profileLabel }}</span>
+        </div>
+      </div>
+ 
+      <div class="coach-profile-summary mt-16" *ngIf="pageState.coach.profileDescription">
+        <p class="coach-profile-summary-description">{{ pageState.coach.profileDescription }}</p>
+      </div>
+ 
+      <div class="coaching-current-row mt-16">
+        <div class="aptitudeBar">
+          <p class="coaching-current-lbl">Aptitud al Riesgo</p>
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ pageState.coach.riskAppetite }} / 100</span>
+            <div class="team-rating-track">
+
+              <div
+                class="team-rating-base"
+                [style.width.%]="pageState.coach.riskAppetite">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aptitudeBar">
+          <p class="coaching-current-lbl">Gestión del Partido</p>
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ pageState.coach.gameManagement }} / 100</span>
+            <div class="team-rating-track">
+
+              <div
+                class="team-rating-base"
+                [style.width.%]="pageState.coach.gameManagement">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aptitudeBar">
+          <p class="coaching-current-lbl">Adaptabilidad</p>
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ pageState.coach.adaptability }} / 100</span>
+            <div class="team-rating-track">
+
+              <div
+                class="team-rating-base"
+                [style.width.%]="pageState.coach.adaptability">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aptitudeBar">
+          <p class="coaching-current-lbl">Tendencia a presionar</p>
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ pageState.coach.pressingBias }} / 100</span>
+            <div class="team-rating-track">
+
+              <div
+                class="team-rating-base"
+                [style.width.%]="pageState.coach.pressingBias">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aptitudeBar">
+          <p class="coaching-current-lbl">Tendencia a poseer el balón</p>
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ pageState.coach.possessionBias }} / 100</span>
+            <div class="team-rating-track">
+
+              <div
+                class="team-rating-base"
+                [style.width.%]="pageState.coach.possessionBias">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aptitudeBar">
+          <p class="coaching-current-lbl">Tendencia a defender</p>
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ pageState.coach.defenseBias }} / 100</span>
+            <div class="team-rating-track">
   
-  <div class="empty-state" *ngIf="pageState.loading">
-    <div class="empty-icon">⏳</div>
-    <p>Cargando Cuerpo Tecnico...</p>
-  </div>
-
-  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
-    <div class="empty-icon">⚠️</div>
-    <p>{{ pageState.errorMessage }}</p>
-  </div>
-
-<section class="table-wrap mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.coach"> 
-  <table>
-    <thead>
-      <tr>
-        <th>name</th>
-        <th>age</th>
-        <th>nationality</th>
-        <th>profile</th>
-        <th>riskAppetite</th>
-        <th>gameManagement</th>
-        <th>adaptability</th>
-        <th>pressingBias</th>
-        <th>possessionBias</th>
-        <th>defenseBias</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{ pageState.coach.name }}</td>
-        <td>{{ pageState.coach.age }}</td>
-        <td>{{ pageState.coach.nationality }}</td>
-        <td>{{ pageState.coach.profile }}</td>
-        <td>{{ pageState.coach.riskAppetite }}</td>
-        <td>{{ pageState.coach.gameManagement }}</td>
-        <td>{{ pageState.coach.adaptability }}</td>
-        <td>{{ pageState.coach.pressingBias }}</td>
-        <td>{{ pageState.coach.possessionBias }}</td>
-        <td>{{ pageState.coach.defenseBias }}</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-  <div class="empty-state" *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.coach">  
-  <div class="empty-icon">🧭</div>
-  <p>No hay cuerpo técnico que coincida con el filtro actual.</p>
+              <div
+                class="team-rating-base"
+                [style.width.%]="pageState.coach.defenseBias">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+ 
+  <div class="empty-state" *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.coach">
+    <div class="empty-icon">🧭</div>
+    <p>No hay cuerpo técnico que coincida con el filtro actual.</p>
   </div>
 </section>
+ 
+ 
 
-<section class="card">
+<section class="card tunisia tun-flag" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.strategy">
   <div class="card-header">
-    <span class="card-title">Estrategia</span>
+    <span class="card-title">Configuración Táctica</span>
+    <span class="badge badge-primary">{{ pageState.selectedTeamLabel }}</span>
   </div>
-  <div class="empty-state" *ngIf="pageState.loading">
-    <div class="empty-icon">⏳</div>
-    <p>Cargando Estrategia...</p>
+ 
+
+  <div class="coaching-panel">
+    <p class="coaching-panel-title">Táctica actual</p>
+    <div class="coaching-current-row">
+      <div>
+        <p class="coaching-current-lbl">Estrategia</p>
+        <span class="badge badge-accent coaching-pill">{{ pageState.strategy.strategy }}</span>
+      </div>
+      <div>
+        <p class="coaching-current-lbl">Formación</p>
+        <span class="badge badge-accent coaching-pill">{{ pageState.formation?.formation }}</span>
+      </div>
+    </div>
+  </div>
+ 
+
+  <div class="coaching-panel mt-16">
+    <p class="coaching-panel-title">Cambiar táctica</p>
+    <div class="coaching-controls-row">
+ 
+
+      <div class="coaching-formation-control">
+        <label class="coaching-current-lbl">Estrategia</label>
+        <select
+          class="coaching-select"
+          [ngModel]="pageState.selectedStrategy"
+          (ngModelChange)="coachingService.onStrategyChange($event)"
+          [disabled]="pageState.savingStrategy">
+          <option value="">— Seleccionar —</option>
+          <option
+            *ngFor="let s of pageState.strategies || []"
+            [value]="s.strategy"
+            [class.compatible-option]="pageState.compatibleStrategies.includes(s.strategy)">
+            {{ s.strategy }}
+          </option>
+        </select>
+ 
+        <div class="coach-profile-summary" *ngIf="pageState.selectedStrategyDescription">
+          <p class="coach-profile-summary-description">{{ pageState.selectedStrategyDescription }}</p>
+        </div>
+      </div>
+ 
+
+      <div class="coaching-formation-control">
+        <label class="coaching-current-lbl">Formación</label>
+        <select
+          class="coaching-select"
+          [ngModel]="pageState.selectedFormation"
+          (ngModelChange)="coachingService.onFormationChange($event)"
+          [disabled]="pageState.savingFormation">
+          <option value="">— Seleccionar —</option>
+          <option
+            *ngFor="let f of pageState.formations"
+            [value]="f.formation"
+            [class.compatible-option]="pageState.compatibleFormations.includes(f.formation)">
+            {{ f.formation }}
+          </option>
+        </select>
+      </div>
+ 
+
+      <div class="coaching-formation-control">
+        <label class="coaching-current-lbl">Acciones</label>
+        <button
+          class="btn btn-primary"
+          (click)="coachingService.saveStrategy()"
+          [disabled]="pageState.savingStrategy || pageState.savingFormation || !pageState.selectedStrategy">
+          <span *ngIf="!pageState.savingStrategy">Guardar táctica</span>
+          <span *ngIf="pageState.savingStrategy">Guardando...</span>
+        </button>
+        <button
+          class="btn coaching-reset-btn coaching-reset-inline mt-8"
+          (click)="coachingService.resetToDefault()"
+          [disabled]="pageState.savingResetDefault">
+          <span *ngIf="!pageState.savingResetDefault">↺ Restaurar por defecto</span>
+          <span *ngIf="pageState.savingResetDefault">Restaurando...</span>
+        </button>
+      </div>
+ 
+    </div>
+  </div>
+ 
+ 
+  <div class="coaching-panel mt-16">
+    <div class="coaching-compatibility">
+      <p class="coaching-panel-title">Compatibilidad táctica</p>
+ 
+      <div class="coaching-compatibility-row">
+        <span class="coaching-compatibility-label">Formaciones compatibles con la estrategia</span>
+        <div class="coaching-chip-list">
+          <ng-container *ngIf="pageState.compatibleFormations.length > 0; else noCompatibleFormations">
+            <span
+              *ngFor="let f of pageState.compatibleFormations"
+              class="badge"
+              [class.badge-success]="f === pageState.selectedFormation"
+              [class.badge-secondary]="f !== pageState.selectedFormation">
+              {{ f }}
+            </span>
+          </ng-container>
+          <ng-template #noCompatibleFormations>
+            <span class="badge badge-secondary">—</span>
+          </ng-template>
+        </div>
+      </div>
+ 
+      <div class="coaching-compatibility-row">
+        <span class="coaching-compatibility-label">Estrategias compatibles con la formación</span>
+        <div class="coaching-chip-list">
+          <ng-container *ngIf="pageState.compatibleStrategies.length > 0; else noCompatibleStrategies">
+            <span
+              *ngFor="let s of pageState.compatibleStrategies"
+              class="badge"
+              [class.badge-success]="s === pageState.selectedStrategy"
+              [class.badge-secondary]="s !== pageState.selectedStrategy">
+              {{ s }}
+            </span>
+          </ng-container>
+          <ng-template #noCompatibleStrategies>
+            <span class="badge badge-secondary">—</span>
+          </ng-template>
+        </div>
+      </div>
+ 
+  
+      <div class="coaching-compatibility-status">
+        <span
+          class="coaching-status-pill"
+          [class.coaching-status-compatible]="pageState.tacticalStatusTone === 'compatible'"
+          [class.coaching-status-incompatible]="pageState.tacticalStatusTone === 'incompatible'"
+          [class.coaching-status-original]="pageState.tacticalStatusTone === 'original'">
+          <ng-container [ngSwitch]="pageState.tacticalStatusTone">
+            <ng-container *ngSwitchCase="'compatible'">✔ Combinación compatible</ng-container>
+            <ng-container *ngSwitchCase="'incompatible'">✖ Combinación incompatible · penalización activa</ng-container>
+            <ng-container *ngSwitchDefault>Táctica original del equipo</ng-container>
+          </ng-container>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+ 
+
+<section class="card tunisia tun-flag" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.stats">
+  <div class="card-header">
+    <span class="card-title">Rating del equipo</span>
+    <span class="badge badge-primary">{{ pageState.selectedTeamLabel }}</span>
   </div>
 
-  <div class="empty-state" *ngIf="!pageState.loading && pageState.errorMessage">
-    <div class="empty-icon">⚠️</div>
-    <p>{{ pageState.errorMessage }}</p>
+  <div class="coaching-panel" >
+    <p class="coaching-panel-title coaching-team-rating-header">puntaje base</p>
+ 
+    <ng-container *ngFor="let item of pageState.baseRatings; let i = index">
+      <ng-container *ngIf="getBaseValue(item.metric) as value">
+        <div class="coaching-compatibility-row mb-8">
+ 
+  
+          <div class="metric-label-row">
+            <span class="coaching-compatibility-label metric-label-uppercase">
+              {{ item.metric }}
+            </span>
+          </div>
+ 
+   
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ item.value }} / 100</span>
+            <div class="team-rating-track">
+    
+              <div
+                class="team-rating-base"
+                [style.width.%]="getBaseValue(item.metric)">
+              </div>
+            </div>
+          </div>
+ 
+        </div>
+      </ng-container>
+    </ng-container>
   </div>
-  <section class="table-wrap mt-16" *ngIf="!pageState.loading && !pageState.errorMessage && pageState.coach"> 
-  <table>
-    <thead>
-      <tr>
-        <th>Estrategia</th>
-        <th>Formacion</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{ pageState.coach.name }}</td>
-        <td>{{ pageState.coach.age }}</td>
-      </tr>
-    </tbody>
-  </table>
+  
+  
+  <div class="coaching-panel" >
+    <p class="coaching-panel-title coaching-team-rating-header">impacto de estrategia</p>
+ 
+    <ng-container *ngFor="let item of pageState.effectiveRatings; let i = index">
+      <ng-container *ngIf="getRatingDelta(item.metric) as delta">
+        <div class="coaching-compatibility-row mb-8">
+ 
+  
+          <div class="metric-label-row">
+            <span class="coaching-compatibility-label metric-label-uppercase">
+              {{ item.metric }}
+            </span>
+  
+            <span
+              class="team-rating-delta"
+              [class.team-rating-delta-positive]="delta.totalDelta > 0"
+              [class.team-rating-delta-negative]="delta.totalDelta < 0"
+              *ngIf="delta.totalDelta !== 0">
+              {{ delta.totalDelta > 0 ? '+' : '' }}{{ delta.totalDelta }}
+            </span>
+   
+            <span
+              class="team-rating-delta team-rating-delta-negative team-rating-delta-penalty"
+              *ngIf="delta.compatibilityPenalty < 0">
+              (penalización: {{ delta.compatibilityPenalty }})
+            </span>
+          </div>
+ 
+       
+          <div class="team-rating-row">
+            <span class="coaching-compatibility-label team-rating-val">{{ item.value }} / 100</span>
+            <div class="team-rating-track">
+
+              <div
+                class="team-rating-base"
+                [style.width.%]="getBaseValue(item.metric)">
+              </div>
+
+              <div
+                *ngIf="delta.totalDelta > 0"
+                class="team-rating-segment team-rating-segment-positive"
+                [style.left.%]="getBaseValue(item.metric)"
+                [style.width.%]="delta.totalDelta">
+             </div>
+
+              <div
+                *ngIf="delta.totalDelta < 0"
+                class="team-rating-segment team-rating-segment-negative"
+                [style.left.%]="item.value"
+                [style.width.%]="(-delta.totalDelta)">
+              </div>
+            </div>
+          </div>
+ 
+        </div>
+      </ng-container>
+    </ng-container>
+ 
+   
+    <div class="coach-profile-summary coach-profile-summary-spacing"
+         *ngIf="pageState.tacticalStatusTone === 'incompatible' && pageState.strategyPenalty !== 0">
+      <p class="coach-profile-summary-description">
+        ⚠ La combinación de estrategia y formación seleccionada no es compatible.
+        Se aplica una penalización de <strong>{{ pageState.strategyPenalty }}</strong> puntos sobre todos los ratings.
+      </p>
+    </div>
+  </div>
 </section>

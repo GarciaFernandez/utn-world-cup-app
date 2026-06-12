@@ -33,3 +33,10 @@ export interface SelectMatchFormationApiResponse {
   formation: string;
   message: string;
 }
+
+export interface ResetTeamTacticsApiResponse {
+  teamId: string;
+  strategy: string;
+  formation: string;
+  message: string;
+}
