@@ -41,7 +41,7 @@ Entre sus responsabilidades se incluyen:
 - Centralizar consultas técnicas y comunicación con la cátedra.
 - Ayudar a destrabar problemas técnicos dentro del equipo.
 
-**Nombre del Tech Lead:**  [Gianfranco Schettino]
+**Nombre del Tech Lead:**  [Bruno Cano]
 
 ### Integrantes por funcionalidad
 
@@ -54,11 +54,12 @@ Entre sus responsabilidades se incluyen:
 | 3 | Valentin Boccarini | Fase de Grupos | El Mundial |
 | 4 | Gianfranco Schettino | Camino del Equipo | El Mundial |
 | 5 | Ignacio Frias | Detalles de Partidos | El Mundial |
-| 6 | Joaquin Garcia Fernandez | Estadísticas y Premios | El Mundial |
+| 6 | Bruno Cano - Joaquin Garcia Fernandez | Estadísticas y Premios | El Mundial |
 | 7 | Miguel Jaramillo | Historial de Mundiales | El Mundial |
 | 8 | Rosana Monteros Sofe| Eventos en Vivo | La Final |
 | 9 | Juan Cruz Borda | Estado del Equipo en la Final | La Final |
-| 10 | | **Jugar la Final** *(Responsabilidad Grupal)* | La Final |
+| 10 | Bruno Cano| **Jugar la Final** *(Responsabilidad Grupal)* | La Final |
+| 11 | Bruno Cano| Extra: Docker e integracion de n8n
 
 > **Jugar la Final** es obligatoria para la aprobación del TP y responsabilidad de todo el grupo. Debe poder jugarse de principio a fin sin errores. De ella dependen: Eventos en Vivo, Estado del Equipo, Estadísticas y Premios e Historial de Mundiales.
 
