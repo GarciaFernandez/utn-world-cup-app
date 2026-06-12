@@ -12,6 +12,7 @@ import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResp
 import { CoachingStrategyCatalogItemApiResponse } from 'src/teams/services/model/coach-service-model';
 import { N8nAiProvider  } from '../n8n/n8nAutomationService'; 
 import { MatchResponse } from '../match/services/helpers/play-final.interface';
+import { TeamApiItem } from 'src/match/services/helpers/team-state.interface';
 
 
 @Injectable()
@@ -211,6 +212,7 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
       lang: this.resolveLang(lang),
     });
   }
+  
 
 public async generateReply_n8n(matchData: MatchResponse): Promise<any> {
   try {
@@ -238,4 +240,10 @@ public async generateReply_n8n(matchData: MatchResponse): Promise<any> {
     return undefined;
   }
 }
+  public async getTeamState(matchId: string, lang?: string): Promise<TeamApiItem> {
+    return this.getEndpointData(`/match/${matchId}/stats`, {
+      matchId: matchId.trim().toLowerCase(),
+      lang: this.resolveLang(lang),
+    });
+  }
 }
