@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # 1. API de Datos - Entorno Linux 100% aislado del ecosistema Docker
+  world-cup-api:
+    build:
+      context: ./
+      dockerfile: api.Dockerfile
+    ports:
+      - "5101:5101"
+    stdin_open: true
+    tty: true
+    # SIN VOLÚMENES: Obliga a usar la estructura nativa con permisos 777 que seteamos arriba
+
+  # 2. Backend BFF (NestJS)
+  world-cup-backend:
+    build:
+      context: ./
+      dockerfile: Backend.Dockerfile
+    ports:
+      - "4101:4101"
+    environment:
+      - NODE_ENV=docker
+    depends_on:
+      - world-cup-api
+
+  # 3. Frontend (Angular)
+  world-cup-frontend:
+    build:
+      context: ./
+      dockerfile: Frontend.Dockerfile
+    ports:
+      - "3101:3101"
+    depends_on:
+      - world-cup-backend
+
+# 4. Automatización (n8n con usuario administrador por defecto)
+  world-cup-n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false  # Desactiva autenticaciones viejas y pesadas
+    volumes:
+      # Volumen interno de Docker para guardar tus workflows y credenciales de forma segura
+      - n8n-data:/home/node/.local/share/n8n
+    depends_on:
+      - world-cup-backend            # Espera a que el backend esté listo antes de levantar
+
+# Declaramos el volumen interno del ecosistema Docker para n8n
+volumes:
+  n8n-data:

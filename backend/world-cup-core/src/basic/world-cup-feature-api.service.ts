@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AdminService } from '../admin/admin.service';
 import { AbstractBaseService } from './abstract-base.service';
 import { LanguageEnum } from './model/language.enum';
@@ -11,6 +11,8 @@ import { StrategyApiItem } from 'src/teams/services/model/strategy-service.inter
 import { FormationApiItem } from 'src/teams/services/model/formation-service.interface';
 import { TournamentStatsData,AwardItem, PlayerStatsItem } from '../world-cup/services/model/stats-awards.interface';
 import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResponse, SelectMatchFormationApiResponse } from '../match/services/helpers/match-tactics.interface';
+import { N8nAiProvider  } from '../n8n/n8nAutomationService'; 
+import { MatchResponse } from '../match/services/helpers/play-final.interface';
 
 
 @Injectable()
@@ -18,6 +20,7 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
   constructor(
     worldCupApiService: WorldCupApiService,
     adminService: AdminService,
+    private readonly N8nAiProvider: N8nAiProvider 
   ) {
     super(adminService, worldCupApiService);
   }
@@ -117,14 +120,16 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
       teamId,
       lang: this.resolveLang(lang),
     });
+    
   }
 
-  public async playMatch(matchId: string, selectedOption: string, lang?: string): Promise<any> {
-    return this.postEndpointData('/match/play', {
+  public async playMatch(matchId: string, selectedOption: string, lang?: string): Promise<MatchResponse> {
+   return  this.postEndpointData<any>('/match/play', {
       matchId,
       selectedOption,
       lang: this.resolveLang(lang),
     });
+   
   }
 
 
@@ -184,4 +189,37 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
       teamId: teamId?.trim().toLowerCase(),
     });
   }
+  
+  public async  getMatchCurrentStats(lang?: string): Promise<MatchResponse> {
+    return this.getEndpointData<MatchResponse>('/match/current/stats', {
+      lang: this.resolveLang(lang),
+    });
+  }
+
+public async generateReply_n8n(matchData: MatchResponse): Promise<any> {
+  try {
+    const n8nResponse = await this.N8nAiProvider.generateReply({
+      conversationId: matchData.matchId,
+  
+      conversationTitle: `Partido Final: ${matchData.teamName || 'Local'} vs ${matchData.opponentName || 'Visitante'}`,
+      
+      latestUserMessage: JSON.stringify(matchData),
+      
+      recentMessages: [
+        {
+          role: 'USER' as any,
+          content: `Marcador actual: ${matchData.score}, Turno: ${matchData.turn}, Minuto: ${matchData.minute}`,
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    });
+
+    console.log(`Respuesta de n8n recibida con éxito: ${n8nResponse}`);
+    return n8nResponse;
+  } catch (n8nError) {
+    const errorInstance = n8nError as Error;
+    console.error(`[n8n Automation Error]: ${errorInstance.message}`);
+    return undefined;
+  }
+}
 }

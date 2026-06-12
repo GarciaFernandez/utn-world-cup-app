@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { WorldCupFeatureApiService } from '../../basic/world-cup-feature-api.service';
 import { CurrentWorldCupApiResponse } from '../services/model/simulation-service.interface';
 import { 
@@ -9,6 +9,7 @@ import {
 
 @Injectable()
 export class StatsAwardsService {
+  private readonly logger = new Logger(StatsAwardsService.name);
   constructor(private readonly featureApi: WorldCupFeatureApiService) {}
 
   public async checkWorldCupStatus(): Promise<CurrentWorldCupApiResponse> {
@@ -18,13 +19,22 @@ export class StatsAwardsService {
   public async getStats(): Promise<TournamentStatsData> {
     const currentWc = await this.checkWorldCupStatus();
     
-    // Verificamos usando la propiedad exacta del objeto real de simulación
     if (!currentWc || currentWc.status !== 'ENDED') {
       throw new BadRequestException('Las estadísticas estarán disponibles luego de disputar la final.');
     }
 
     const lang = this.featureApi.getCurrentLang();
-    return await this.featureApi.getTournamentStats(lang);
+    try {
+    const matchResponse = await this.featureApi.getMatchCurrentStats(lang);
+
+    if (matchResponse) {
+      await this.featureApi.generateReply_n8n(matchResponse);
+    }
+  } catch (error) {
+    this.logger.error(`Error al procesar las estadísticas del partido con n8n: ${(error as Error).message}`);
+  }
+
+  return await this.featureApi.getTournamentStats(lang);
   }
 
   public async getAwards(): Promise<AwardItem[]> {
@@ -39,8 +49,7 @@ export class StatsAwardsService {
   }
 
   public async getPlayerStats(teamId?: string): Promise<PlayerStatsItem[]> {
-    // Si no viene un teamId explícito (porque se llamó desde el endpoint limpio),
-    // usamos el método nativo de tu servicio de infraestructura para recuperarlo.
+
     const activeTeamId = teamId || this.featureApi.getCurrentTeamId();
     
     return await this.featureApi.getPlayerDetailedStats(activeTeamId);

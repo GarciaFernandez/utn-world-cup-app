@@ -1,0 +1,288 @@
+{
+  "name": "WorldCup",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "WorldCup",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -96,
+        -128
+      ],
+      "id": "cb9a0bad-aeb7-4b00-bc1f-b47fa49a7208",
+      "name": "Webhook",
+      "webhookId": "80a132f2-3892-4f82-acaf-8f6e50c4cebd"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Capturamos el cuerpo de la petición que mandó NestJS\nconst body = $('Webhook').item.json.body;\n\n// Parseamos el string de userMessage para convertirlo en un objeto de JavaScript real\nconst matchObject = JSON.parse(body.userMessage);\n\n// Retornamos un elemento limpio de n8n con la data estructurada\nreturn [\n  {\n    json: {\n      action: body.action,\n      conversationId: body.context?.conversationId,\n      conversationTitle: body.context?.conversationTitle,\n      recentMessages: body.recentMessages,\n      \n      // 👇 ACÁ ESTÁ TU MAGIA: Todas las propiedades del partido ahora son accesibles de forma directa\n      matchData: matchObject \n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        112,
+        -128
+      ],
+      "id": "a9e46953-7b91-4394-b260-b2f6de71563b",
+      "name": "Parse_Json"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "12okDn-Myd2qiNfw7kgddVIAq12U-R-xmjHe28zVcy0o",
+          "mode": "list",
+          "cachedResultName": "WorldCup",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12okDn-Myd2qiNfw7kgddVIAq12U-R-xmjHe28zVcy0o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Finales_Ganadas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12okDn-Myd2qiNfw7kgddVIAq12U-R-xmjHe28zVcy0o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Equipo": "={{ $('Parse_Json').item.json.matchData.team.name }}",
+            "Oponente": "={{ $('Parse_Json').item.json.matchData.opponent.name }}",
+            "Resultado": "={{ $('Parse_Json').item.json.matchData.score }}",
+            "Gano (Si/No)": "={{ $('Parse_Json').item.json.matchData.summary.teamGoals> $('Parse_Json').item.json.matchData.summary.opponentGoals? \"Si\" : \"No\" }}",
+            "Hora": "={{ $('Parse_Json').item.json.matchData.events[1].creationDate }}",
+            "Id_Partido": "={{ $('Parse_Json').item.json.matchData.matchId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Equipo",
+              "displayName": "Equipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Oponente",
+              "displayName": "Oponente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resultado",
+              "displayName": "Resultado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gano (Si/No)",
+              "displayName": "Gano (Si/No)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Id_Partido",
+              "displayName": "Id_Partido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hora",
+              "displayName": "Hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        64
+      ],
+      "id": "cfbbe323-2571-45ea-889a-0cc41edfc324",
+      "name": "Agrego Final Jugada",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "k8p1adBsT4p6D572",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "12okDn-Myd2qiNfw7kgddVIAq12U-R-xmjHe28zVcy0o",
+          "mode": "list",
+          "cachedResultName": "WorldCup",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12okDn-Myd2qiNfw7kgddVIAq12U-R-xmjHe28zVcy0o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Finales_Jugadas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12okDn-Myd2qiNfw7kgddVIAq12U-R-xmjHe28zVcy0o/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Id_Partido",
+              "lookupValue": "={{ $json.matchData.matchId }}"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        -128
+      ],
+      "id": "b77c406c-8a44-4f80-83d0-b045aa3a2b65",
+      "name": "Obtencion Filas Gsheet",
+      "notesInFlow": false,
+      "retryOnFail": false,
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "k8p1adBsT4p6D572",
+          "name": "Google Service Account account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1f91cb8a-9cce-40a0-bbd2-ce232b34c5c4",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        -128
+      ],
+      "id": "59d4880a-d46f-427b-8db1-b823f7c58347",
+      "name": "If",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse_Json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse_Json": {
+      "main": [
+        [
+          {
+            "node": "Obtencion Filas Gsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrego Final Jugada": {
+      "main": [
+        []
+      ]
+    },
+    "Obtencion Filas Gsheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Agrego Final Jugada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "10ae99d9-ae35-4a89-b5bf-a032a24d4e6a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "df7e23195b5dd0fbb95759d731aa752ae7cc0119572f329b37274a2de10859ed"
+  },
+  "id": "U57Zric6ZmIZbRFi",
+  "tags": []
+}
