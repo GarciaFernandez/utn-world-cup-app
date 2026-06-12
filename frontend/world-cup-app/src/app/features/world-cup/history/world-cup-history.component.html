@@ -1,6 +1,42 @@
-<section class="card">
-  <div class="card-header">
-    <span class="card-title">Historial de mundiales</span>
+<div class="history-wrapper" *ngIf="historyData">
+
+  <div class="team-header">
+    <img src="https://flagcdn.com/w80/tn.png" class="team-flag">
+    <div>
+      <h1>{{ historyData.name }}</h1>
+      <p>{{ historyData.appearances }} participaciones mundialistas</p>
+      <small>
+        Máximo goleador: {{ historyData.topScorer.name }} ({{ historyData.topScorer.goals }} goles)
+      </small>
+    </div>
   </div>
-  <pre>{{ historyData | json }}</pre>
-</section>
+
+  <div class="history-grid">
+    <div class="worldcup-card" *ngFor="let item of historyData.history">
+      
+      <div class="card-header">
+        <div>
+          <h2>{{ item.year }}</h2>
+          <span>{{ item.host }}</span>
+        </div>
+        <div class="position">#{{ item.position }}</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat win">G {{ item.gamesWon }}</div>
+        <div class="stat draw">E {{ item.gamesDrawn }}</div>
+        <div class="stat loss">P {{ item.gamesLost }}</div>
+      </div>
+
+      <div class="matches">
+        <div class="match" *ngFor="let match of item.matches">
+          <span>{{ historyData.name }}</span>
+          <strong>{{ match.result }}</strong>
+          <span>{{ match.opponent }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

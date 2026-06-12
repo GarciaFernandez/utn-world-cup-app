@@ -13,3 +13,4 @@ export class WorldCupHistoryController {
     return await this.worldCupHistoryService.getHistory();
   }
 }
+

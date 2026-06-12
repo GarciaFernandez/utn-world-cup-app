@@ -1,20 +1,146 @@
-.history-card-meta {
+.history-wrapper {
+  padding: 40px;
+  color: white;
+  max-width: 1300px; 
+  margin: 0 auto;    
+}
+
+
+.team-header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 60px;
+}
+
+.team-flag {
+  width: 80px;
+  border-radius: 8px;
+}
+
+.team-header h1 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+
+.team-header p, .team-header small {
+  display: block; 
+  width: fit-content;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.team-header p { color: #ffffff; font-weight: 600; }
+.team-header small { color: #e0e0e0; }
+
+.team-header small::after {
+  content: " ⚽"; 
+  font-size: 14px;
+}
+
+
+.history-grid {
+  display: grid;
+ 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px; 
+  align-items: start;
+}
+
+
+.worldcup-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.card-header span {
+  color: #bdbdbd;
+  font-size: 13px;
+}
+
+
+.position {
+  background: #24304d;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+
+.stats-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+}
+
+.stat.win { background: rgba(87, 214, 107, .15); color: #57d66b; }
+.stat.draw { background: rgba(243, 179, 64, .15); color: #f3b340; }
+.stat.loss { background: rgba(255, 87, 87, .15); color: #ff5757; }
+
+
+.matches {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  gap: 8px;
 }
 
-.history-badge-id {
-  font-size: 10px;
+.match {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
-.history-badge-date {
-  font-size: 10px;
+.match strong {
+  text-align: center;
+  font-family: monospace;
+  font-weight: bold;
 }
 
-@media (max-width: 960px) {
-  .history-card-meta {
-    align-items: flex-start;
-  }
+.match span:first-child { text-align: left; }
+.match span:last-child { text-align: right; }
+
+
+@media (max-width: 1024px) {
+  .history-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .history-grid { grid-template-columns: 1fr; }
 }
