@@ -1,167 +1,40 @@
-import { Injectable } from '@nestjs/common';
-
-interface LiveEventsTeamApiItem {
-  id: string;
-  name: string;
-  flag: string;
-  formation: string;
-  strategy: string;
-  strategyLabel: string;
-  coachName: string;
-  coachProfile: string;
-}
-
-interface LiveEventsSummaryApiItem {
-  teamGoals: number;
-  opponentGoals: number;
-  teamYellowCards: number;
-  opponentYellowCards: number;
-  teamRedCards: number;
-  opponentRedCards: number;
-  totalGoals: number;
-}
-
-interface LiveEventsPlayerOfMatchApiItem {
-  playerName: string;
-  teamId: string;
-  teamName: string;
-  teamFlag: string;
-  position: string | null;
-}
-
-interface LiveEventFeedApiItem {
-  statId: number;
-  minute: number;
-  minuteLabel: string;
-  turn: number;
-  type: string;
-  style: 'goal' | 'yellow' | 'red' | 'sub' | 'info' | 'foul' | 'attack';
-  icon: string;
-  text: string;
-  teamId: string | null;
-  teamName: string | null;
-  playerName: string | null;
-}
-
-interface LiveEventsApiResponse {
-  teamId: string;
-  lang: 'es' | 'en';
-  matchId: string;
-  isActive: boolean;
-  isFinished: boolean;
-  minute: number;
-  turn: number;
-  zone: string | null;
-  zoneLabel: string;
-  score: string;
-  team: LiveEventsTeamApiItem;
-  opponent: LiveEventsTeamApiItem;
-  summary: LiveEventsSummaryApiItem;
-  playerOfMatch: LiveEventsPlayerOfMatchApiItem | null;
-  events: LiveEventFeedApiItem[];
-}
-
-interface ResponseWrapper<T> {
-  success: boolean;
-  serverTime: string;
-  responseMessage: string;
-  data: T;
-}
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { AbstractBaseService } from '../../basic/abstract-base.service';
+import { AdminService } from '../../admin/admin.service';
+import { WorldCupFeatureApiService } from '../../basic/world-cup-feature-api.service';
 
 @Injectable()
-export class LiveEventsService {
+export class LiveEventsService extends AbstractBaseService {
+  constructor(
+    private readonly worldCupFeatureApiService: WorldCupFeatureApiService,
+    adminService: AdminService,
+  ) {
+    super(adminService);
+  }
 
-  async getLiveEvents(lang: 'es' | 'en'): Promise<ResponseWrapper<LiveEventsApiResponse>> {
-
-    const mockMatch: LiveEventsApiResponse = {
-      teamId: 'TUN',
-      lang,
-      matchId: 'final-2026',
-      isActive: true,
-      isFinished: false,
-      minute: 58,
-      turn: 2,
-      zone: 'MID',
-      zoneLabel: 'Zona media',
-      score: '1 - 0',
-      team: {
-        id: 'TUN',
-        name: lang === 'en' ? 'Tunisia' : 'Túnez',
-        flag: '🇹🇳',
-        formation: '4-3-3',
-        strategy: lang === 'en' ? 'Medium Press' : 'Presión Media',
-        strategyLabel: lang === 'en' ? 'Medium Press and Low Block' : 'Presión Media y Bloque Bajo',
-        coachName: 'Jalel Kadri',
-        coachProfile: '',
-      },
-      opponent: {
-        id: 'FRA',
-        name: lang === 'en' ? 'France' : 'Francia',
-        flag: '🇫🇷',
-        formation: '4-2-3-1',
-        strategy: lang === 'en' ? 'Wing Attack' : 'Ataque por las Bandas',
-        strategyLabel: lang === 'en' ? 'Wing Attack' : 'Ataque por las Bandas',
-        coachName: 'Didier Deschamps',
-        coachProfile: '',
-      },
-      summary: {
-        teamGoals: 1,
-        opponentGoals: 0,
-        teamYellowCards: 2,
-        opponentYellowCards: 1,
-        teamRedCards: 0,
-        opponentRedCards: 0,
-        totalGoals: 1,
-      },
-      playerOfMatch: null,
-      events: [
-        {
-          statId: 101,
-          minute: 58,
-          minuteLabel: "58'",
-          turn: 2,
-          type: 'GOAL',
-          style: 'goal',
-          icon: '⚽',
-          text: lang === 'en' ? 'Great goal by Tunisia!' : '¡Golazo de Túnez!',
-          teamId: 'TUN',
-          teamName: lang === 'en' ? 'Tunisia' : 'Túnez',
-          playerName: null,
-        },
-        {
-          statId: 102,
-          minute: 30,
-          minuteLabel: "30'",
-          turn: 1,
-          type: 'YELLOW_CARD',
-          style: 'yellow',
-          icon: '🟨',
-          text: lang === 'en' ? 'Yellow card for tactical foul.' : 'Tarjeta amarilla por falta táctica.',
-          teamId: 'TUN',
-          teamName: lang === 'en' ? 'Tunisia' : 'Túnez',
-          playerName: null,
-        },
-        {
-          statId: 103,
-          minute: 1,
-          minuteLabel: "1'",
-          turn: 1,
-          type: 'START',
-          style: 'info',
-          icon: 'ℹ️',
-          text: lang === 'en' ? 'Match kicked off!' : '¡Arrancó el partido!',
-          teamId: null,
-          teamName: null,
-          playerName: null,
-        },
-      ],
-    };
-
-    return {
-      success: true,
-      serverTime: new Date().toISOString(),
-      responseMessage: '',
-      data: mockMatch,
-    };
+  async getLiveEvents(lang?: string): Promise<unknown> {
+    try {
+      const activeLang = lang || this.getCurrentLang();
+      const response = await this.worldCupFeatureApiService.getMatchCurrentStats(activeLang);
+      const raw = (response as any).getData ? (response as any).getData() : (response as any).data || response;
+      console.log('PRIMER EVENTO RAW:', JSON.stringify(raw.events?.[0]));
+      const events = (raw.events ?? []).map((e: any) => {
+        let type = e.eventType ?? 'INFO';
+        let style = 'info';
+        let icon = 'ℹ️';
+        if (e.isGoal) { style = 'goal'; icon = '⚽'; type = 'GOAL'; }
+        else if (e.cardType === 'YELLOW') { style = 'yellow'; icon = '🟨'; type = 'YELLOW_CARD'; }
+        else if (e.cardType === 'RED') { style = 'red'; icon = '🟥'; type = 'RED_CARD'; }
+        else if (type.includes('SUB')) { style = 'sub'; icon = '🔄'; }
+        else if (type.includes('FOUL')) { style = 'info'; icon = '🦵'; }
+        else if (type.includes('ATTACK') || type.includes('CORNER') || type.includes('CROSS')) { style = 'info'; icon = '⚡'; }
+        return { statId: e.statId, minute: e.minute, minuteLabel: e.minute + "'", turn: e.turn, type, style, icon, text: e.message ?? '', teamId: e.teamId ?? null, teamName: e.teamName ?? null, playerName: e.playerName ?? null };
+      });
+      const data = { ...raw, events };
+      return { success: true, serverTime: new Date().toISOString(), responseMessage: '', data };
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      throw new HttpException('No se pudieron cargar los eventos de la final.', HttpStatus.BAD_GATEWAY);
+    }
   }
 }

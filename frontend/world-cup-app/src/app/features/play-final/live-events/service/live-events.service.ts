@@ -106,17 +106,29 @@ export class LiveEventsService extends BaseApiService {
     const upperType  = (event.type  ?? '').toUpperCase();
     const upperStyle = (event.style ?? '').toUpperCase();
 
-    if (upperStyle === 'GOAL'   || upperType.includes('GOAL'))   {
+    if (upperStyle === 'GOAL' || upperType.includes('GOAL')) {
       return { ...event, icon: '⚽', style: 'goal' };
     }
     if (upperStyle === 'YELLOW' || upperType.includes('YELLOW')) {
       return { ...event, icon: '🟨', style: 'yellow' };
     }
-    if (upperStyle === 'RED'    || upperType.includes('RED'))    {
+    if (upperStyle === 'RED' || upperType.includes('RED')) {
       return { ...event, icon: '🟥', style: 'red' };
     }
     if (upperType.includes('SUB')) {
       return { ...event, icon: '🔄', style: 'sub' };
+    }
+    if (upperType.includes('CORNER') || upperType.includes('CROSS')) {
+      return { ...event, icon: '🏳️', style: 'info' };
+    }
+    if (upperType.includes('FOUL') || upperType.includes('CARD')) {
+      return { ...event, icon: '🦵', style: 'info' };
+    }
+    if (upperType.includes('ATTACK') || upperType.includes('SHOOT') || upperType.includes('KICK')) {
+      return { ...event, icon: '⚡', style: 'info' };
+    }
+    if (upperType.includes('KICKOFF') || upperType.includes('START')) {
+      return { ...event, icon: '🏁', style: 'info' };
     }
 
     return { ...event, icon: 'ℹ️', style: 'info' };
