@@ -1,1 +1,182 @@
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #eef2f5;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  text-align: center;
+}
+.loading-message {
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+}
+.error-message {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+.empty-message {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+}
+
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #f2f2f2;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #ccc;
+}
+.stat {
+  font-size: 16px;
+}
+.stat strong {
+  font-size: 20px;
+  margin-left: 6px;
+}
+
+
+.team-card {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 30px;
+}
+.team-card h2 {
+  margin-bottom: 12px;
+  border-bottom: 2px solid #aaa;
+  padding-bottom: 6px;
+}
+.team-card p {
+  margin: 5px 0;
+}
+
+
+.tactics {
+  margin: 15px 0;
+}
+.tactics div {
+  margin-bottom: 10px;
+}
+.bar {
+  background: #ddd;
+  height: 18px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 3px;
+}
+.fill {
+  height: 100%;
+  width: 0%;
+}
+.attack { background: #ff5722; }
+.defense { background: #4caf50; }
+.midfield { background: #2196f3; }
+
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0 20px;
+}
+.player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 30px;
+}
+.player.bench {
+  background: #fff8e7;
+  border-color: #ffd966;
+}
+.number {
+  font-weight: bold;
+  background: #ccc;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.position {
+  width: 45px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.name {
+  flex: 1;
+}
+.energy {
+  background: #eee;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.substitutions-info {
+  background: #e9ecef;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.substitutions-info span {
+  margin-right: 16px;
+  font-size: 14px;
+}
+.no-players {
+  text-align: center;
+  padding: 12px;
+  background: #f1f1f1;
+  border-radius: 20px;
+  color: #666;
+  font-style: italic;
+}
+
+
+@media (max-width: 700px) {
+  .container {
+    margin: 10px;
+    padding: 12px;
+  }
+  .top-bar {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  .player {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}

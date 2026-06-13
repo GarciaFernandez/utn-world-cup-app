@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus} from '@nestjs/common';
 import { AbstractBaseService } from '../../basic/abstract-base.service';
 import { AdminService } from '../../admin/admin.service';
 import { WorldCupFeatureApiService } from '../../basic/world-cup-feature-api.service';
@@ -38,8 +38,7 @@ export class PlayFinalService extends AbstractBaseService {
   public async playTurn(matchId: string, selectedOption: string, lang?: string): Promise<MatchResponse> {
     try {
       const response = await this.worldCupFeatureApiService.playMatch(matchId, selectedOption, lang);
-      
-      // Desempaquetamos la data limpia del turno
+
       const data = (response as any).getData ? (response as any).getData() : (response as any).data || response;
       return data;
     } catch (error) {

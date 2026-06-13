@@ -24,16 +24,6 @@ export class StatsAwardsService {
     }
 
     const lang = this.featureApi.getCurrentLang();
-    try {
-    const matchResponse = await this.featureApi.getMatchCurrentStats(lang);
-
-    if (matchResponse) {
-      await this.featureApi.generateReply_n8n(matchResponse);
-    }
-  } catch (error) {
-    this.logger.error(`Error al procesar las estadísticas del partido con n8n: ${(error as Error).message}`);
-  }
-
   return await this.featureApi.getTournamentStats(lang);
   }
 

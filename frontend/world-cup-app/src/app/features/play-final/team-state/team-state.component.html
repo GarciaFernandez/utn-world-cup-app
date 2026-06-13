@@ -1,6 +1,106 @@
-<section class="card">
-  <div class="card-header">
-    <span class="card-title">Estado del equipo</span>
+
+<div class="container">
+  
+  <div *ngIf="pageState.loading" class="message loading-message">
+    ⏳ Cargando estado del equipo...
   </div>
-  <p>Este componente debe ser desarrollado por el alumno.</p>
-</section>
+  <div *ngIf="!pageState.loading && pageState.errorMessage" class="message error-message">
+    ❌ {{ pageState.errorMessage }}
+  </div>
+  <div *ngIf="!pageState.loading && !pageState.errorMessage && pageState.showNoFinalState" class="message empty-message">
+    📭 No hay final activa. Simulá el mundial primero.
+  </div>
+
+  
+  <div *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.showNoFinalState && pageState.data as data" class="top-bar">
+    <div class="stat">Minuto: <strong>{{ data.minute }}'</strong></div>
+    <div class="stat">Turno: <strong>{{ data.turn }}</strong></div>
+    <div class="stat">Marcador: <strong>{{ data.score }}</strong></div>
+  </div>
+
+  
+  <div *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.showNoFinalState && pageState.data as data" class="teams">
+    
+    <div class="team-card">
+      <h2>{{ data.team.flag }} {{ data.team.name }}</h2>
+      <p><strong>Formación:</strong> {{ data.team.formation }}</p>
+      <p><strong>Estrategia:</strong> {{ data.team.strategyLabel }}</p>
+      <p><strong>Entrenador:</strong> {{ data.team.coachName }} ({{ data.team.coachProfile }})</p>
+
+     
+      <div class="tactics">
+        <div>Attack {{ data.team.tactical.attack }}% <div class="bar"><div class="fill attack" [style.width.%]="data.team.tactical.attack"></div></div></div>
+        <div>Defense {{ data.team.tactical.defense }}% <div class="bar"><div class="fill defense" [style.width.%]="data.team.tactical.defense"></div></div></div>
+        <div>Midfield {{ data.team.tactical.midfield }}% <div class="bar"><div class="fill midfield" [style.width.%]="data.team.tactical.midfield"></div></div></div>
+      </div>
+
+      
+      <h3>Jugadores en cancha</h3>
+      <div class="players-list">
+        <div *ngFor="let p of data.team.onField" class="player">
+          <span class="number">{{ p.shirtNumber }}</span>
+          <span class="position">{{ p.positionTag }}</span>
+          <span class="name">{{ p.displayName || p.name }}</span>
+          <span class="energy">{{ p.energyLabel }}</span>
+        </div>
+      </div>
+
+     
+      <h3>Suplentes disponibles</h3>
+      <div class="substitutions-info">
+        <span>Usadas: {{ data.team.substitutionsUsed }}</span>
+        <span>Quedan: {{ data.team.remainingSubstitutions }}</span>
+        <span>Máximas: {{ data.team.maxSubstitutions }}</span>
+      </div>
+      <div class="players-list">
+        <div *ngFor="let p of data.team.bench" class="player bench">
+          <span class="number">{{ p.shirtNumber }}</span>
+          <span class="position">{{ p.positionTag }}</span>
+          <span class="name">{{ p.displayName || p.name }}</span>
+          <span class="energy">{{ p.energyLabel }}</span>
+        </div>
+        <div *ngIf="data.team.bench.length === 0" class="no-players">No hay suplentes</div>
+      </div>
+    </div>
+
+    
+    <div class="team-card">
+      <h2>{{ data.opponent.flag }} {{ data.opponent.name }}</h2>
+      <p><strong>Formación:</strong> {{ data.opponent.formation }}</p>
+      <p><strong>Estrategia:</strong> {{ data.opponent.strategyLabel }}</p>
+      <p><strong>Entrenador:</strong> {{ data.opponent.coachName }} ({{ data.opponent.coachProfile }})</p>
+
+      <div class="tactics">
+        <div>Attack {{ data.opponent.tactical.attack }}% <div class="bar"><div class="fill attack" [style.width.%]="data.opponent.tactical.attack"></div></div></div>
+        <div>Defense {{ data.opponent.tactical.defense }}% <div class="bar"><div class="fill defense" [style.width.%]="data.opponent.tactical.defense"></div></div></div>
+        <div>Midfield {{ data.opponent.tactical.midfield }}% <div class="bar"><div class="fill midfield" [style.width.%]="data.opponent.tactical.midfield"></div></div></div>
+      </div>
+
+      <h3>Jugadores en cancha</h3>
+      <div class="players-list">
+        <div *ngFor="let p of data.opponent.onField" class="player">
+          <span class="number">{{ p.shirtNumber }}</span>
+          <span class="position">{{ p.positionTag }}</span>
+          <span class="name">{{ p.displayName || p.name }}</span>
+          <span class="energy">{{ p.energyLabel }}</span>
+        </div>
+      </div>
+
+      <h3>Suplentes disponibles</h3>
+      <div class="substitutions-info">
+        <span>Usadas: {{ data.opponent.substitutionsUsed }}</span>
+        <span>Quedan: {{ data.opponent.remainingSubstitutions }}</span>
+        <span>Máximas: {{ data.opponent.maxSubstitutions }}</span>
+      </div>
+      <div class="players-list">
+        <div *ngFor="let p of data.opponent.bench" class="player bench">
+          <span class="number">{{ p.shirtNumber }}</span>
+          <span class="position">{{ p.positionTag }}</span>
+          <span class="name">{{ p.displayName || p.name }}</span>
+          <span class="energy">{{ p.energyLabel }}</span>
+        </div>
+        <div *ngIf="data.opponent.bench.length === 0" class="no-players">No hay suplentes</div>
+      </div>
+    </div>
+  </div>
+</div>

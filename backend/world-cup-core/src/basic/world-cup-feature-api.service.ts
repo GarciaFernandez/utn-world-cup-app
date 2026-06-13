@@ -10,7 +10,7 @@ import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-serv
 import { TournamentStatsData,AwardItem, PlayerStatsItem } from '../world-cup/services/model/stats-awards.interface';
 import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResponse, SelectMatchFormationApiResponse } from '../match/services/helpers/match-tactics.interface';
 import { CoachingStrategyCatalogItemApiResponse } from 'src/teams/services/model/coach-service-model';
-import { N8nAiProvider  } from '../n8n/n8nAutomationService'; 
+
 import { MatchResponse } from '../match/services/helpers/play-final.interface';
 import { TeamApiItem } from 'src/match/services/helpers/team-state.interface';
 
@@ -19,8 +19,7 @@ import { TeamApiItem } from 'src/match/services/helpers/team-state.interface';
 export class WorldCupFeatureApiService extends AbstractBaseService {
   constructor(
     worldCupApiService: WorldCupApiService,
-    adminService: AdminService,
-    private readonly N8nAiProvider: N8nAiProvider 
+    adminService: AdminService
   ) {
     super(adminService, worldCupApiService);
   }
@@ -213,33 +212,6 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     });
   }
   
-
-public async generateReply_n8n(matchData: MatchResponse): Promise<any> {
-  try {
-    const n8nResponse = await this.N8nAiProvider.generateReply({
-      conversationId: matchData.matchId,
-  
-      conversationTitle: `Partido Final: ${matchData.teamName || 'Local'} vs ${matchData.opponentName || 'Visitante'}`,
-      
-      latestUserMessage: JSON.stringify(matchData),
-      
-      recentMessages: [
-        {
-          role: 'USER' as any,
-          content: `Marcador actual: ${matchData.score}, Turno: ${matchData.turn}, Minuto: ${matchData.minute}`,
-          createdAt: new Date().toISOString(),
-        },
-      ],
-    });
-
-    console.log(`Respuesta de n8n recibida con éxito: ${n8nResponse}`);
-    return n8nResponse;
-  } catch (n8nError) {
-    const errorInstance = n8nError as Error;
-    console.error(`[n8n Automation Error]: ${errorInstance.message}`);
-    return undefined;
-  }
-}
   public async getTeamState(matchId: string, lang?: string): Promise<TeamApiItem> {
     return this.getEndpointData(`/match/${matchId}/stats`, {
       matchId: matchId.trim().toLowerCase(),

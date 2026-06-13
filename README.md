@@ -59,7 +59,6 @@ Entre sus responsabilidades se incluyen:
 | 8 | Rosana Monteros Sofe| Eventos en Vivo | La Final |
 | 9 | Juan Cruz Borda | Estado del Equipo en la Final | La Final |
 | 10 | Bruno Cano| **Jugar la Final** *(Responsabilidad Grupal)* | La Final |
-| 11 | Bruno Cano| Extra: Docker e integracion de n8n
 
 > **Jugar la Final** es obligatoria para la aprobación del TP y responsabilidad de todo el grupo. Debe poder jugarse de principio a fin sin errores. De ella dependen: Eventos en Vivo, Estado del Equipo, Estadísticas y Premios e Historial de Mundiales.
 

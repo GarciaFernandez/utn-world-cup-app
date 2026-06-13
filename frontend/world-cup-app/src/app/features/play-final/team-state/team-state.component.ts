@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TeamStateViewModel } from './model/team-state-view-model.interface';
+import { TeamStateService } from './service/team-state.service';
 
 @Component({
   selector: 'app-team-state-page',
@@ -6,4 +8,15 @@ import { Component } from '@angular/core';
   templateUrl: './team-state.component.html',
   styleUrls: ['./team-state.component.css'],
 })
-export class TeamStatePageComponent {}
+
+export class TeamStatePageComponent implements OnInit {
+  constructor(private readonly pageService: TeamStateService) {}
+
+  get pageState(): TeamStateViewModel {
+    return this.pageService.getViewModel();
+  }
+
+  ngOnInit(): void {
+    this.pageService.initialize();
+  }
+}
