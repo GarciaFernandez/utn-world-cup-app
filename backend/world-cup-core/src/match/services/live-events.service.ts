@@ -61,10 +61,17 @@ interface LiveEventsApiResponse {
   events: LiveEventFeedApiItem[];
 }
 
+interface ResponseWrapper<T> {
+  success: boolean;
+  serverTime: string;
+  responseMessage: string;
+  data: T;
+}
+
 @Injectable()
 export class LiveEventsService {
 
-  async getLiveEvents(lang: 'es' | 'en'): Promise<LiveEventsApiResponse> {
+  async getLiveEvents(lang: 'es' | 'en'): Promise<ResponseWrapper<LiveEventsApiResponse>> {
 
     const mockMatch: LiveEventsApiResponse = {
       teamId: 'TUN',
@@ -150,6 +157,11 @@ export class LiveEventsService {
       ],
     };
 
-    return mockMatch;
+    return {
+      success: true,
+      serverTime: new Date().toISOString(),
+      responseMessage: '',
+      data: mockMatch,
+    };
   }
 }

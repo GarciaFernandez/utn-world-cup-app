@@ -3,10 +3,10 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, combineLatest, finalize, map, of, switchMap, tap } from 'rxjs';
 import { BaseApiService } from '../../../../core/services/base-api.service';
 import { UiVisualsService } from '../../../../core/services/ui-visuals.service';
+import { ResponseObject } from '../../../../core/models/response-object.interface';
 
 import { LiveEventFeedApiItem, LiveEventsApiResponse } from '../model/live-events-api.interface';
 import { LiveEventsViewModel } from '../model/live-events-view-model.interface';
-
 
 interface BackendErrorBody {
   responseMessage?: {
@@ -23,7 +23,7 @@ export class LiveEventsService extends BaseApiService {
     loading: false,
     errorMessage: '',
     showEmptyState: false,
-    showNoFinalState: false,  
+    showNoFinalState: false,
     data: null,
   };
 
@@ -64,20 +64,17 @@ export class LiveEventsService extends BaseApiService {
     this.pageState.errorMessage = '';
 
     return this.get<LiveEventsApiResponse>('/final-match/live-events', { lang }).pipe(
-      map((response) => response.data),
-      map((data) => this.normalizeResponse(data)),
+      map((response: ResponseObject<LiveEventsApiResponse>) => this.normalizeResponse(response.data)),
       tap((data) => (this.pageState.data = data)),
       tap((data) => (this.pageState.showEmptyState = !data)),
-      map(() => undefined),
+      map(() => undefined as void),
       catchError((error: HttpErrorResponse) => {
         this.pageState.data = null;
-
         if (this.isFinalUnavailableError(error)) {
           this.pageState.showEmptyState = true;
           this.pageState.errorMessage = '';
           return of(undefined);
         }
-
         this.pageState.showEmptyState = false;
         this.pageState.errorMessage = 'No se pudieron cargar los eventos de la final.';
         return of(undefined);
@@ -106,7 +103,6 @@ export class LiveEventsService extends BaseApiService {
   }
 
   private decorateEvent(event: LiveEventFeedApiItem): LiveEventFeedApiItem {
-   
     const upperType  = (event.type  ?? '').toUpperCase();
     const upperStyle = (event.style ?? '').toUpperCase();
 
@@ -127,7 +123,6 @@ export class LiveEventsService extends BaseApiService {
   }
 
   private isFinalUnavailableError(error: HttpErrorResponse): boolean {
-    
     if (!error?.error || typeof error.error !== 'object') return false;
 
     const body = error.error as BackendErrorBody;
