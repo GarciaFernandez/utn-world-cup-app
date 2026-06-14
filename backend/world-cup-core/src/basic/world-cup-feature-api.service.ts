@@ -12,7 +12,7 @@ import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResp
 import { CoachingStrategyCatalogItemApiResponse } from 'src/teams/services/model/coach-service-model';
 
 import { MatchResponse } from '../match/services/helpers/play-final.interface';
-import { TeamApiItem } from 'src/match/services/helpers/team-state.interface';
+import { MatchSquadApiResponse } from 'src/match/services/helpers/team-state.interface';
 
 
 @Injectable()
@@ -212,8 +212,8 @@ export class WorldCupFeatureApiService extends AbstractBaseService {
     });
   }
   
-  public async getTeamState(matchId: string, lang?: string): Promise<TeamApiItem> {
-    return this.getEndpointData(`/match/${matchId}/stats`, {
+  public async getTeamState(matchId: string, lang?: string): Promise<MatchSquadApiResponse> {
+    return this.getEndpointData<MatchSquadApiResponse>(`/match/${matchId}/squad`, {
       matchId: matchId.trim().toLowerCase(),
       lang: this.resolveLang(lang),
     });

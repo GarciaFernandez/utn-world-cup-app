@@ -1,129 +1,221 @@
 
-<div class="container">
-  
-  <div *ngIf="pageState.loading" class="message loading-message">
-    ⏳ Cargando estado del equipo...
-  </div>
-  <div *ngIf="!pageState.loading && pageState.errorMessage" class="message error-message">
-    ❌ {{ pageState.errorMessage }}
-  </div>
-  <div *ngIf="!pageState.loading && !pageState.errorMessage && pageState.showNoFinalState" class="message empty-message">
-    📭 No hay final activa. Simulá el mundial primero.
+<div class="page-wrap">
+
+  <div *ngIf="pageState.loading" class="empty-state">
+    <div class="empty-icon">⏳</div>
+    <p>Cargando estado del equipo...</p>
   </div>
 
-  
-  <div *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.showNoFinalState && pageState.data as data" class="top-bar">
-    <div class="stat">Minuto: <strong>{{ data.minute }}'</strong></div>
-    <div class="stat">Turno: <strong>{{ data.turn }}</strong></div>
-    <div class="stat">Marcador: <strong>{{ data.score }}</strong></div>
+  <div *ngIf="!pageState.loading && pageState.errorMessage" class="empty-state">
+    <div class="empty-icon">❌</div>
+    <p>{{ pageState.errorMessage }}</p>
   </div>
 
-  <ng-template #localTeamCard let-team>
-    <div class="team-card">
-      <div class="team-card-header">
-        <div>
-          <span class="team-role">Equipo local</span>
-          <h2>{{ team.flag }} {{ team.name }}</h2>
-        </div>
-        <div class="lineup-summary">
-          <span>En cancha</span>
-          <strong>{{ team.onFieldCount }}</strong>
-        </div>
-      </div>
+  <div *ngIf="!pageState.loading && !pageState.errorMessage && pageState.showNoFinalState" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <p>No hay final activa. Simulá el mundial primero.</p>
+  </div>
 
-      <p><strong>Formación:</strong> {{ team.formation }}</p>
-      <p><strong>Estrategia:</strong> {{ team.strategyLabel }}</p>
-      <p><strong>Entrenador:</strong> {{ team.coachName }} ({{ team.coachProfile }})</p>
+  <ng-container *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.showNoFinalState && pageState.data as data">
 
-      <div class="tactics">
-        <div>Ataque {{ team.tactical.attack }}% <div class="bar"><div class="fill attack" [style.width.%]="team.tactical.attack"></div></div></div>
-        <div>Defensa {{ team.tactical.defense }}% <div class="bar"><div class="fill defense" [style.width.%]="team.tactical.defense"></div></div></div>
-        <div>Mediocampo {{ team.tactical.midfield }}% <div class="bar"><div class="fill midfield" [style.width.%]="team.tactical.midfield"></div></div></div>
-      </div>
-
-      <h3>Jugadores en cancha <span class="section-count">{{ team.onField.length }}</span></h3>
-      <div class="players-list">
-        <div *ngFor="let p of team.onField" class="player">
-          <span class="number">{{ p.shirtNumber }}</span>
-          <span class="position">{{ p.positionTag }}</span>
-          <span class="name">{{ p.displayName || p.name }}</span>
-          <span class="energy">{{ p.energyLabel }}</span>
-        </div>
-      </div>
-
-      <h3>Suplentes disponibles <span class="section-count">{{ team.bench.length }}</span></h3>
-      <div class="substitutions-info">
-        <span>Usadas: {{ team.substitutionsUsed }}</span>
-        <span>Quedan: {{ team.remainingSubstitutions }}</span>
-        <span>Máximas: {{ team.maxSubstitutions }}</span>
-      </div>
-      <div class="players-list">
-        <div *ngFor="let p of team.bench" class="player bench">
-          <span class="number">{{ p.shirtNumber }}</span>
-          <span class="position">{{ p.positionTag }}</span>
-          <span class="name">{{ p.displayName || p.name }}</span>
-          <span class="energy">{{ p.energyLabel }}</span>
-        </div>
-        <div *ngIf="team.bench.length === 0" class="no-players">No hay suplentes disponibles</div>
-      </div>
+    <div class="info-bar">
+      <span class="info-icon">⏱</span>
+      <span>Minuto <strong>{{ data.minute }}'</strong></span>
+      <span class="ts-sep">•</span>
+      <span>Turno <strong>{{ data.turn }}</strong></span>
+      <span class="ts-sep">•</span>
+      <span>Marcador <strong>{{ data.score }}</strong></span>
     </div>
-  </ng-template>
 
-  <ng-template #opponentTeamCard let-team>
-    <div class="team-card">
-      <div class="team-card-header">
-        <div>
+    <div class="grid-2">
 
-
-          <span class="team-role">Equipo oponente</span>
-          <h2>{{ team.flag }} {{ team.name }}</h2>
+      <!-- Equipo local -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">{{ data.team.flag }} {{ data.team.name }}</span>
+          <span class="badge badge-primary">Local</span>
         </div>
-        <div class="lineup-summary">
-          <span>En cancha</span>
-          <strong>{{ team.onFieldCount }}</strong>
+
+        <p class="team-meta-row">
+          <span>{{ data.team.formation }}</span>
+          <span class="ts-sep">•</span>
+          <span>{{ data.team.strategyLabel || data.team.strategy }}</span>
+          <span class="ts-sep">•</span>
+          <span>{{ data.team.coachName }}</span>
+        </p>
+
+        <div class="ts-tactics mt-16">
+          <div class="ts-tac-row">
+            <span class="ts-tac-lbl">Ataque</span>
+            <div class="ts-bar-track">
+              <div class="ts-bar-fill ts-attack" [style.width.%]="getTacticalValue(data.team, 'attack')"></div>
+            </div>
+            <span class="ts-tac-val">{{ getTacticalValue(data.team, 'attack') }}%</span>
+          </div>
+          <div class="ts-tac-row">
+            <span class="ts-tac-lbl">Mediocampo</span>
+            <div class="ts-bar-track">
+              <div class="ts-bar-fill ts-midfield" [style.width.%]="getTacticalValue(data.team, 'midfield')"></div>
+            </div>
+            <span class="ts-tac-val">{{ getTacticalValue(data.team, 'midfield') }}%</span>
+          </div>
+          <div class="ts-tac-row">
+            <span class="ts-tac-lbl">Defensa</span>
+            <div class="ts-bar-track">
+              <div class="ts-bar-fill ts-defense" [style.width.%]="getTacticalValue(data.team, 'defense')"></div>
+            </div>
+            <span class="ts-tac-val">{{ getTacticalValue(data.team, 'defense') }}%</span>
+          </div>
+        </div>
+
+        <div class="squad-section-lbl mt-16">En cancha · {{ data.team.onField.length }}</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pos</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of sortByPosition(data.team.onField)">
+                <td>{{ p.shirtNumber }}</td>
+                <td><span class="pos-tag" [ngClass]="'pos-' + getPositionTag(p)">{{ getPositionTag(p) }}</span></td>
+                <td>{{ p.displayName || p.name }}</td>
+                <td><span class="badge" [ngClass]="getEnergyClass(getEnergyLabel(p))">{{ getEnergyLabel(p) }}</span></td>
+              </tr>
+              <tr *ngIf="!data.team.onField.length">
+                <td colspan="4" class="empty-cell">Sin jugadores en cancha</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="squad-section-lbl mt-16">
+          Suplentes · {{ data.team.bench.length }}
+          <span class="badge badge-gray ts-sub-badge">{{ data.team.substitutionsUsed }}/{{ data.team.maxSubstitutions }} cambios</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pos</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of sortByPosition(data.team.bench)">
+                <td>{{ p.shirtNumber }}</td>
+                <td><span class="pos-tag" [ngClass]="'pos-' + getPositionTag(p)">{{ getPositionTag(p) }}</span></td>
+                <td>{{ p.displayName || p.name }}</td>
+                <td><span class="badge" [ngClass]="getEnergyClass(getEnergyLabel(p))">{{ getEnergyLabel(p) }}</span></td>
+              </tr>
+              <tr *ngIf="!data.team.bench.length">
+                <td colspan="4" class="empty-cell">Sin suplentes disponibles</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <p><strong>Formación:</strong> {{ team.formation }}</p>
-      <p><strong>Estrategia:</strong> {{ team.strategyLabel }}</p>
-      <p><strong>Entrenador:</strong> {{ team.coachName }} ({{ team.coachProfile }})</p>
+      <!-- Equipo rival -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">{{ data.opponent.flag }} {{ data.opponent.name }}</span>
+          <span class="badge badge-gray">Rival</span>
+        </div>
 
-      <div class="tactics">
-        <div>Ataque {{ team.tactical.attack }}% <div class="bar"><div class="fill attack" [style.width.%]="team.tactical.attack"></div></div></div>
-        <div>Defensa {{ team.tactical.defense }}% <div class="bar"><div class="fill defense" [style.width.%]="team.tactical.defense"></div></div></div>
-        <div>Mediocampo {{ team.tactical.midfield }}% <div class="bar"><div class="fill midfield" [style.width.%]="team.tactical.midfield"></div></div></div>
-      </div>
+        <p class="team-meta-row">
+          <span>{{ data.opponent.formation }}</span>
+          <span class="ts-sep">•</span>
+          <span>{{ data.opponent.strategyLabel || data.opponent.strategy }}</span>
+          <span class="ts-sep">•</span>
+          <span>{{ data.opponent.coachName }}</span>
+        </p>
 
-      <h3>Jugadores en cancha <span class="section-count">{{ team.onField.length }}</span></h3>
-      <div class="players-list">
-        <div *ngFor="let p of team.onField" class="player">
-          <span class="number">{{ p.shirtNumber }}</span>
-          <span class="position">{{ p.positionTag }}</span>
-          <span class="name">{{ p.displayName || p.name }}</span>
-          <span class="energy">{{ p.energyLabel }}</span>
+        <div class="ts-tactics mt-16">
+          <div class="ts-tac-row">
+            <span class="ts-tac-lbl">Ataque</span>
+            <div class="ts-bar-track">
+              <div class="ts-bar-fill ts-attack" [style.width.%]="getTacticalValue(data.opponent, 'attack')"></div>
+            </div>
+            <span class="ts-tac-val">{{ getTacticalValue(data.opponent, 'attack') }}%</span>
+          </div>
+          <div class="ts-tac-row">
+            <span class="ts-tac-lbl">Mediocampo</span>
+            <div class="ts-bar-track">
+              <div class="ts-bar-fill ts-midfield" [style.width.%]="getTacticalValue(data.opponent, 'midfield')"></div>
+            </div>
+            <span class="ts-tac-val">{{ getTacticalValue(data.opponent, 'midfield') }}%</span>
+          </div>
+          <div class="ts-tac-row">
+            <span class="ts-tac-lbl">Defensa</span>
+            <div class="ts-bar-track">
+              <div class="ts-bar-fill ts-defense" [style.width.%]="getTacticalValue(data.opponent, 'defense')"></div>
+            </div>
+            <span class="ts-tac-val">{{ getTacticalValue(data.opponent, 'defense') }}%</span>
+          </div>
+        </div>
+
+        <div class="squad-section-lbl mt-16">En cancha · {{ data.opponent.onField.length }}</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pos</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of sortByPosition(data.opponent.onField)">
+                <td>{{ p.shirtNumber }}</td>
+                <td><span class="pos-tag" [ngClass]="'pos-' + getPositionTag(p)">{{ getPositionTag(p) }}</span></td>
+                <td>{{ p.displayName || p.name }}</td>
+                <td><span class="badge" [ngClass]="getEnergyClass(getEnergyLabel(p))">{{ getEnergyLabel(p) }}</span></td>
+              </tr>
+              <tr *ngIf="!data.opponent.onField.length">
+                <td colspan="4" class="empty-cell">Sin jugadores en cancha</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="squad-section-lbl mt-16">
+          Suplentes · {{ data.opponent.bench.length }}
+          <span class="badge badge-gray ts-sub-badge">{{ data.opponent.substitutionsUsed }}/{{ data.opponent.maxSubstitutions }} cambios</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pos</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of sortByPosition(data.opponent.bench)">
+                <td>{{ p.shirtNumber }}</td>
+                <td><span class="pos-tag" [ngClass]="'pos-' + getPositionTag(p)">{{ getPositionTag(p) }}</span></td>
+                <td>{{ p.displayName || p.name }}</td>
+                <td><span class="badge" [ngClass]="getEnergyClass(getEnergyLabel(p))">{{ getEnergyLabel(p) }}</span></td>
+              </tr>
+              <tr *ngIf="!data.opponent.bench.length">
+                <td colspan="4" class="empty-cell">Sin suplentes disponibles</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <h3>Suplentes disponibles <span class="section-count">{{ team.bench.length }}</span></h3>
-      <div class="substitutions-info">
-        <span>Usadas: {{ team.substitutionsUsed }}</span>
-        <span>Quedan: {{ team.remainingSubstitutions }}</span>
-        <span>Máximas: {{ team.maxSubstitutions }}</span>
-      </div>
-      <div class="players-list">
-        <div *ngFor="let p of team.bench" class="player bench">
-          <span class="number">{{ p.shirtNumber }}</span>
-          <span class="position">{{ p.positionTag }}</span>
-          <span class="name">{{ p.displayName || p.name }}</span>
-          <span class="energy">{{ p.energyLabel }}</span>
-        </div>
-        <div *ngIf="team.bench.length === 0" class="no-players">No hay suplentes disponibles</div>
-      </div>
     </div>
-  </ng-template>
+  </ng-container>
 
-  <div *ngIf="!pageState.loading && !pageState.errorMessage && !pageState.showNoFinalState && pageState.data as data" class="teams">
-    <ng-container *ngTemplateOutlet="localTeamCard; context: { $implicit: data.team }"></ng-container>
-    <ng-container *ngTemplateOutlet="opponentTeamCard; context: { $implicit: data.opponent }"></ng-container>
-  </div>
 </div>

@@ -1,26 +1,24 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, combineLatest, finalize, map, of, switchMap, tap } from 'rxjs';
 import { BaseApiService } from '../../../../core/services/base-api.service';
-import { AdminService } from '../../../../shared/admin/service/admin.service';
+import { UiVisualsService } from '../../../../core/services/ui-visuals.service';
 import { SimulationApiResponse } from '../../../world-cup/simulate/model/simulate-api.interface';
 import { TeamStateApiResponse } from '../model/team-state-api.interface';
 import { TeamStateViewModel } from '../model/team-state-view-model.interface';
 
 @Injectable({ providedIn: 'root' })
 export class TeamStateService extends BaseApiService {
-    private readonly adminService = inject(AdminService);
-
+    private readonly uiVisualsService = inject(UiVisualsService);
 
     private readonly pageState: TeamStateViewModel = {
     lang: 'es',
     loading: false,
     errorMessage: '',
     showNoFinalState: false,
-    data: null,    
+    data: null,
     };
 
     private hasInitialized = false;
-
 
     getViewModel(): TeamStateViewModel {
     return this.pageState;
@@ -48,11 +46,9 @@ export class TeamStateService extends BaseApiService {
     .subscribe();
     }
 
-
     refresh(): void {
     this.loadTeamState().subscribe();
     }
-
 
     private loadTeamState(): Observable<void> {
     const lang = this.getCurrentLang();
@@ -60,7 +56,7 @@ export class TeamStateService extends BaseApiService {
     this.pageState.loading = true;
     this.pageState.errorMessage = '';
 
-        return this.get<SimulationApiResponse>('/world-cup/current', { lang }).pipe(
+    return this.get<SimulationApiResponse>('/world-cup/current', { lang }).pipe(
     map((response) => response?.data),
     switchMap((simulation) => {
         const finalMatchId = simulation?.finalMatchId?.trim();
@@ -77,10 +73,10 @@ export class TeamStateService extends BaseApiService {
         }).pipe(
         map((teamStateResponse) => teamStateResponse?.data),
         tap((data) => {
-            this.pageState.data = data ?? null;
-            this.pageState.showNoFinalState = false;
+            this.pageState.data = data ? this.normalizeData(data) : null;
+            this.pageState.showNoFinalState = !data;
         }),
-        map(() => undefined),
+        map(() => undefined as void),
         catchError(() => {
             this.pageState.data = null;
             this.pageState.showNoFinalState = true;
@@ -88,14 +84,28 @@ export class TeamStateService extends BaseApiService {
             return of(undefined);
         }),
         );
-    }),
-    catchError(() => {
+        }),
+        catchError(() => {
         this.pageState.data = null;
         this.pageState.showNoFinalState = true;
         this.pageState.errorMessage = 'No se pudo cargar la final actual. Intenta nuevamente.';
         return of(undefined);
-    }),
-    finalize(() => (this.pageState.loading = false)),
+        }),
+        finalize(() => (this.pageState.loading = false)),
     );
+    }
+
+    private normalizeData(data: TeamStateApiResponse): TeamStateApiResponse {
+    return {
+    ...data,
+    team: {
+        ...data.team,
+        flag: this.uiVisualsService.getTeamFlag(data.team?.id),
+    },
+    opponent: {
+        ...data.opponent,
+        flag: this.uiVisualsService.getTeamFlag(data.opponent?.id),
+    },
+    };
     }
 }
