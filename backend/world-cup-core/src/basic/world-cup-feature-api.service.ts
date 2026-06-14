@@ -6,11 +6,11 @@ import { WorldCupApiService } from './world-cup-api.service';
 import type { GameDictionaryApiResponse, SquadPlayerApiItem } from '../teams/services/model/squad-service.interface';
 import type { TeamHistoryApiResponse } from '../teams/services/model/team-history-service.interface';
 import type {CurrentWorldCupApiResponse,TeamCatalogApiItem,TeamStatsApiResponse,} from '../world-cup/services/model/simulation-service.interface';
-import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';import { CoachApiItem, CoachProfileApiItem, FormationApiItem, StrategyApiItem } from 'src/teams/services/model/coach-service.interface';
+import type { HistoricalRivalApiItem } from '../teams/services/model/rivals-service.interface';
+import { CoachApiItem, CoachProfileApiItem, FormationApiItem, StrategyApiItem } from 'src/teams/services/model/coach-service.interface';
 import { TournamentStatsData,AwardItem, PlayerStatsItem } from '../world-cup/services/model/stats-awards.interface';
 import { MatchStrategyApiItem, MatchFormationApiItem, SelectMatchStrategyApiResponse, SelectMatchFormationApiResponse } from '../match/services/helpers/match-tactics.interface';
 import { CoachingStrategyCatalogItemApiResponse } from 'src/teams/services/model/coach-service-model';
-
 import { MatchResponse } from '../match/services/helpers/play-final.interface';
 import { MatchSquadApiResponse } from 'src/match/services/helpers/team-state.interface';
 

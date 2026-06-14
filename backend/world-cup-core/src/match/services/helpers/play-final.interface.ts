@@ -6,7 +6,7 @@ export interface MatchOption {
 
 export interface MatchMessageItem {
   messageKey: string | null;
-  type: string; // 'PLAYER_ACTION', 'CONTEXT', 'RESULT', 'INFO', etc.
+  type: string; 
   text: string;
   minute: number;
   turn: number;

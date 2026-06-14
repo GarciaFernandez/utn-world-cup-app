@@ -29,14 +29,12 @@ export class RivalsService extends AbstractBaseService {
     super(adminService);
   }
 
-  /** Obtiene la lista de rivales enriquecida para el equipo configurado actualmente. */
   public async getRivals(): Promise<EnrichedRivalApiItem[]> { 
     try {
       const teamId = this.getCurrentTeamId();
       const rivalsResponse = await this.worldCupFeatureApiService.getHistoricalRivals(teamId);
       const baseRivals = rivalsResponse as HistoricalRivalApiItem[];
 
-      // Mapeamos los rivales y buscamos su detalle en paralelo
       return await Promise.all(
         baseRivals.map(async (rival) => {
           const teamDetailsResponse = await this.worldCupFeatureApiService.getTeamDetailById(rival.id);

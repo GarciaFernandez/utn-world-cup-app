@@ -1,4 +1,4 @@
-// == Contrato de Estrategia del Partido ==
+
 export interface MatchStrategyImpactApiItem {
   attack: number;
   defense: number;
@@ -12,14 +12,14 @@ export interface MatchStrategyApiItem {
   strategyLineImpact: MatchStrategyImpactApiItem;
 }
 
-// == Contrato de Formación del Partido ==
+
 export interface MatchFormationApiItem {
   formation: string;
   description: string;
   compatibleStrategies: string[];
 }
 
-// == Contrato de Respuestas de los Cambios Tácticos (POSTs) ==
+
 export interface SelectMatchStrategyApiResponse {
   teamId: string;
   strategy: string;

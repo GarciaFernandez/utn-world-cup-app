@@ -19,7 +19,6 @@ export class PlayFinalService extends AbstractBaseService {
     super(adminService);
   }
 
-  /** Inicia el partido de la final en la API externa */
   public async startFinal(customTeamId?: string, lang?: string): Promise<MatchResponse> {
     try {
       const teamId = customTeamId?.trim().toLowerCase() || this.getCurrentTeamId();
@@ -34,7 +33,6 @@ export class PlayFinalService extends AbstractBaseService {
     }
   }
 
-  /** Juega un turno del partido de la final */
   public async playTurn(matchId: string, selectedOption: string, lang?: string): Promise<MatchResponse> {
     try {
       const response = await this.worldCupFeatureApiService.playMatch(matchId, selectedOption, lang);
@@ -60,7 +58,7 @@ export class PlayFinalService extends AbstractBaseService {
     }
   }
 
-  /** Obtiene las formaciones disponibles de acuerdo al partido corriente */
+
   public async getMatchFormations(lang?: string): Promise<MatchFormationApiItem[]> {
     try {
       const activeLang = lang || this.getCurrentLang();
@@ -73,7 +71,6 @@ export class PlayFinalService extends AbstractBaseService {
     }
   }
 
-  /** Modifica la estrategia del equipo en medio del partido corriente */
   public async selectMatchStrategy(customTeamId?: string, strategy?: string, lang?: string): Promise<SelectMatchStrategyApiResponse> {
     try {
       const teamId = customTeamId?.trim().toLowerCase() || this.getCurrentTeamId();
@@ -86,7 +83,6 @@ export class PlayFinalService extends AbstractBaseService {
     }
   }
 
-  /** Modifica la formación del equipo en medio del partido corriente */
   public async selectMatchFormation(customTeamId?: string, formation?: string, lang?: string): Promise<SelectMatchFormationApiResponse> {
     try {
       const teamId = customTeamId?.trim().toLowerCase() || this.getCurrentTeamId();

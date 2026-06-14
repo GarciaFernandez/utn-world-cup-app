@@ -32,7 +32,6 @@ export class StatsAwardsController {
   @Get('current/player-stats')
   @ApiOperation({ summary: 'Obtener estadísticas detalladas por jugador' })
   public async getPlayerStats(): Promise<PlayerStatsItem[]> {
-    // Ya no recibimos nada por @Query, delegamos la carga automática al servicio
     return await this.statsAwardsService.getPlayerStats();
   }
 }

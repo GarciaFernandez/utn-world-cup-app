@@ -1,4 +1,3 @@
-// Estructura base común para las respuestas del servidor
 export interface BaseServerResponse<T> {
   serverTime: string;
   data: T;
@@ -9,7 +8,6 @@ export interface BaseServerResponse<T> {
   success: boolean;
 }
 
-// === INTERFACE DE /world-cup/current/awards ===
 export interface AwardItem {
   code: string;
   winnerName: string;
@@ -23,7 +21,6 @@ export interface AwardItem {
   redCards?: number;
 }
 
-// === INTERFACE DE /world-cup/current/player-stats ===
 export interface PlayerStatsItem {
   playerId: string;
   playerName: string;
@@ -39,7 +36,6 @@ export interface PlayerStatsItem {
   playerOfMatch: number;
 }
 
-// === INTERFACES DE /world-cup/current/stats ===
 export interface BaseTeamPlacement {
   teamId: string;
   teamName: string;
@@ -49,7 +45,7 @@ export interface LeaderboardItem {
   playerName: string;
   teamId: string;
   teamName: string;
-  value: number; // El JSON real usa "value" tanto para goles como asistencias o vallas invictas
+  value: number; 
 }
 
 export interface TournamentStatsData {

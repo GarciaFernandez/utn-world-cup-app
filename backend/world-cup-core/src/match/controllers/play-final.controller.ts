@@ -9,7 +9,6 @@ export class PlayFinalController extends AbstractController {
     super();
   }
 
-  /** Endpoint para dar inicio a la final */
   @Post('start-final')
   @ApiOperation({ summary: 'World Cup - Iniciar el partido de la final' })
   @ApiBody({
@@ -27,7 +26,6 @@ export class PlayFinalController extends AbstractController {
     return this.createOkResponse(result);
   }
 
-  /** Endpoint para ejecutar las decisiones tácticas del partido turno por turno */
   @Post('play')
   @ApiOperation({ summary: 'World Cup - Jugar turno del partido' })
   @ApiBody({
@@ -45,7 +43,6 @@ export class PlayFinalController extends AbstractController {
     return this.createOkResponse(result);
   }
 
-/** Endpoint para poblar el selector de estrategias durante la final */
   @Get('strategies')
   @ApiOperation({ summary: 'World Cup - Obtener estrategias disponibles para el partido corriente' })
   public async getMatchStrategies() {
@@ -53,7 +50,6 @@ export class PlayFinalController extends AbstractController {
     return this.createOkResponse(result);
   }
 
-  /** Endpoint para poblar el selector de formaciones durante la final */
   @Get('formations')
   @ApiOperation({ summary: 'World Cup - Obtener formaciones disponibles para el partido corriente' }) 
   public async getMatchFormations() {
@@ -61,7 +57,6 @@ export class PlayFinalController extends AbstractController {
     return this.createOkResponse(result);
   }
 
-  /** Endpoint para cambiar la estrategia sobre la marcha en el transcurso del partido */
   @Post('select-strategy')
   @ApiOperation({ summary: 'World Cup - Cambiar estrategia en medio del partido' })
   @ApiBody({
@@ -80,7 +75,6 @@ export class PlayFinalController extends AbstractController {
     return this.createOkResponse(result);
   }
 
-  /** Endpoint para cambiar la formación sobre la marcha en el transcurso del partido */
   @Post('select-formation')
   @ApiOperation({ summary: 'World Cup - Cambiar formación en medio del partido' })
   @ApiBody({
