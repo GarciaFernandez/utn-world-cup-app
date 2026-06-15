@@ -63,12 +63,6 @@ export class CoachingService extends BaseApiService {
       isSelectedFormationCompatible: false,
       tacticalStatusTone: 'original',
       tacticalStatusLabelKey: '',
-      searchTerm: function (searchTerm: any, positionFilter: any) {
-        throw new Error('Function not implemented.');
-      },
-      positionFilter: function (searchTerm: any, positionFilter: any) {
-        throw new Error('Function not implemented.');
-      }
     }; 
 
     private hasInitialized = false; 
@@ -78,25 +72,22 @@ export class CoachingService extends BaseApiService {
     }
 
   initialize(): void { 
-    // Si ya arrancó, solo recarga los datos sin duplicar escuchas
     if (this.hasInitialized) return;
     this.hasInitialized = true;
 
     this.pageState.lang = this.getCurrentLang();
     this.pageState.selectedTeamLabel = this.adminService.getCurrentTeam()?.name ?? 'ARG';
 
-    // Sincroniza el nombre del país en la cabecera si se cambia en el panel administrador
     this.adminService.currentTeam$.subscribe((team) => {
       this.pageState.selectedTeamLabel = team?.name ?? 'ARG';
     });
 
-    // Combina los cambios de equipo e idioma para disparar la petición HTTP automáticamente
     combineLatest([this.appContextService.currentTeamId$, this.appContextService.lang$])
       .pipe(
         tap(([lang]) => (this.pageState.lang = lang === 'en' ? 'en' : 'es')),
         switchMap(([teamId]) => combineLatest([
           this.loadCoaching(teamId)
-          ]).pipe(map(() => undefined))) // Muta el evento global en la llamada al backend
+          ]).pipe(map(() => undefined)))
       )
       .subscribe();
       
@@ -111,7 +102,7 @@ export class CoachingService extends BaseApiService {
   this.pageState.compatibleFormations = cambioStrat?.compatibleFormations ?? [];
 
   this._recalcCompatibilityStatus();
-  this._recalcRatings();  // ← agregar esto
+  this._recalcRatings();
 }
 
 public onFormationChange(formation: string): void {
@@ -121,29 +112,28 @@ public onFormationChange(formation: string): void {
   this.pageState.compatibleStrategies = cambioForm?.compatibleStrategies ?? [];
 
   this._recalcCompatibilityStatus();
-  this._recalcRatings();  // ← agregar esto
+  this._recalcRatings();
 }
 
-  // ─── Guardar táctica (estrategia + formación) ─────────────────────────────
 
  public saveStrategy(): void {
   const teamId = this.adminService.getCurrentTeam()?.teamId ?? '';
   if (!teamId || !this.pageState.selectedStrategy) return;
 
   this.pageState.savingStrategy = true;
-  this.pageState.savingFormation = true;  // ← activar ambos
+  this.pageState.savingFormation = true; 
 
   this.post<void>('/my-team/saveStrategy', {
     teamId,
     strategy: this.pageState.selectedStrategy,
-    lang: this.pageState.lang  // ← incluir lang
+    lang: this.pageState.lang 
   }).pipe(
     catchError(() => {
       this.pageState.errorMessage = 'No se pudo guardar la estrategia.';
-      return of(null);  // ← cortar el pipe sin explotar
+      return of(null);  
     }),
     switchMap((result) => {
-      if (result === null) return of(null); // si falló la estrategia, no seguir
+      if (result === null) return of(null);
       return this.post<void>('/my-team/saveFormation', {
         teamId,
         formation: this.pageState.selectedFormation,
@@ -163,11 +153,11 @@ public onFormationChange(formation: string): void {
     }),
     finalize(() => {
       this.pageState.savingStrategy = false;
-      this.pageState.savingFormation = false;  // ← apagar ambos
+      this.pageState.savingFormation = false;
     })
   ).subscribe();
 }
-  // ─── Restaurar táctica por defecto ────────────────────────────────────────
+
 
   public resetToDefault(): void {
     const teamId = this.adminService.getCurrentTeam()?.teamId ?? '';
@@ -188,7 +178,6 @@ public onFormationChange(formation: string): void {
             if (this.pageState.strategy) this.pageState.strategy.strategy = data.strategy;
             if (this.pageState.formation) this.pageState.formation.formation = data.formation;
           }
-          // Recargar datos completos para actualizar ratings y compatibilidad
           this.loadCoaching(teamId).subscribe();
         }),
         catchError(() => {
@@ -222,7 +211,6 @@ public onFormationChange(formation: string): void {
         this.pageState.ratingDeltas = data.ratingDeltas;
         this.pageState.strategyPenalty = data.strategyPenalty;
 
-        // Inicializar selectores desde los datos del servidor
         this.pageState.selectedStrategy =
               data.compatibility?.selectedStrategy ||
               data.strategy?.strategy ||
@@ -264,7 +252,6 @@ public onFormationChange(formation: string): void {
     );
   }
 
-  // ─── Helpers ──────────────────────────────────────────────────────────────
 
   private _recalcCompatibilityStatus(): void {
     const strategy  = this.pageState.selectedStrategy;
@@ -300,7 +287,6 @@ public onFormationChange(formation: string): void {
   const impact = selectedStrat.strategyLineImpact;
   const isCompatible = this.pageState.isSelectedFormationCompatible;
 
-  // Penalización si la formación no es compatible
   const penalty = isCompatible ? 0 : (this.pageState.strategyPenalty ?? 0);
 
   const effectiveOverall = Math.round(
