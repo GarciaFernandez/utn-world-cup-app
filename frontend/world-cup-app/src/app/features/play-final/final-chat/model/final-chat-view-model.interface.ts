@@ -11,7 +11,7 @@ export interface FinalChatViewModel {
   showNoFinalState: boolean;
   data: FinalChatApiResponse | null;
   teamsPreview: FinalChatTeamsPreviewApiResponse | null;
-  // Catálogos cargados desde el backend
-  availableStrategies: MatchStrategyApiItem[]; // <-- NUEVO
-  availableFormations: MatchFormationApiItem[]; // <-- NUEVO
+  availableStrategies: MatchStrategyApiItem[];
+  availableFormations: MatchFormationApiItem[];
+  draftMessage: string;
 }

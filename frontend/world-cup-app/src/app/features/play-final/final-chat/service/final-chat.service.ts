@@ -16,14 +16,15 @@ export class FinalChatService extends BaseApiService {
     loading: false,
     starting: false,
     sending: false,
-    changingTactic: false, // 
+    changingTactic: false,
     errorMessage: '',
     actionErrorMessage: '',
     showNoFinalState: false,
     data: null,
     teamsPreview: null,
-    availableStrategies: [], // 
-    availableFormations: []  // 
+    availableStrategies: [], 
+    availableFormations: []  ,
+    draftMessage: ''
   };
 
   private hasInitialized = false;
@@ -199,8 +200,10 @@ public cargarEstrategiasDisponibles(): Observable<void> {
       })
     );
   }
-
-
+    
+   public setDraftMessage(value: string): void {
+    this.pageState.draftMessage = value;
+  }
   public cambiarFormacionPartido(formation: string): Observable<void> {
     this.pageState.changingTactic = true;
     this.pageState.actionErrorMessage = '';

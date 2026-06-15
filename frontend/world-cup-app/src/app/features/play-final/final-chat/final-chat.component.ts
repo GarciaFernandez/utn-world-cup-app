@@ -218,5 +218,41 @@ if (this.chatTimeline.length === 0 && this.partido) {
 
     elementoScroll.scrollTop = elementoScroll.scrollHeight;
   }
+
+  public onDraftInput(value: string): void {
+    this.finalChatService.setDraftMessage(value);
+  }
+
+public enviarComandoTexto(event: Event): void {
+    event.preventDefault(); 
+
+    const comando = this.finalChatService.getViewModel().draftMessage;
+    const partidoData = this.finalChatService.getViewModel().data;
+
+    if (!comando || !comando.trim() || !partidoData || !partidoData.options) {
+      return;
+    }
+
+    const textoUsuario = comando.trim().toLowerCase();
+
+    const indiceEncontrado = partidoData.options.findIndex((opcion, index) => {
+      const numeroOpcion = String(index + 1);
+      const textoBoton = opcion.label.toLowerCase();
+      
+      return textoUsuario === numeroOpcion || 
+             textoBoton === textoUsuario || 
+             textoBoton.includes(textoUsuario) ||
+             textoUsuario.includes(textoBoton);
+    });
+
+    if (indiceEncontrado !== -1) {
+      this.finalChatService.getViewModel().actionErrorMessage = '';
+      this.seleccionarOpcion(indiceEncontrado + 1);
+      this.finalChatService.setDraftMessage('');
+    } else {
+      this.finalChatService.getViewModel().actionErrorMessage = 
+        `"${comando}" no es una acción válida en este turno.`;
+    }
+  }
   
 }

@@ -27,7 +27,20 @@
           Ir a Simular para Volver a Jugar
         </button>
       </div>
-      
+      <footer class="composer-wrap" *ngIf="!esPartidoFinalizado">
+  <form class="composer" (submit)="enviarComandoTexto($event)">
+    <textarea
+      #draftInput
+      rows="1"
+      placeholder="Escribí una acción alternativa..."
+      [value]="vm.draftMessage || ''"
+      (input)="onDraftInput(draftInput.value)"
+    ></textarea>
+    <button type="submit" [disabled]="vm.loading || !draftInput.value.trim()">
+      Enviar
+    </button>
+  </form>
+</footer>
       <div *ngIf="!esPartidoFinalizado">
         <p class="actions-label">Acciones disponibles:</p>
         <div class="quick-actions-grid">
