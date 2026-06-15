@@ -86,7 +86,6 @@ if (this.chatTimeline.length === 0 && this.partido) {
           this.finalChatService.cargarEstrategiasDisponibles().subscribe();
           this.finalChatService.cargarFormacionesDisponibles().subscribe();
           
-          // Sincronizamos las variables para que el HTML dibuje la opción correcta por defecto
           if (this.partido) {
             this.estrategiaSeleccionada = this.partido.teamStrategy || '';
             this.formacionSeleccionada = this.partido.teamFormation || '';
@@ -135,7 +134,6 @@ if (this.chatTimeline.length === 0 && this.partido) {
       next: () => {
         if (this.chatTimeline && this.chatTimeline.length > 0 && this.partido) {
           
-          // REEMPLAZO: Buscamos el último marcador recorriendo el array al revés de forma clásica
           let mensajeConMarcador: any = null;
           for (let i = this.chatTimeline.length - 1; i >= 0; i--) {
             const item = this.chatTimeline[i] as any;

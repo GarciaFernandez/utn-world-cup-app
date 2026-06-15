@@ -10,7 +10,6 @@ import { WorldCupStatsViewModel } from './model/world-cup-stats-view-model.inter
 })
 export class WorldCupStatsPageComponent implements OnInit {
   
-  // Getter reactivo para enganchar el estado centralizado del servicio con el HTML
   public get vm(): WorldCupStatsViewModel {
     return this.statsService.vm;
   }
@@ -18,7 +17,6 @@ export class WorldCupStatsPageComponent implements OnInit {
   constructor(private readonly statsService: WorldCupStatsService) {}
 
   ngOnInit(): void {
-    // Gatillamos la carga de datos limpia al inicializar la pantalla
     this.statsService.loadStatsAndAwards().subscribe();
   }
 }

@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BaseApiService } from '../../../../core/services/base-api.service'; // Ajustá según tus carpetas
-import { UiVisualsService } from '../../../../core/services/ui-visuals.service'; // Ajustá según la ruta real de tu archivo
+import { BaseApiService } from '../../../../core/services/base-api.service';
+import { UiVisualsService } from '../../../../core/services/ui-visuals.service';
 import { WorldCupStatsViewModel } from '../model/world-cup-stats-view-model.interface';
 import { WorldCupStatsApiResponse, StatsAwardItem } from '../model/world-cup-stats-api.interface';
 
@@ -107,11 +107,11 @@ export class WorldCupStatsService extends BaseApiService {
         this.pageState.awards = (awardsData || []).map((award: StatsAwardItem) => ({
           code: award.code,
           title: (award.code || '').replace('_', ' '),
-          icon: this.uiVisuals.getAwardIcon(award.code), // <-- Método oficial de ellos
+          icon: this.uiVisuals.getAwardIcon(award.code),
           winnerName: award.winnerName,
           teamId: award.teamId,
           teamName: award.teamName,
-          teamFlag: this.uiVisuals.getTeamFlag(award.teamId), // <-- Método oficial de ellos
+          teamFlag: this.uiVisuals.getTeamFlag(award.teamId),
           reason: award.reason
         }));
 

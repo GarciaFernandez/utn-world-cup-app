@@ -24,7 +24,6 @@ export class PlayFinalService extends AbstractBaseService {
       const teamId = customTeamId?.trim().toLowerCase() || this.getCurrentTeamId();
       const response = await this.worldCupFeatureApiService.startFinal(teamId, lang);
       
-      // Desempaquetamos de forma segura usando la arquitectura genérica de tu grupo
       const data = (response as any).getData ? (response as any).getData() : (response as any).data || response;
       return data;
     } catch (error) {

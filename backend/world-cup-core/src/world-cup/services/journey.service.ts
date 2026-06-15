@@ -87,7 +87,7 @@ export class JourneyService extends AbstractBaseService {
         stageLabel: this.translateStage(match.stage, lang),
         scoreLabel: scoreLabel,
         resultLabel: this.translateResult(match.result, lang),
-        resultStyle: match.result, // WIN, LOSS, DRAW, PENDING
+        resultStyle: match.result,
         resolutionLabel: this.translateResolution(match.resolution, lang),
         opponentFlag: opponentFlag
       };

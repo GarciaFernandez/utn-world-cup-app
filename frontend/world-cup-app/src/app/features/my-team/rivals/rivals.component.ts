@@ -23,16 +23,11 @@ export class RivalsPageComponent implements OnInit {
     this.rivalsService.initialize();
   }
 
-  /**
-   * Obtiene el emoji directo almacenado en el UiVisualsService de la cátedra
-   */
   public getFlagEmoji(teamId: string): string {
     const id = teamId?.toLowerCase().trim();
 
-    // Accedemos al diccionario estático donde ya están los emojis reales mapeados
     const flagMap = (UiVisualsService as any).TEAM_FLAGS as Record<string, string>;
     
-    // Retornamos el emoji correspondiente (ej: '🇲🇦') o una bandera blanca de respaldo si no existe
     return flagMap && flagMap[id] ? flagMap[id] : '🏳️';
   }
 }

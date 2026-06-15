@@ -41,8 +41,8 @@ export class FinalChatService extends BaseApiService {
     this.pageState.errorMessage = '';
     this.pageState.actionErrorMessage = '';
     this.pageState.showNoFinalState = false;
-    this.pageState.availableStrategies = []; // <-- NUEVO
-    this.pageState.availableFormations = [];  // <-- NUEVO
+    this.pageState.availableStrategies = []; 
+    this.pageState.availableFormations = []; 
   }
 
  
