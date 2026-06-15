@@ -5,15 +5,15 @@
        ═══════════════════════════════════════════════════════════════ */
     :root {
       /* ── Team palette (default: Generic) ── */
-      --team-primary:     #455A64;   /* main brand color            */
-      --team-secondary:   #607D8B;   /* contrast / secondary color  */
-      --team-accent:      #90A4AE;   /* darker shade, buttons, etc. */
-      --team-dark:        #263238;   /* darkest shade, gradients    */
+      --team-primary:     #C8102E;   /* main brand color            */
+      --team-secondary:   white;   /* contrast / secondary color  */
+      --team-accent:      rgb(194, 194, 194);   /* darker shade, buttons, etc. */
+      --team-dark:        #440611;   /* darkest shade, gradients    */
       --team-text-light:  #FFFFFF;   /* text on primary background  */
       --team-text-dark:   #212121;   /* text on light background    */
       --team-primary-contrast: #FFFFFF; /* auto-calculated at runtime */
       --team-accent-contrast:  #212121; /* auto-calculated at runtime */
-      --team-highlight:   rgba(69,90,100,0.12); /* subtle tint      */
+      --team-highlight:   rgba(255, 2, 2, 0.12); /* subtle tint      */
 
       /* ── App layout constants (do not touch) ── */
       --sidebar-width:       260px;
