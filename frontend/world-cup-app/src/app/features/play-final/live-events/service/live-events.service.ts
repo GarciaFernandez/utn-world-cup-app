@@ -88,16 +88,9 @@ export class LiveEventsService extends BaseApiService {
   ): LiveEventsApiResponse | null {
     if (!data) return null;
 
+    
     return {
       ...data,
-      team: {
-        ...data.team,
-        flag: this.uiVisualsService.getTeamFlag(data.team?.id),
-      },
-      opponent: {
-        ...data.opponent,
-        flag: this.uiVisualsService.getTeamFlag(data.opponent?.id),
-      },
       events: (data.events ?? []).map((event) => this.decorateEvent(event)),
     };
   }
