@@ -10,11 +10,9 @@ interface WorldCupResponse<T> {
 
 @Injectable()
 export class AdminService {
-  /** Stores and manages runtime teacher-mode configuration (team/language/theme). */
   private currentTeamId: string;
   private currentLang: LanguageEnum;
 
-  /** Initializes admin runtime state from environment defaults. */
   constructor(
     private readonly configService: ConfigService,
     private readonly worldCupApiService: WorldCupApiService,
@@ -23,29 +21,24 @@ export class AdminService {
     this.currentLang = this.configService.get<LanguageEnum>('APP_LANG', LanguageEnum.DEFAULT);
   }
 
-  /** Returns currently selected team id. */
   public getCurrentTeamId(): string {
     return this.currentTeamId;
   }
 
-  /** Returns currently selected language. */
   public getCurrentLang(): LanguageEnum {
     return this.currentLang;
   }
 
-  /** Validates and updates selected team id. */
   public async setCurrentTeamId(teamId: string): Promise<void> {
     const normalizedTeamId = this.getValidatedTeamId(teamId);
     await this.ensureTeamExists(normalizedTeamId);
     this.currentTeamId = normalizedTeamId;
   }
 
-  /** Updates selected language after normalization. */
   public setCurrentLang(lang: string): void {
     this.currentLang = lang as LanguageEnum;
   }
 
-  /** Applies optional team/lang updates in one request and returns resulting config. */
   public async applyConfig(body: { teamId?: string; lang?: string }): Promise<{
     teamId: string;
     lang: LanguageEnum;
@@ -76,12 +69,10 @@ export class AdminService {
     return this.getCurrentConfig();
   }
 
-  /** Returns the visual theme associated with the current team. */
   public getCurrentTheme(): TeamTheme {
     return getTeamTheme(this.currentTeamId);
   }
 
-  /** Returns the full current admin config snapshot. */
   public getCurrentConfig(): { teamId: string; lang: LanguageEnum; theme: TeamTheme } {
     return {
       teamId: this.currentTeamId,
@@ -90,7 +81,6 @@ export class AdminService {
     };
   }
 
-  /** Returns selected team details together with active theme and language. */
   public async getCurrentTeamInfo(): Promise<{ team: unknown; theme: TeamTheme; lang: LanguageEnum }> {
     const team = await this.findTeamById(this.currentTeamId);
     if (!team) {
@@ -107,13 +97,11 @@ export class AdminService {
     };
   }
 
-  /** Returns all teams from World Cup API. */
   public async getAllTeams(): Promise<unknown[]> {
     const response = await this.worldCupApiService.get<WorldCupResponse<unknown[]>>('/teams');
     return response.data ?? [];
   }
 
-  /** Validates and returns normalized team id input. */
   private getValidatedTeamId(teamId: string): string {
     if (!teamId) {
       throw new BadRequestException({
@@ -125,7 +113,6 @@ export class AdminService {
     return teamId;
   }
 
-  /** Ensures a team id exists in World Cup API before persisting it in config. */
   private async ensureTeamExists(teamId: string): Promise<void> {
     const team = await this.findTeamById(teamId);
     if (!team) {
@@ -136,7 +123,6 @@ export class AdminService {
     }
   }
 
-  /** Queries World Cup API for a team by id and returns first result if found. */
   private async findTeamById(teamId: string): Promise<unknown | null> {
     const response = await this.worldCupApiService.get<WorldCupResponse<unknown[]>>('/teams', {
       teamId,
