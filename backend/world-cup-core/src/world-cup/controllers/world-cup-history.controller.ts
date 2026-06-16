@@ -17,25 +17,22 @@ export class WorldCupHistoryController {
     private readonly worldCupHistoryService: WorldCupHistoryService
   ) {}
 
-@Get('history')
-async getHistory(@Query('lang') lang = 'es') {
-  try {
-    const result = await this.worldCupHistoryService.getHistory();
+  @Get('history')
+  async getHistory(@Query('lang') lang = 'es') {
+    try {
+      const result = await this.worldCupHistoryService.getHistory();
 
-    return {
-      success: result.success,
-      data: result.data ?? [],
-      message: result.message
-    };
-  } catch (error) {
-    this.logger.error('Error al obtener el historial', error);
+      return {
+        success: result.success,
+        data: result.data ?? [],
+        message: result.message
+      };
+    } catch (error) {
+      this.logger.error('Error al obtener el historial', error);
 
-    throw new InternalServerErrorException(
-      'Error al procesar el historial'
-    );
+      throw new InternalServerErrorException(
+        'Error al procesar el historial'
+      );
+    }
   }
-<<<<<<< Updated upstream
-=======
-}
->>>>>>> Stashed changes
 }
