@@ -1,90 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-export interface Match {
-  opponent: string;
-  result: string;
-  outcome: string;
+interface Podium {
+  rank: number;
+  team: string;
 }
 
-export interface MatchHistory {
-
-  year: number;
-
-  host: string;
-
-  maxStage: string;
-
-  position: number;
-
-  gamesWon: number;
-
-  gamesDrawn: number;
-
-  gamesLost: number;
-
-  goalsFor: number;
-
-  goalsAgainst: number;
-
-  matches: Match[];
+interface WorldCupHistoryItem {
+  worldCupId: string;
+  title: string;
+  date: string;
+  podium: Podium[];
+  stats: Record<string, number | string>;
+  awards: Record<string, unknown>;
 }
 
+
+ 
 export interface WorldCupHistoryResponse {
-
   success: boolean;
-
-  responseMessage: {
-    messageCode: string;
-    message: string;
-  };
-
-  data: {
-
-    teamId: string;
-
-    name: string;
-
-    fifaCode: string;
-
-    appearances: number;
-
-    bestResult: string;
-
-    topScorer: {
-      name: string;
-      goals: number;
-    };
-
-    totalStats: {
-      matchesPlayed: number;
-      wins: number;
-      draws: number;
-      losses: number;
-      goalsFor: number;
-      goalsAgainst: number;
-    };
-
-    history: MatchHistory[];
-  };
+  data: WorldCupHistoryItem[] | null;
+  message: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorldCupHistoryService {
+ 
+private apiUrl ='http://localhost:4101/worldCupCore/world-cup/history';
+  constructor(private readonly http: HttpClient) {}
 
-  private apiUrl =
-    'http://localhost:4101/worldCupCore/world-cup/historial';
-
-  constructor(private http: HttpClient) {}
-
+  
   getHistory(): Observable<WorldCupHistoryResponse> {
-
-    return this.http.get<WorldCupHistoryResponse>(
-      this.apiUrl
+    return this.http.get<WorldCupHistoryResponse>(this.apiUrl).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error detallado desde el servicio:', error);
+        return throwError(() => error);
+      })
     );
-
   }
 }

@@ -1,42 +1,54 @@
-<div class="history-wrapper" *ngIf="historyData">
 
-  <div class="team-header">
-    <img src="https://flagcdn.com/w80/tn.png" class="team-flag">
-    <div>
-      <h1>{{ historyData.name }}</h1>
-      <p>{{ historyData.appearances }} participaciones mundialistas</p>
-      <small>
-        Máximo goleador: {{ historyData.topScorer.name }} ({{ historyData.topScorer.goals }} goles)
-      </small>
-    </div>
+<div class="history-container">
+  <h1>Historial de Mundiales</h1>
+
+  <div *ngIf="loading" class="loading">Cargando historial...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="historyData.length === 0 && !loading" class="no-data">
+    Historial no disponible aún
   </div>
 
-  <div class="history-grid">
-    <div class="worldcup-card" *ngFor="let item of historyData.history">
-      
-      <div class="card-header">
-        <div>
-          <h2>{{ item.year }}</h2>
-          <span>{{ item.host }}</span>
-        </div>
-        <div class="position">#{{ item.position }}</div>
+  <div class="history-list">
+    <div *ngFor="let wc of historyData" class="world-cup-card">
+      <div class="header">
+        <h2>{{ wc.title }}</h2>
+        <span class="date">{{ wc.date }}</span>
       </div>
 
-      <div class="stats-row">
-        <div class="stat win">G {{ item.gamesWon }}</div>
-        <div class="stat draw">E {{ item.gamesDrawn }}</div>
-        <div class="stat loss">P {{ item.gamesLost }}</div>
-      </div>
-
-      <div class="matches">
-        <div class="match" *ngFor="let match of item.matches">
-          <span>{{ historyData.name }}</span>
-          <strong>{{ match.result }}</strong>
-          <span>{{ match.opponent }}</span>
+      <div class="podium">
+        <h3>Podio</h3>
+        <div class="podium-list">
+          <div *ngFor="let pos of getSortedPodium(wc.podium)" 
+               class="podium-position"
+               [class.gold]="pos.rank === 1"
+               [class.silver]="pos.rank === 2"
+               [class.bronze]="pos.rank === 3">
+            <span class="rank">#{{ pos.rank }}</span>
+            <span class="team">{{ pos.team }}</span>
+          </div>
         </div>
       </div>
 
+      <div class="stats">
+        <h3>Estadísticas</h3>
+        <div class="stats-grid">
+          <div *ngFor="let key of getStatKeys(wc.stats)" class="stat-item">
+            <span class="stat-label">{{ formatStatLabel(key) }}</span>
+            <span class="stat-value">{{ wc.stats[key] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="getAwardEntries(wc.awards).length > 0" class="awards">
+        <h3>Premios</h3>
+        <ul>
+          <li *ngFor="let award of getAwardEntries(wc.awards)">
+            <strong>{{ award.key }}:</strong> {{ award.value }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-
 </div>
+

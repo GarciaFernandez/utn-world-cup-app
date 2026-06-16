@@ -1,146 +1,88 @@
-.history-wrapper {
-  padding: 40px;
-  color: white;
-  max-width: 1300px; 
-  margin: 0 auto;    
+.history-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-
-.team-header {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 60px;
-}
-
-.team-flag {
-  width: 80px;
-  border-radius: 8px;
-}
-
-.team-header h1 {
-  margin: 0;
-  font-size: 48px;
-  font-weight: 700;
-}
-
-
-.team-header p, .team-header small {
-  display: block; 
-  width: fit-content;
-  padding: 10px 20px;
-  margin: 8px 0;
+.world-cup-card {
+  border: 1px solid #ddd;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 15px;
-  font-weight: 500;
+  padding: 20px;
+  margin-bottom: 25px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.team-header p { color: #ffffff; font-weight: 600; }
-.team-header small { color: #e0e0e0; }
-
-.team-header small::after {
-  content: " ⚽"; 
-  font-size: 14px;
-}
-
-
-.history-grid {
-  display: grid;
- 
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 30px; 
-  align-items: start;
-}
-
-
-.worldcup-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 22px;
-}
-
-
-.card-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
 }
 
-.card-header h2 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.card-header span {
-  color: #bdbdbd;
-  font-size: 13px;
-}
-
-
-.position {
-  background: #24304d;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 13px;
-}
-
-
-.stats-row {
+.podium-list {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 15px;
+  margin: 15px 0;
+  flex-wrap: wrap;
 }
 
-.stat {
-  padding: 6px 12px;
+.podium-position {
+  padding: 10px 15px;
   border-radius: 8px;
-  font-size: 11px;
-  font-weight: bold;
-  display: inline-flex;
+  background: #f8f9fa;
+  min-width: 140px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  min-width: 50px;
-}
-
-.stat.win { background: rgba(87, 214, 107, .15); color: #57d66b; }
-.stat.draw { background: rgba(243, 179, 64, .15); color: #f3b340; }
-.stat.loss { background: rgba(255, 87, 87, .15); color: #ff5757; }
-
-
-.matches {
-  display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
-.match {
+.gold { background: #ffd700; color: #000; font-weight: bold; }
+.silver { background: #c0c0c0; color: #000; }
+.bronze { background: #cd7f32; color: #fff; }
+
+.stats-grid {
   display: grid;
-  grid-template-columns: 1fr 60px 1fr;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
 }
 
-.match strong {
-  text-align: center;
-  font-family: monospace;
-  font-weight: bold;
+.stat-item {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #eee;
 }
 
-.match span:first-child { text-align: left; }
-.match span:last-child { text-align: right; }
-
-
-@media (max-width: 1024px) {
-  .history-grid { grid-template-columns: repeat(2, 1fr); }
+.stat-label {
+  display: block;
+  font-size: 0.85em;
+  color: #666;
+  text-transform: uppercase;
 }
 
-@media (max-width: 700px) {
-  .history-grid { grid-template-columns: 1fr; }
+.stat-value {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+}
+
+.awards ul {
+  list-style: none;
+  padding: 0;
+}
+
+.awards li {
+  margin: 5px 0;
+  padding: 5px;
+  border-bottom: 1px dashed #ddd;
+}
+
+@media (max-width: 600px) {
+  .history-container { padding: 10px; }
+  .header { flex-direction: column; align-items: flex-start; }
+  .podium-list { flex-direction: column; }
 }
