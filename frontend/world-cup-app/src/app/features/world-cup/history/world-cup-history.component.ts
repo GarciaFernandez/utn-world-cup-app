@@ -48,10 +48,8 @@ export class WorldCupHistoryPageComponent implements OnInit {
         }
       });
   }
-<<<<<<< Updated upstream
-=======
 
-  // Funciones necesarias para el HTML
+  
   getSortedPodium(podium: Podium[]): Podium[] {
     if (!podium) return [];
     return [...podium].sort((a, b) => a.rank - b.rank);
@@ -69,5 +67,4 @@ export class WorldCupHistoryPageComponent implements OnInit {
     if (!awards) return [];
     return Object.entries(awards).map(([key, value]) => ({ key, value }));
   }
->>>>>>> Stashed changes
 }

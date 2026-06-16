@@ -1,24 +1,3 @@
-<<<<<<< Updated upstream
-.history-card-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.history-badge-id {
-  font-size: 10px;
-}
-
-.history-badge-date {
-  font-size: 10px;
-}
-
-@media (max-width: 960px) {
-  .history-card-meta {
-    align-items: flex-start;
-  }
-=======
 .history-container {
   padding: 20px;
   max-width: 1200px;
@@ -89,7 +68,6 @@
   font-size: 1.1em;
   font-weight: 600;
   color: #333;
->>>>>>> Stashed changes
 }
 
 .awards ul {
