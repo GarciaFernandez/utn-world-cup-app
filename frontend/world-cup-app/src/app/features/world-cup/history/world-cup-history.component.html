@@ -1,6 +1,61 @@
+<<<<<<< Updated upstream
 <section class="card">
   <div class="card-header">
     <span class="card-title">Historial de mundiales</span>
   </div>
   <pre>{{ historyData | json }}</pre>
 </section>
+=======
+<div class="history-container">
+  <h1>Historial de Mundiales</h1>
+
+  <div *ngIf="loading" class="loading">Cargando historial...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="historyData.length === 0 && !loading" class="no-data">
+    Historial no disponible aún
+  </div>
+
+  <div class="history-list">
+    <div *ngFor="let wc of historyData" class="world-cup-card">
+      <div class="header">
+        <h2>{{ wc.title }}</h2>
+        <span class="date">{{ wc.date }}</span>
+      </div>
+
+      <div class="podium">
+        <h3>Podio</h3>
+        <div class="podium-list">
+          <div *ngFor="let pos of getSortedPodium(wc.podium)" 
+               class="podium-position"
+               [class.gold]="pos.rank === 1"
+               [class.silver]="pos.rank === 2"
+               [class.bronze]="pos.rank === 3">
+            <span class="rank">#{{ pos.rank }}</span>
+            <span class="team">{{ pos.team }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <h3>Estadísticas</h3>
+        <div class="stats-grid">
+          <div *ngFor="let key of getStatKeys(wc.stats)" class="stat-item">
+            <span class="stat-label">{{ formatStatLabel(key) }}</span>
+            <span class="stat-value">{{ wc.stats[key] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="getAwardEntries(wc.awards).length > 0" class="awards">
+        <h3>Premios</h3>
+        <ul>
+          <li *ngFor="let award of getAwardEntries(wc.awards)">
+            <strong>{{ award.key }}:</strong> {{ award.value }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+>>>>>>> Stashed changes

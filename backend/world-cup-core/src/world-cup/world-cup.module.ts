@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { AdminModule } from '../admin/admin.module';
+import { BasicModule } from '../basic/basic.module';
 import { GroupsController } from './controllers/groups.controller';
 import { JourneyController } from './controllers/journey.controller';
 import { MatchesController } from './controllers/matches.controller';
@@ -16,12 +17,11 @@ import { StatsAwardsService } from './services/stats-awards.service';
 import { WorldCupHistoryService } from './services/world-cup-history.service';
 import { PlayFinalService } from '../match/services/play-final.service';
 
-
-
 @Module({
   imports: [
     AdminModule,
-    HttpModule
+    HttpModule,
+    BasicModule
   ],
   controllers: [
     SimulationController,
